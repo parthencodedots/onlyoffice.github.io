@@ -1601,7 +1601,7 @@
                         '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '   </div>\n' +
                         '   <div class="message-content">\n' +
-                        '      <div class="message">' + data.message +
+                        '      <div class="message">' + data.message.replaceAll(/\n/g, '<br>') +
                         '      </div>\n' +
                         '   </div>\n' +
                         '</div>\n';
@@ -1666,7 +1666,7 @@
                             '       <div class="request-row">\n' +
                             '           <div class="message-content">\n' +
                             '               <h4>Position confirmation rejected</h4>\n' +
-                            '               <div class="message">' + data.message + '</div>\n' +
+                            '               <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                             '           </div>\n' +
                             '       </div>\n' +
                             '</div>';
@@ -1705,7 +1705,7 @@
                             '       <div class="request-row">\n' +
                             '           <div class="message-content">\n' +
                             '               <h4>Draft confirmation rejected</h4>\n' +
-                            '               <div class="message">' + data.message + '</div>\n' +
+                            '               <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                             '           </div>\n' +
                             '       </div>\n' +
                             '</div>';
@@ -1762,7 +1762,7 @@
                             '       <div class="request-row">\n' +
                             '           <div class="message-content">\n' +
                             '               <h4>Draft Request</h4>\n' +
-                            '               <div class="message">' + data.message + '</div>\n' +
+                            '               <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                             '           </div>\n' +
                             '       </div>\n' +
                             '</div>';
@@ -1799,7 +1799,7 @@
                         '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '   </div>\n' +
                         '   <div class="message-content">\n' +
-                        '      <div class="message">' + data.message +
+                        '      <div class="message">' + data.message.replaceAll(/\n/g, '<br>') +
                         '      </div>\n' +
                         '   </div>\n' +
                         '</div>\n';
@@ -1845,7 +1845,7 @@
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
                             '      <h4>Sent a position confirmation <br> request</h4>\n' +
-                            '      <div class="message">' + data.message + '</div>\n' +
+                            '      <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                             '   </div>\n' +
                             '</div>';
                     } else if (data.messageType == "Notification" && data.confirmationType == "position") {
@@ -1859,7 +1859,7 @@
                                 '       <div class="request-row">\n' +
                                 '           <div class="message-content">\n' +
                                 '               <h4>Position confirmation rejected</h4>\n' +
-                                '               <div class="message">' + data.message + '</div>\n' +
+                                '               <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                                 '           </div>\n' +
                                 '       </div>\n' +
                                 '</div>';
@@ -1923,7 +1923,7 @@
                                 '       <div class="request-row">\n' +
                                 '           <div class="message-content">\n' +
                                 '               <h4>Draft Request</h4>\n' +
-                                '               <div class="message">' + data.message + '</div>\n' +
+                                '               <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                                 '           </div>\n' +
                                 '       </div>\n' +
                                 '</div>';
@@ -1948,7 +1948,7 @@
                             '       <div class="request-row">\n' +
                             '           <div class="message-content">\n' +
                             '               <h4>Draft confirmation rejected</h4>\n' +
-                            '               <div class="message">' + data.message + '</div>\n' +
+                            '               <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                             '           </div>\n' +
                             '       </div>\n' +
                             '</div>';
@@ -1986,7 +1986,7 @@
                             '       <div class="request-row">\n' +
                             '           <div class="message-content">\n' +
                             '               <h4>Draft confirmation request</h4>\n' +
-                            '               <div class="message">' + data.message + '</div>\n' +
+                            '               <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                             '           </div>\n' +
                             '       </div>\n' +
                             '</div>';
@@ -1998,7 +1998,7 @@
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
-                            '      <div class="message">' + data.message +
+                            '      <div class="message">' + data.message.replaceAll(/\n/g, '<br>') +
                             '      </div>\n' +
                             '   </div>\n' +
                             '</div>\n';
@@ -2034,7 +2034,7 @@
                             '<div class="request-row">\n' +
                             '           <div class="request-content">\n' +
                             '                <h4>Sent a position confirmation <br> request</h4>' +
-                            '                <div class="content-message">' + data.message + '</div>\n' +
+                            '                <div class="content-message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                             '       </div>\n' +
                             '    </div>\n' +
                             '</div>';
@@ -2049,7 +2049,7 @@
                                 '   <div class="request-row">\n' +
                                 '   <div class="request-content">\n' +
                                 '      <h4>Position confirmation rejected</h4>\n' +
-                                '      <div class="message">' + data.message +
+                                '      <div class="message">' + data.message.replaceAll(/\n/g, '<br>') +
                                 '      </div>\n' +
                                 '   </div>\n' +
                                 '   </div>\n' +
@@ -2086,7 +2086,7 @@
                             '   <div class="request-row">\n' +
                             '   <div class="request-content">\n' +
                             '      <h4>Draft confirmation rejected</h4>\n' +
-                            '      <div class="message">' + data.message +
+                            '      <div class="message">' + data.message.replaceAll(/\n/g, '<br>') +
                             '      </div>\n' +
                             '   </div>\n' +
                             '   </div>\n' +
@@ -2109,7 +2109,7 @@
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
-                            '      <div class="message">' + data.message +
+                            '      <div class="message">' + data.message.replaceAll(/\n/g, '<br>') +
                             '      </div>\n' +
                             '   </div>\n' +
                             '</div>\n';
@@ -2764,7 +2764,7 @@
                             '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
-                            '      <div class="message">' + postData.message +
+                            '      <div class="message">' + postData.message.replaceAll(/\n/g, '<br>') +
                             '      </div>\n' +
                             '   </div>\n' +
                             '</div>\n';
@@ -4186,7 +4186,7 @@
                                     '   <div class="request-row">\n' +
                                     '   <div class="request-content">\n' +
                                     '      <h4>Position confirmation rejected</h4>\n' +
-                                    '      <div class="message">' + postData.message +
+                                    '      <div class="message">' + postData.message.replaceAll(/\n/g, '<br>') +
                                     '      </div>\n' +
                                     '   </div>\n' +
                                     '   </div>\n' +
@@ -4251,7 +4251,7 @@
                                     '   <div class="request-row">\n' +
                                     '      <div class="message-content">\n' +
                                     '         <h4>Draft Request</h4>\n' +
-                                    '         <div class="message">' + postData.message + '</div>\n' +
+                                    '         <div class="message">' + postData.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                                     '      </div>\n' +
                                     '   </div>\n' +
                                     '</div>';
@@ -4322,22 +4322,7 @@
                                     element.classList.add(displayNoneClass);
                                 });
                                 getSelectedContractSectionDetails();
-                                html = '<div class="chat-typing-area" id="draftConfirmCP">\n' +
-                                    '   <div class="position-text">Drafting has been confirmed by John Mark and Ketan Barad</div>\n' +
-                                    '</div>';
-                                /*var contentDiv = document.getElementById("chatContractCounterpartyFooter");
-                                var newElement = document.createElement("div");
-                                newElement.innerHTML = html;
-                                contentDiv.appendChild(newElement);*/
-
-                                htmlA = '<div class="chat-typing-area" id="draftConfirmSS">\n' +
-                                    '   <div class="position-text">Drafting has been confirmed by John Mark and Ketan Barad</div>\n' +
-                                    '   <div class="btn-box btn-box-re-open"><button class="btn btn-primary">Re-Open</button></div>\n' +
-                                    '</div>';
-                                /*var contentDiv = document.getElementById("chatContractSameSideFooter");
-                                var newElement = document.createElement("div");
-                                newElement.innerHTML = htmlA;
-                                contentDiv.appendChild(newElement);*/
+                                getOpenContractUserDetails(socket, redirection = false);
                             } else {
                                 html += '<div class="message-wrapper reverse red-color">\n' +
                                     '   <div class="profile-picture">\n' +
@@ -4349,7 +4334,7 @@
                                     '      <div class="message-content">\n' +
                                     '         <h4>Draft confirmation rejected</h4>\n' +
                                     '         <div class="message">\n' +
-                                    '            <p>' + postData.message + '</p>\n' +
+                                    '            <p>' + postData.message.replaceAll(/\n/g, '<br>') + '</p>\n' +
                                     '         </div>\n' +
                                     '      </div>\n' +
                                     '   </div>\n' +
@@ -4385,7 +4370,7 @@
                                 '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <div class="message-content">\n' +
-                                '      <div class="message">' + postData.message +'</div>\n' +
+                                '      <div class="message">' + postData.message.replaceAll(/\n/g, '<br>') +'</div>\n' +
                                 '   </div>\n' +
                                 '</div>\n';
                         }
