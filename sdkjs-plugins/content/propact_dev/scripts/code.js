@@ -2913,7 +2913,7 @@
                                             '               <div class="' + (messageType == "Counterparty" ? "message" : "content-message") + '">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                                             '           </div>\n';
                                         if (messageType == 'Counterparty') {
-                                            if (chatMessage.from != loggedInUserDetails._id && chatMessage.companyId != loggedInUserDetails.company._id && chatMessage.messageStatus == 'None' && openContractUserDetails.canConfirmPosition) {
+                                            if (chatMessage.from != loggedInUserDetails._id && chatMessage.messageStatus == 'None' && openContractUserDetails.canConfirmPosition) {
                                                 html += '        <div class="request-btn">\n' +
                                                     '               <button class="btn reject-btn  reconfirm-reject " data-action="Reject"  data-id="' + chatMessage._id + '" >Reject</button>\n' +
                                                     '               <button class="btn btn-primary ' + (chatMessage.with != 'Counterparty' ? "approve-possition" : "reconfirm-approve") + '" data-action="Approve" data-id="' + chatMessage._id + '" >Approve</button>\n' +
@@ -3061,7 +3061,7 @@
                                             '               <div class="' + (chatMessage.with == "Counterparty" ? "message" : "content-message") + '">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                                             '           </div>\n';
                                         if (messageType == 'Counterparty') {
-                                            if (chatMessage.from != loggedInUserDetails._id && chatMessage.companyId != loggedInUserDetails.company._id && chatMessage.messageStatus == 'None' && openContractUserDetails.canConfirmPosition) {
+                                            if (chatMessage.from != loggedInUserDetails._id && chatMessage.messageStatus == 'None' && openContractUserDetails.canConfirmPosition) {
                                                 html += '        <div class="request-btn">\n' +
                                                     '               <button class="btn btn-primary ' + (chatMessage.with != 'Counterparty' ? "approve-possition" : "reconfirm-approve") + '" data-action="Approve" data-id="' + chatMessage._id + '">Approve</button>\n' +
                                                     '               <button class="btn reject-btn  reconfirm-reject "  data-action="Reject"  data-id="' + chatMessage._id + '">Reject</button>\n' +
