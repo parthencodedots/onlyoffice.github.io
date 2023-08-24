@@ -320,3 +320,7 @@ input[type=checkbox]:before { content: ''; position: absolute; right: 50%; top: 
     .request-row .request-btn {padding: 0 0 0  0;}
     .request-row .request-btn .btn {margin: 0 4px; min-width: 90px;}
 }
+/* Custom CSS to decrease tooltip font size */
+.tooltip .tooltip-inner {
+    font-size: 12px; /* Adjust the font size as needed */
+}
