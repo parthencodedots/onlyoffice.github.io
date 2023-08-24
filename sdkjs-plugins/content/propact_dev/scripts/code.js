@@ -89,7 +89,7 @@
             document.getElementById('btnCreateClause').classList.add(disabledClass);
             document.getElementById('btnMarkupMode').innerHTML = "Back to Contract";
         } else {
-            document.getElementById('btnMarkupMode').innerHTML = "Markup Mode";
+            document.getElementById('btnMarkupMode').innerHTML = "Select Markup Mode";
             if (text) {
                 document.getElementById('btnCreateClause').classList.remove(disabledClass);
             } else {
