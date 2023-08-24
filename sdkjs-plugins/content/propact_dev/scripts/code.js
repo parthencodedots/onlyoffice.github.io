@@ -1695,6 +1695,7 @@
                 } else if (data.messageType == "Notification" && data.confirmationType == "draft") {
                     if (data.status == 'approved') {
                         getSelectedContractSectionDetails();
+                        getOpenContractUserDetails(socket, redirection = false);
                     } else {
                         html += '<div class="message-wrapper red-color">\n' +
                             '       <div class="profile-picture">\n' +
