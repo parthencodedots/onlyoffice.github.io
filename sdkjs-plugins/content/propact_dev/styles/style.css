@@ -246,7 +246,7 @@ input[type=checkbox]:before { content: ''; position: absolute; right: 50%; top: 
 /*==================================== 22-08-2023 ====================================*/
 @media only screen and (max-width:375px){
     .chat-footer-inner .btn { margin: 0 4px;  padding: 10px 12px; min-width: auto;}
-    .btn {font-size: 12px;}
+    .btn {font-size: 11px;}
     .request-row .request-content,.chat-body .chat-area .message-wrapper .message-content {min-width: auto;}
     .conversation-right > ul li {padding: 0 4px;}
     .conversation-right > ul li a img { max-width: 24px; max-height: 24px;}

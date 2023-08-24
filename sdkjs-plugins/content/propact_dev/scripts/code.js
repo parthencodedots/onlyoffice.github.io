@@ -953,11 +953,12 @@
                         "actionperformedbyUser": loggedInUserDetails.firstName + " " + loggedInUserDetails.lastName,
                         "actionperformedbyUserImage": loggedInUserDetails.imageUrl,
                         "actionperformedbyUserRole": loggedInUserDetails.role,
+                        "actionperformedbyUserType": loggedInUserDetails.isCounterPartyCustomer || loggedInUserDetails.isCounterPartyUser ? 'Counterparty' : 'Customer',
                         "messageConfirmationFor": 'Opposite Side',
                         "chatRoomName": getChatRoom('Counterparty'),
                         "messageId": $('#approvePositionMessageId').val(),
                         "messageNumber": 0,
-                        "chatWindow": withType
+                        "chatWindow": withType,
                     };
                     if ($('#assignDraftRequestUserIdB').val() && document.getElementById('sendToTeamForDraft').checked) {
                         approveConfirmation.with = 'Our Team';
