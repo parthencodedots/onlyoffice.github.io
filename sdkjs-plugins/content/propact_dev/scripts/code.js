@@ -21,6 +21,7 @@
     // Declare variables
     var flagInit = false;
     var flagSocketInit = false;
+    var flagSocketFunctionInit = false;
     var fClickLabel = false;
     var fClickBtnCur = false;
     let flagJSLoad = false;
@@ -82,6 +83,13 @@
         authToken = window.Asc.plugin.info.documentCallbackUrl.split('/').pop();
         /**====================== Get & Set variables ======================*/
 
+        if (!flagSocketInit) {
+            socket = io.connect(baseUrl,
+                {auth: {authToken}}
+            );
+            flagSocketInit = true;
+        }
+
         /**
          * @desc If text is not selected or contract is in markup mode than disable the create clause button
          */
@@ -103,7 +111,7 @@
          * @desc Get the open contract and user details
          */
         if (documentID && authToken && !flagInit) {
-            getOpenContractUserDetails();
+            getOpenContractUserDetails(socket);
         }
 
         const varBtnCreateClause = document.getElementById('btnCreateClause');
@@ -1463,13 +1471,14 @@
     function setupSocket() {
         /**============================== Socket Function Start ===============================*/
         /** Socket Emit: user typing on contract thread */
-        if (!flagSocketInit) {
-            socket = io.connect(baseUrl,
-                {auth: {authToken}}
-            );
+        if (!flagSocketFunctionInit) {
 
             let chatRoomName = loggedInUserDetails.userWebId + "_" + documentID;
             socket.emit('join_chat_room', chatRoomName);
+
+            let chatRoomNameA = 'room_'+documentID;
+            console.log('chatRoomNameA', chatRoomNameA);
+            socket.emit('join_chat_room', chatRoomNameA);
 
             let documentChatRoomName = documentID;
             socket.emit('join_chat_room', documentChatRoomName);
@@ -1477,6 +1486,12 @@
             function user_is_typing_contract_section(socket, data) {
                 socket.emit('user_is_typing_contract_section', data);
             }
+
+            socket.on('counterparty_invited', data => {
+                if (data) {
+                    getOpenContractUserDetails(socket, redirection = true);
+                }
+            });
 
             /** Socket On: user typing for same side */
             socket.on('user_typing_notification_contract_section', data => {
@@ -2241,7 +2256,7 @@
                 console.error('Socket Error:', error);
             });
 
-            flagSocketInit = true;
+            flagSocketFunctionInit = true;
         }
         /**============================== Socket Function End =================================*/
     }
@@ -2279,28 +2294,32 @@
                     }
                     flagInit = true;
                     openContractUserDetails = responseData.data;
-                    if (selectedThreadID) {
-                        let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
-                        if (openContractUserDetails && openContractUserDetails.openContractDetails && openContractUserDetails.canSendPositionConfirmation && getClauseDetails.isSectionInDraftMode) {
-                            if (openContractUserDetails.openContractDetails.userWhoHasEditAccess == loggedInUserDetails._id || loggedInUserDetails.role == "Counterparty" || loggedInUserDetails.role == "Contract Creator") {
-                                $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Draft Confirmation');
-                            } else {
-                                $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Position Confirmation');
-                            }
-                        } else {
-                            $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Position Confirmation');
-                        }
-                    } else {
-                        $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Position Confirmation');
-                    }
+                    // if (selectedThreadID) {
+                    //     let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
+                    //     if (openContractUserDetails && openContractUserDetails.openContractDetails && openContractUserDetails.canSendPositionConfirmation && getClauseDetails.isSectionInDraftMode) {
+                    //         if (openContractUserDetails.openContractDetails.userWhoHasEditAccess == loggedInUserDetails._id || loggedInUserDetails.role == "Counterparty" || loggedInUserDetails.role == "Contract Creator") {
+                    //             $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Draft Confirmation');
+                    //         } else {
+                    //             $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Position Confirmation');
+                    //         }
+                    //     } else {
+                    //         $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Position Confirmation');
+                    //     }
+                    // } else {
+                    //     $('#toggleSendPositionConfirmationA').attr('data-bs-title', 'Send for Position Confirmation');
+                    // }
                     document.title = "ProPact | " + openContractUserDetails.loggedInUserDetails.firstName + " " + openContractUserDetails.loggedInUserDetails.lastName + " " + openContractUserDetails.loggedInUserDetails.role;
+                    if (responseData.data.loggedInUserDetails) {
+                        loggedInUserDetails = responseData.data.loggedInUserDetails;
+                    }
+
                     if (responseData.data.invitationDetail && responseData.data.invitationDetail._id) {
+                        setupSocket();
                         document.getElementById('divInviteCounterparty').classList.add(displayNoneClass);
                         document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
                         document.getElementById('organizationName').textContent = responseData.data.invitationDetail.organizationName;
                         document.getElementById('counterpartyName').textContent = responseData.data.invitationDetail.firstName + " " + responseData.data.invitationDetail.lastName;
                     } else if (responseData.data.oppositeUser && responseData.data.oppositeUser._id) {
-                        loggedInUserDetails = responseData.data.loggedInUserDetails;
                         counterPartyCustomerDetail = responseData.data.oppositeUser;
                         if (redirection == true) {
                             document.getElementById('divInviteCounterpartyPending').classList.add(displayNoneClass);
@@ -2329,6 +2348,7 @@
                         getContractSectionList();
                         setupSocket();
                     } else if ((responseData.data.openContractDetails && responseData.data.openContractDetails.counterPartyInviteStatus && responseData.data.openContractDetails.counterPartyInviteStatus == 'Pending') || responseData.data.counterPartyInviteStatus == 'Pending') {
+                        setupSocket();
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
                     }
                 }
@@ -2663,15 +2683,9 @@
                     document.getElementById("inviteForm").reset();
                     document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
                     document.getElementById('divInviteCounterpartyForm').classList.add(displayNoneClass);
-                    if (responseData.data && responseData.data._id) {
-                        document.getElementById('organizationName').textContent = responseData.data.organizationName;
-                        document.getElementById('counterpartyName').textContent = responseData.data.firstName + " " + responseData.data.lastName;
-                    } else {
-                        getOpenContractUserDetails();
-                    }
-                } else if (responseData && responseData.status == false) {
+                    getOpenContractUserDetails();
+                } else if (responseData && responseData.status == false && responseData.message) {
                     $('#inviteEmailAddress').parent().append('<label class="error api-error">' + responseData.message + '</label>');
-                    // document.getElementById('inviteEmailAddress').setCustomValidity(responseData.message);
                 }
             })
             .catch(error => {
