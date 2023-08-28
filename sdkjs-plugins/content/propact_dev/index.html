@@ -83,7 +83,7 @@
         <div class="invite-form">
             <div class="invite-form-header">
                 <h3>Invite Counterparties</h3>
-                <a href="#" class="close-btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Close">
+                <a href="#" class="close-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Close">
                     <img src="images/close.svg" alt="Close Icon">
                 </a>
             </div>
@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 <a href="#" class="close-btn btn-redirect-contract-list" id="btnContractCreateClose"
-                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Close">
+                   data-bs-toggle="tooltip" data-bs-placement="top" title="Close">
                     <img src="images/close.svg" alt="Close Icon">
                 </a>
             </div>
@@ -220,7 +220,7 @@
             <div class="chat-create-header">
                 <h3>View the Conversation History</h3>
                 <a href="#" class="close-btn" id="btnRedirectClauseListsA" data-bs-toggle="tooltip"
-                   data-bs-placement="top" data-bs-title="Close">
+                   data-bs-placement="top" title="Close">
                     <img src="images/close.svg" alt="Close Icon">
                 </a>
             </div>
@@ -253,13 +253,13 @@
                     <ul>
                         <li>
                             <a href="#" id="btnGoToConversionHistory" data-bs-toggle="tooltip" data-bs-placement="top"
-                               data-bs-title="View the Conversation History">
+                               title="View the Conversation History">
                                 <img src="images/chat-header-icon1.svg" alt="conversation-icon">
                             </a>
                         </li>
                         <li class="action-sameside">
                             <a href="#" id="toggleInviteUserTeam" data-bs-toggle="tooltip" data-bs-placement="top"
-                               data-bs-title="Invite User & Team">
+                               title="Invite User & Team">
                                 <img src="images/chat-header-icon2.svg" alt="invite-icon">
                             </a>
                             <div class="invite-user-tabs active">
@@ -318,12 +318,12 @@
                         </li>
                         <li class="action-sameside">
                             <a href="#" id="toggleSendPositionConfirmation" data-bs-toggle="tooltip"
-                               data-bs-placement="top" data-bs-title="Send Confirmation">
+                               data-bs-placement="top" title="Send Confirmation">
                                 <img src="images/chat-header-icon3.svg" alt="send-icon">
                             </a>
                         </li>
                         <li class="action-sameside" data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Schedule Meeting">
+                            title="Schedule Meeting">
                             <a href="#">
                                 <img src="images/chat-header-icon4.svg" alt="">
                             </a>
@@ -331,7 +331,7 @@
 
                     </ul>
                     <a href="#" class="close-btn" id="btnRedirectClauseListsB" data-bs-toggle="tooltip"
-                       data-bs-placement="top" data-bs-title="Close">
+                       data-bs-placement="top" title="Close">
                         <img src="images/close.svg" alt="Close Icon">
                     </a>
                 </div>
@@ -374,26 +374,26 @@
                     <ul>
                         <li>
                             <a href="#" id="btnGoToConversionHistoryA" data-bs-toggle="tooltip" data-bs-placement="top"
-                               data-bs-title="View the Conversation History">
+                               title="View the Conversation History">
                                 <img src="images/chat-header-icon1.svg" alt="conversation-icon">
                             </a>
                         </li>
                         <li class="action-counterparty">
                             <a href="#" id="toggleSendPositionConfirmationA" data-bs-toggle="tooltip"
-                               data-bs-placement="top" data-bs-title="Send Confirmation">
+                               data-bs-placement="top" title="Send Confirmation">
                                 <img src="images/chat-header-icon3.svg" alt="">
                             </a>
                         </li>
                         <li class="action-counterparty">
                             <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
-                               data-bs-title="Schedule Meeting">
+                               title="Schedule Meeting">
                                 <img src="images/chat-header-icon4.svg" alt="">
                             </a>
                         </li>
 
                     </ul>
                     <a href="#" class="close-btn" id="btnRedirectClauseListsC" data-bs-toggle="tooltip"
-                       data-bs-placement="top" data-bs-title="Close">
+                       data-bs-placement="top" title="Close">
                         <img src="images/close.svg" alt="Close Icon">
                     </a>
                 </div>
@@ -676,11 +676,4 @@
     </div>
 </div>
 </body>
-<script>
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
-</script>
 </html>
