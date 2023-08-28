@@ -39,7 +39,7 @@
     var selectedInvitedTeams = [];
     var inviteUserSelect = [];
     var inviteTeamSelect = [];
-    var baseUrl = 'https://propact.digitaldilemma.com.au:3000';
+    var baseUrl = 'http://localhost:3000';
     var apiBaseUrl = baseUrl + '/api/v1/app';
     var IMAGE_USER_PATH_LINK = 'https://propact.s3.amazonaws.com/';
     var clauseRecordLimit = 10;
@@ -73,7 +73,7 @@
     window.Asc.plugin.init = function (text) {
 
         //event "init" for plugin
-        window.Asc.plugin.executeMethod ("ShowButton", ["back", false]);
+        window.Asc.plugin.executeMethod("ShowButton", ["back", false]);
         window.Asc.plugin.executeMethod("GetAllContentControls");
         fBtnGetAll = true;
 
@@ -516,23 +516,32 @@
                     let chatRoomNameB = getChatRoom('Our Team');
                     socket.emit('join_contract_section_chat_room', chatRoomNameB);
                     document.getElementById('divContractLists').classList.add(displayNoneClass);
+
+                    var draftConfirmSSElement = document.getElementById("draftConfirmSS");
+                    if (draftConfirmSSElement) {
+                        draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
+                    }
+                    var draftConfirmCPElement = document.getElementById("draftConfirmCP");
+                    if (draftConfirmCPElement) {
+                        draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
+                    }
                     document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
                     document.getElementById('sendPositionConfirmationPopup').classList.add(displayNoneClass);
                     document.getElementById('toggleInviteUserTeam').closest("li").classList.remove('active');
                     window.Asc.plugin.executeMethod("SelectContentControl", [tagLists[tagExists].InternalId]);
                     document.getElementById('btnGoToCounterparty').classList.remove(displayNoneClass);
                     document.getElementById('btnGoToCounterpartyA').classList.remove(displayNoneClass);
-                    $('#toggleSendPositionConfirmation').parent().removeClass(displayNoneClass);
-                    $('#toggleSendPositionConfirmationA').parent().removeClass(displayNoneClass);
+                    document.getElementById('toggleSendPositionConfirmation').closest("li").classList.remove(displayNoneClass);
+                    document.getElementById('toggleSendPositionConfirmationA').closest("li").classList.remove(displayNoneClass);
                     $('#chatFooterInner').removeClass('justify-content-end');
                     if (!openContractUserDetails.canCommunicateWithCounterparty) {
                         document.getElementById('btnGoToCounterparty').classList.add(displayNoneClass);
                         document.getElementById('btnGoToCounterpartyA').classList.add(displayNoneClass);
                         $('#chatFooterInner').addClass('justify-content-end');
                     }
-                    if (!openContractUserDetails.canSendPositionConfirmation) {
-                        $('#toggleSendPositionConfirmation').parent().addClass(displayNoneClass);
-                        $('#toggleSendPositionConfirmationA').parent().addClass(displayNoneClass);
+                    if (openContractUserDetails.canSendPositionConfirmation == false) {
+                        document.getElementById('toggleSendPositionConfirmation').closest("li").classList.add(displayNoneClass);
+                        document.getElementById('toggleSendPositionConfirmationA').closest("li").classList.add(displayNoneClass);
                     }
 
                     // let actionSameSide = document.querySelectorAll('.action-sameside');
@@ -1476,7 +1485,7 @@
             let chatRoomName = loggedInUserDetails.userWebId + "_" + documentID;
             socket.emit('join_chat_room', chatRoomName);
 
-            let chatRoomNameA = 'room_'+documentID;
+            let chatRoomNameA = 'room_' + documentID;
             console.log('chatRoomNameA', chatRoomNameA);
             socket.emit('join_chat_room', chatRoomNameA);
 
@@ -1601,12 +1610,14 @@
                         '      <div class="message-content">\n' +
                         '         <h4>Draft confirmation request</h4>\n' +
                         '         <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                        '      </div>\n' +
-                        '      <div class="request-btn">\n' +
-                        '         <button class="btn btn-primary draft-approve" data-action="Approve" data-id="' + data._id + '">Approve</button>\n' +
-                        '         <button class="btn reject-btn  draft-reject " data-action="Reject" data-id="' + data._id + '">Reject</button>\n' +
-                        '      </div>\n' +
-                        '   </div>\n' +
+                        '      </div>';
+                    if (openContractUserDetails.canConfirmPosition) {
+                        html += '      <div class="request-btn">\n' +
+                            '         <button class="btn btn-primary draft-approve" data-action="Approve" data-id="' + data._id + '">Approve</button>\n' +
+                            '         <button class="btn reject-btn  draft-reject " data-action="Reject" data-id="' + data._id + '">Reject</button>\n' +
+                            '      </div>';
+                    }
+                    html += '   </div>\n' +
                         '</div>';
                 } else if (data.messageType == 'Notification') {
                     if (data.confirmationType == 'position') {
@@ -1656,7 +1667,7 @@
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
-                            '           <strong>' + data.actionperformedbyUser + ' has assigned '+data.sendToName+' to draft this contract section</strong>\n' +
+                            '           <strong>' + data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this contract section</strong>\n' +
                             '       </div>\n' +
                             '</div>'
                         if (loggedInUserDetails._id == data.sendTo) {
@@ -1718,12 +1729,14 @@
                         '      <div class="message-content">\n' +
                         '         <h4>Draft confirmation request</h4>\n' +
                         '         <div class="message">' + data.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                        '      </div>\n' +
-                        '      <div class="request-btn">\n' +
-                        '         <button class="btn btn-primary draft-approve" data-action="Approve" data-id="' + data._id + '">Approve</button>\n' +
-                        '         <button class="btn reject-btn  draft-reject " data-action="Reject" data-id="' + data._id + '">Reject</button>\n' +
-                        '      </div>\n' +
-                        '   </div>\n' +
+                        '      </div>';
+                    if (openContractUserDetails.canConfirmPosition) {
+                        html += '      <div class="request-btn">\n' +
+                            '         <button class="btn btn-primary draft-approve" data-action="Approve" data-id="' + data._id + '">Approve</button>\n' +
+                            '         <button class="btn reject-btn  draft-reject " data-action="Reject" data-id="' + data._id + '">Reject</button>\n' +
+                            '      </div>';
+                    }
+                    html += '   </div>\n' +
                         '</div>';
                 } else if (data.messageType == "Notification" && data.confirmationType == "position") {
                     if (data.status == 'rejected') {
@@ -1804,27 +1817,30 @@
                             '           <strong>' + data.actionperformedbyUser + ' has assigned a team member to draft this contract section</strong>\n' +
                             '       </div>\n' +
                             '</div>';
-                        html += '<div class="message-wrapper ' + (data.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
-                            '       <div class="profile-picture">\n' +
-                            '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
-                            '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                            '       </div>\n' +
-                            '       <div class="request-row dudhiya-color">\n' +
-                            '           <div class="message-content">\n' +
-                            '               <h4>Draft contract request</h4>\n' +
-                            '               <div class="message">\n' +
-                            '                   <p>Draft Request: '+data.message+'</p>\n' +
-                            '                   <p>Note: '+ data.actionperformedbyUser +' has requested to give contract draft edit request to ' + data.sendToName + '.</p>\n' +
-                            '               </div>\n' +
-                            '           </div>';
-                        if (data.companyId != loggedInUserDetails.company._id) {
-                            html += '<div class="request-btn">\n' +
-                                '   <button class="btn btn-primary draft-request-approve" data-action="Approve" data-id="' + data._id + '">Approve</button>\n' +
-                                '   <button class="btn reject-btn  draft-request-reject " data-action="Reject"  data-id="' + data._id + '">Reject</button>\n' +
-                                '</div>\n';
+                        if (data.messageConfirmationFor != 'Same Side') {
+                            html += '<div class="message-wrapper ' + (data.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
+                                '       <div class="profile-picture">\n' +
+                                '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                                '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
+                                '       </div>\n' +
+                                '       <div class="request-row dudhiya-color">\n' +
+                                '           <div class="message-content">\n' +
+                                '               <h4>Draft contract request</h4>\n' +
+                                '               <div class="message">\n' +
+                                '                   <p>Draft Request: ' + data.message + '</p>\n' +
+                                '                   <p>Note: ' + data.actionperformedbyUser + ' has requested to give contract draft edit request to ' + data.sendToName + '.</p>\n' +
+                                '               </div>\n' +
+                                '           </div>';
+                            if (data.companyId != loggedInUserDetails.company._id && openContractUserDetails.canConfirmPosition) {
+                                html += '<div class="request-btn">\n' +
+                                    '   <button class="btn btn-primary draft-request-approve" data-action="Approve" data-id="' + data._id + '">Approve</button>\n' +
+                                    '   <button class="btn reject-btn  draft-request-reject " data-action="Reject"  data-id="' + data._id + '">Reject</button>\n' +
+                                    '</div>\n';
+                            }
                         }
-                        html +='</div>\n' +
+                        getOpenContractUserDetails(socket, redirection = false);
+                        html += '</div>\n' +
                             '</div>';
                     } else {
                         html += '<div class="message-wrapper dark-gold-color">\n' +
@@ -1876,8 +1892,8 @@
                             '           <div class="message-content">\n' +
                             '               <h4>Draft contract request</h4>\n' +
                             '               <div class="message">\n' +
-                            '                   <p>Draft Request: '+data.message+'</p>\n' +
-                            '                   <p>Note: '+ data.actionperformedbyUser +' has requested to give contract draft edit request to opposite user.</p>\n' +
+                            '                   <p>Draft Request: ' + data.message + '</p>\n' +
+                            '                   <p>Note: ' + data.actionperformedbyUser + ' has requested to give contract draft edit request to opposite user.</p>\n' +
                             '               </div>\n' +
                             '           </div>\n' +
                             '       </div>\n' +
@@ -2001,22 +2017,25 @@
                                 '           <strong>' + data.actionperformedbyUser + ' has assigned a team member to draft this contract section</strong>\n' +
                                 '       </div>\n' +
                                 '</div>';
-                            htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
-                                '       <div class="profile-picture">\n' +
-                                '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
-                                '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '       </div>\n' +
-                                '       <div class="request-row dudhiya-color">\n' +
-                                '           <div class="message-content">\n' +
-                                '               <h4>Draft contract request</h4>\n' +
-                                '               <div class="message">\n ' +
-                                '                   <p>Draft Request: '+data.message+'</p>\n' +
-                                '                   <p>Note: '+ data.actionperformedbyUser +' has requested to give contract draft edit request to ' + data.sendToName + '.</p>\n' +
-                                '               </div>\n' +
-                                '           </div>\n' +
-                                '       </div>\n' +
-                                '</div>';
+                            if (data.messageConfirmationFor != 'Same Side') {
+                                htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
+                                    '       <div class="profile-picture">\n' +
+                                    '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                    '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
+                                    '       </div>\n' +
+                                    '       <div class="request-row dudhiya-color">\n' +
+                                    '           <div class="message-content">\n' +
+                                    '               <h4>Draft contract request</h4>\n' +
+                                    '               <div class="message">\n ' +
+                                    '                   <p>Draft Request: ' + data.message + '</p>\n' +
+                                    '                   <p>Note: ' + data.actionperformedbyUser + ' has requested to give contract draft edit request to ' + data.sendToName + '.</p>\n' +
+                                    '               </div>\n' +
+                                    '           </div>\n' +
+                                    '       </div>\n' +
+                                    '</div>';
+                            }
+                            getOpenContractUserDetails(socket, redirection = false);
                         } else {
                             htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                                 '       <div class="profile-picture">\n' +
@@ -2260,6 +2279,7 @@
         }
         /**============================== Socket Function End =================================*/
     }
+
     /**============================== Utils Function End ==================================*/
 
     /**================================ API Function Start ================================*/
@@ -2315,6 +2335,9 @@
 
                     if (responseData.data.invitationDetail && responseData.data.invitationDetail._id) {
                         setupSocket();
+                        if (!loggedInUserDetails.isCustomer) {
+                            document.getElementById('invitationActionPara').classList.add(displayNoneClass);
+                        }
                         document.getElementById('divInviteCounterparty').classList.add(displayNoneClass);
                         document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
                         document.getElementById('organizationName').textContent = responseData.data.invitationDetail.organizationName;
@@ -2350,6 +2373,9 @@
                     } else if ((responseData.data.openContractDetails && responseData.data.openContractDetails.counterPartyInviteStatus && responseData.data.openContractDetails.counterPartyInviteStatus == 'Pending') || responseData.data.counterPartyInviteStatus == 'Pending') {
                         setupSocket();
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
+                        if (!loggedInUserDetails.isCustomer) {
+                            document.getElementById('btnRedirectInviteCounterpartyForm').classList.add('disabled');
+                        }
                     }
                 }
             })
@@ -2458,11 +2484,11 @@
                         var userLists = [];
                         if (loggedInUserDetails.isCounterPartyCustomer || loggedInUserDetails.isCounterPartyUser) {
                             userLists = responseData.data.filter((ele) => {
-                                return ele.type == "counterparty" && (ele.role == "Contract Creator" || ele.role == "Position Confirmer");
+                                return ele.type == "user" && (ele.role == "Counterparty" || ele.role == "Position Confirmer") && ele.canDraftContract;
                             });
                         } else {
                             userLists = responseData.data.filter((ele) => {
-                                return ele.type == "user" && (ele.role == "Contract Creator" || ele.role == "Position Confirmer");
+                                return ele.type == "user" && (ele.role == "Contract Creator" || ele.role == "Position Confirmer") && ele.canDraftContract;
                             });
                         }
                         if (userLists.length > 0) {
@@ -3040,12 +3066,12 @@
                                             '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
-                                            '       <div class="request-row '+(chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "")+'">\n' +
+                                            '       <div class="request-row ' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "") + '">\n' +
                                             '           <div class="' + (chatMessage.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
                                             '               <h4>' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'Draft contract request' : (chatMessage.messageStatus == 'Approve' ? 'Draft contract request approved' : 'Draft contract request rejected')) + '</h4>\n' +
                                             '               <div class="' + (chatMessage.with == "Counterparty" ? "message" : "content-message") + '">\n' +
-                                            '                   <p>Draft Request: '+chatMessage.message+'</p>\n' +
-                                            '                   <p>Note: '+userName.trim()+' has requested to give contract draft edit request to '+receiverName.trim()+'.</p>\n' +
+                                            '                   <p>Draft Request: ' + chatMessage.message + '</p>\n' +
+                                            '                   <p>Note: ' + userName.trim() + ' has requested to give contract draft edit request to ' + receiverName.trim() + '.</p>\n' +
                                             '               </div>\n' +
                                             '           </div>\n';
                                         html += '       </div>\n' +
@@ -3193,11 +3219,11 @@
                                             '           <div class="' + (chatMessage.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
                                             '               <h4>' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'Draft contract request' : (chatMessage.messageStatus == 'Approve' ? 'Draft contract request approved' : 'Draft contract request rejected')) + '</h4>\n' +
                                             '               <div class="' + (chatMessage.with == "Counterparty" ? "message" : "content-message") + '">\n' +
-                                            '                   <p>Draft Request: '+chatMessage.message+'</p>\n' +
-                                            '                   <p>Note: '+userName.trim()+' has requested to give contract draft edit request to '+receiverName.trim()+'. Please take any action on it</p>\n' +
+                                            '                   <p>Draft Request: ' + chatMessage.message + '</p>\n' +
+                                            '                   <p>Note: ' + userName.trim() + ' has requested to give contract draft edit request to ' + receiverName.trim() + '. Please take any action on it</p>\n' +
                                             '               </div>\n' +
                                             '           </div>\n';
-                                        if (loggedInUserDetails.role == "Contract Creator" && chatMessage.messageStatus == 'None') {
+                                        if (loggedInUserDetails.role == "Contract Creator" && chatMessage.messageStatus == 'None' && openContractUserDetails.canConfirmPosition) {
                                             html += '        <div class="request-btn">\n' +
                                                 '               <button class="btn btn-primary draft-request-approve" data-action="Approve" data-id="' + chatMessage._id + '" >Approve</button>\n' +
                                                 '               <button class="btn reject-btn  draft-request-reject " data-action="Reject"  data-id="' + chatMessage._id + '" >Reject</button>\n' +
@@ -3465,12 +3491,12 @@
                                             '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
                                             '       </div>\n' +
-                                            '       <div class="request-row '+(chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "")+'">\n' +
+                                            '       <div class="request-row ' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "") + '">\n' +
                                             '           <div class="' + (chatMessage.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
                                             '               <h4>' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'Draft contract request' : (chatMessage.messageStatus == 'Approve' ? 'Draft contract request approved' : 'Draft contract request rejected')) + '</h4>\n' +
                                             '               <div class="' + (chatMessage.with == "Counterparty" ? "message" : "content-message") + '">\n' +
-                                            '                   <p>Draft Request: '+chatMessage.message+'</p>\n' +
-                                            '                   <p>Note: '+userName.trim()+' has requested to give contract draft edit request to '+receiverName.trim()+'.</p>\n' +
+                                            '                   <p>Draft Request: ' + chatMessage.message + '</p>\n' +
+                                            '                   <p>Note: ' + userName.trim() + ' has requested to give contract draft edit request to ' + receiverName.trim() + '.</p>\n' +
                                             '               </div>\n' +
                                             '           </div>\n';
                                         html += '       </div>\n' +
@@ -3539,12 +3565,12 @@
                                             '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
-                                            '       <div class="request-row '+(chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "")+'">\n' +
+                                            '       <div class="request-row ' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "") + '">\n' +
                                             '           <div class="' + (chatMessage.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
                                             '               <h4>' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'Draft contract request' : (chatMessage.messageStatus == 'Approve' ? 'Draft contract request approved' : 'Draft contract request rejected')) + '</h4>\n' +
                                             '               <div class="' + (chatMessage.with == "Counterparty" ? "message" : "content-message") + '">\n' +
-                                            '                   <p>Draft Request: '+chatMessage.message+'</p>\n' +
-                                            '                   <p>Note: '+userName.trim()+' has requested to give contract draft edit request to '+receiverName.trim()+'.</p>\n' +
+                                            '                   <p>Draft Request: ' + chatMessage.message + '</p>\n' +
+                                            '                   <p>Note: ' + userName.trim() + ' has requested to give contract draft edit request to ' + receiverName.trim() + '.</p>\n' +
                                             '               </div>\n' +
                                             '           </div>\n';
                                         html += '       </div>\n' +
@@ -4029,22 +4055,22 @@
                         selectedContractSectionDetails = responseData.data;
                         document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                         document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                        let actionSameSide = document.querySelectorAll('.action-sameside');
-                        actionSameSide.forEach(function (element) {
-                            element.classList.remove(displayNoneClass);
-                        });
-                        let actionCounterparty = document.querySelectorAll('.action-counterparty');
-                        actionCounterparty.forEach(function (element) {
-                            element.classList.remove(displayNoneClass);
-                        });
-                        var draftConfirmCPElement = document.getElementById("draftConfirmCP");
-                        if (draftConfirmCPElement) {
-                            draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
-                        }
-                        var draftConfirmSSElement = document.getElementById("draftConfirmSS");
-                        if (draftConfirmSSElement) {
-                            draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
-                        }
+                        // let actionSameSide = document.querySelectorAll('.action-sameside');
+                        // actionSameSide.forEach(function (element) {
+                        //     element.classList.remove(displayNoneClass);
+                        // });
+                        // let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                        // actionCounterparty.forEach(function (element) {
+                        //     element.classList.remove(displayNoneClass);
+                        // });
+                        // var draftConfirmCPElement = document.getElementById("draftConfirmCP");
+                        // if (draftConfirmCPElement) {
+                        //     draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
+                        // }
+                        // var draftConfirmSSElement = document.getElementById("draftConfirmSS");
+                        // if (draftConfirmSSElement) {
+                        //     draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
+                        // }
                         document.getElementById('chatBodyID').classList.remove('contract-completed');
                         document.getElementById('chatCPBodyID').classList.remove('contract-completed');
                         let selectedContractSectionDetailsA = responseData.data;
@@ -4345,22 +4371,25 @@
                                     '      <strong>' + postData.actionperformedbyUser + ' has assigned a team member to draft this contract section</strong>\n' +
                                     '   </div>\n' +
                                     '</div>';
-                                html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
-                                    '   <div class="profile-picture">\n' +
-                                    '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                    '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
-                                    '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                    '   </div>\n' +
-                                    '   <div class="request-row dudhiya-color">\n' +
-                                    '      <div class="message-content">\n' +
-                                    '         <h4>Draft contract request</h4>\n' +
-                                    '           <div class="message">\n' +
-                                    '               <p>Draft Request: '+postData.message+'</p>\n' +
-                                    '               <p>Note: '+postData.actionperformedbyUser+' has requested to give contract draft edit request to ' + postData.sendToName +'</p>\n' +
-                                    '           </div>\n' +
-                                    '      </div>\n' +
-                                    '   </div>\n' +
-                                    '</div>';
+                                if (postData.messageConfirmationFor != "Same Side") {
+                                    html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
+                                        '   <div class="profile-picture">\n' +
+                                        '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
+                                        '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
+                                        '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                        '   </div>\n' +
+                                        '   <div class="request-row dudhiya-color">\n' +
+                                        '      <div class="message-content">\n' +
+                                        '         <h4>Draft contract request</h4>\n' +
+                                        '           <div class="message">\n' +
+                                        '               <p>Draft Request: ' + postData.message + '</p>\n' +
+                                        '               <p>Note: ' + postData.actionperformedbyUser + ' has requested to give contract draft edit request to ' + postData.sendToName + '</p>\n' +
+                                        '           </div>\n' +
+                                        '      </div>\n' +
+                                        '   </div>\n' +
+                                        '</div>';
+                                }
+                                getOpenContractUserDetails(socket, redirection = false);
                             } else {
                                 html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                                     '   <div class="profile-picture">\n' +
@@ -4375,7 +4404,7 @@
                                     '      </div>\n' +
                                     '   </div>\n' +
                                     '</div>';
-                                html += '<div class="message-wrapper reverse '+ (postData.with == "Counterparty" ? "light-gold-color" : "") +' ">\n' +
+                                html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                     '   <div class="profile-picture">\n' +
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
@@ -4410,8 +4439,8 @@
                                     '      <div class="message-content">\n' +
                                     '         <h4>Draft contract request rejected</h4>\n' +
                                     '         <div class="message">\n' +
-                                    '            <p>Draft Request: '+postData.message+'</p>\n' +
-                                    '            <p>Note: '+postData.actionperformedbyUser+' has requested to give contract draft edit request to opposite user.</p>\n' +
+                                    '            <p>Draft Request: ' + postData.message + '</p>\n' +
+                                    '            <p>Note: ' + postData.actionperformedbyUser + ' has requested to give contract draft edit request to opposite user.</p>\n' +
                                     '         </div>\n' +
                                     '      </div>\n' +
                                     '   </div>\n' +
@@ -4437,8 +4466,8 @@
                                     '      <div class="message-content">\n' +
                                     '         <h4>Draft contract request rejected</h4>\n' +
                                     '         <div class="message">\n' +
-                                    '            <p>Draft Request: '+postData.message+'</p>\n' +
-                                    '            <p>Note: '+postData.actionperformedbyUser+' has requested to give contract draft edit request to Internal User.</p>\n' +
+                                    '            <p>Draft Request: ' + postData.message + '</p>\n' +
+                                    '            <p>Note: ' + postData.actionperformedbyUser + ' has requested to give contract draft edit request to Internal User.</p>\n' +
                                     '         </div>\n' +
                                     '      </div>\n' +
                                     '   </div>\n' +
@@ -4454,7 +4483,7 @@
                                     '   </div>\n' +
                                     '</div>\n';
                             }
-                        }  else if (postData.messageType == 'Notification' && postData.confirmationType == 'draft') {
+                        } else if (postData.messageType == 'Notification' && postData.confirmationType == 'draft') {
                             if (postData.status == 'approved') {
                                 document.getElementById('chatCPBodyID').classList.add('contract-completed');
                                 document.getElementById('chatBodyID').classList.add('contract-completed');
@@ -4517,7 +4546,7 @@
                                 '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <div class="message-content">\n' +
-                                '      <div class="message">' + postData.message.replaceAll(/\n/g, '<br>') +'</div>\n' +
+                                '      <div class="message">' + postData.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
                                 '   </div>\n' +
                                 '</div>\n';
                         }
@@ -4597,6 +4626,7 @@
             console.error('Error fetching data:', error);
         }
     }
+
     /**================================ API Function End ==================================*/
 
 })(window, undefined);

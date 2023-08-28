@@ -197,7 +197,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .chat-body::-webkit-scrollbar-track, .contract-list-items::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
 .chat-body::-webkit-scrollbar-thumb, .contract-list-items::-webkit-scrollbar-thumb { background-color: darkgrey; outline: 1px solid slategrey; }
 div.div-selected { background: #d5d5d5 !important; }
-.chat-body .chat-area .message-wrapper.reverse .message {direction: ltr;}
+.chat-body .chat-area .message-wrapper.reverse .message, .reverse .message, .reverse .content-message {direction: ltr;}
 .small, small { font-size: 0.75em; }
 .crop-text { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; width:103px; }
 p.nodata-info { text-align: center; font-size: 12px; color: #282756; }
@@ -321,6 +321,5 @@ input[type=checkbox]:before { content: ''; position: absolute; right: 50%; top: 
     .request-row .request-btn .btn {margin: 0 4px; min-width: 90px;}
 }
 /* Custom CSS to decrease tooltip font size */
-.tooltip .tooltip-inner {
-    font-size: 12px; /* Adjust the font size as needed */
-}
+.tooltip .tooltip-inner { font-size: 12px; }
+a.disabled { pointer-events: none; cursor: not-allowed; opacity: .5; }
