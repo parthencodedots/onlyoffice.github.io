@@ -1839,7 +1839,7 @@
                         '         <h4>Draft confirmation request</h4>\n' +
                         '         <div class="message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                         '      </div>';
-                    if (chatMessage.companyId != loggedInUserDetails.company._id && openContractUserDetails.canConfirmPosition) {
+                    if (data.companyId != loggedInUserDetails.company._id && openContractUserDetails.canConfirmPosition) {
                         html += '      <div class="request-btn">\n' +
                             '         <button class="btn btn-primary draft-approve" data-action="Approve" data-id="' + data._id + '">Approve</button>\n' +
                             '         <button class="btn reject-btn  draft-reject " data-action="Reject" data-id="' + data._id + '">Reject</button>\n' +
