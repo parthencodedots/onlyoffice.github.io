@@ -2582,6 +2582,8 @@
                         document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
                         document.getElementById('organizationName').textContent = responseData.data.invitationDetail.organizationName;
                         document.getElementById('counterpartyName').textContent = responseData.data.invitationDetail.firstName + " " + responseData.data.invitationDetail.lastName;
+                        var sDocumentEditingRestrictions = "none";
+                        window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
                     } else if (responseData.data.oppositeUser && responseData.data.oppositeUser._id) {
                         counterPartyCustomerDetail = responseData.data.oppositeUser;
                         if (redirection == true) {
@@ -2610,12 +2612,16 @@
                         clauseLists = [];
                         getContractSectionList();
                         setupSocket();
+                        var sDocumentEditingRestrictions = "readOnly";
+                        window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
                     } else if ((responseData.data.openContractDetails && responseData.data.openContractDetails.counterPartyInviteStatus && responseData.data.openContractDetails.counterPartyInviteStatus == 'Pending') || responseData.data.counterPartyInviteStatus == 'Pending') {
                         setupSocket();
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
                         if (!loggedInUserDetails.isCustomer) {
                             document.getElementById('btnRedirectInviteCounterpartyForm').classList.add('disabled');
                         }
+                        var sDocumentEditingRestrictions = "none";
+                        window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
                     }
                 }
             })
