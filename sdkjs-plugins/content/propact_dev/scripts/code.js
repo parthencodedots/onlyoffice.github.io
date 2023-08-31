@@ -1850,6 +1850,20 @@
                             draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                         }
                     }
+                } else if (data.confirmationType == "Meeting") {
+                    html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
+                        '          <div class="scheduled-meeting-inner">\n' +
+                        '            <div class="scheduled-meeting-icon">\n' +
+                        '              <img src="images/schedule-meeting-icon.svg"\n' +
+                        '                alt="Schedule Meeting Icon" />\n' +
+                        '            </div>\n' +
+                        '            <div class="scheduled-meeting-content">\n' +
+                        '              <h3>'+data.meetingTitle+'</h3>\n' +
+                        '              <p>Scheduled Meeting</p>\n' +
+                        '              <span>' + formatDateForMeeting(data.meetingDate) + ' &#183; ' + data.meetingStartTime + ' - ' + data.meetingEndTime + '</span>\n' +
+                        '            </div>\n' +
+                        '          </div>\n' +
+                        '        </div>';
                 } else {
                     html += '<div class="message-wrapper grey-color">\n' +
                         '   <div class="profile-picture">\n' +
@@ -2118,6 +2132,20 @@
                         '      <div class="message">Contract section Re-Opened by ' + data.actionperformedbyUser + '</div>\n' +
                         '   </div>\n' +
                         '</div>\n';
+                } else if (data.confirmationType == "Meeting") {
+                    html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
+                        '          <div class="scheduled-meeting-inner">\n' +
+                        '            <div class="scheduled-meeting-icon">\n' +
+                        '              <img src="images/schedule-meeting-icon.svg"\n' +
+                        '                alt="Schedule Meeting Icon" />\n' +
+                        '            </div>\n' +
+                        '            <div class="scheduled-meeting-content">\n' +
+                        '              <h3>'+data.meetingTitle+'</h3>\n' +
+                        '              <p>Scheduled Meeting</p>\n' +
+                        '              <span>' + formatDateForMeeting(data.meetingDate) + ' &#183; ' + data.meetingStartTime + ' - ' + data.meetingEndTime + '</span>\n' +
+                        '            </div>\n' +
+                        '          </div>\n' +
+                        '        </div>';
                 } else {
                     html += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                         '   <div class="profile-picture">\n' +
@@ -2469,6 +2497,20 @@
                         if (draftConfirmSSElement) {
                             draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                         }
+                    } else if (data.confirmationType == "Meeting") {
+                        html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
+                            '          <div class="scheduled-meeting-inner">\n' +
+                            '            <div class="scheduled-meeting-icon">\n' +
+                            '              <img src="images/schedule-meeting-icon.svg"\n' +
+                            '                alt="Schedule Meeting Icon" />\n' +
+                            '            </div>\n' +
+                            '            <div class="scheduled-meeting-content">\n' +
+                            '              <h3>'+data.meetingTitle+'</h3>\n' +
+                            '              <p>Scheduled Meeting</p>\n' +
+                            '              <span>' + formatDateForMeeting(data.meetingDate) + ' &#183; ' + data.meetingStartTime + ' - ' + data.meetingEndTime + '</span>\n' +
+                            '            </div>\n' +
+                            '          </div>\n' +
+                            '        </div>';
                     } else {
                         htmlHistory += '<div class="message-wrapper reverse">\n' +
                             '   <div class="profile-picture">\n' +
