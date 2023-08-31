@@ -828,6 +828,7 @@
                 let meetingData = {
                     contractId: documentID,
                     contractSectionId: selectedThreadID,
+                    contractSectionThreadId: selectedCommentThereadID,
                     chatRoomName: loggedInUserDetails.userWebId + "_" + documentID
                 };
                 socket.emit('meeting-schedule', meetingData)
@@ -837,6 +838,7 @@
                 let meetingData = {
                     contractId: documentID,
                     contractSectionId: selectedThreadID,
+                    contractSectionThreadId: selectedCommentThereadID,
                     chatRoomName: loggedInUserDetails.userWebId + "_" + documentID
                 };
                 socket.emit('meeting-schedule', meetingData)
@@ -3807,7 +3809,7 @@
                                         html += '    </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-                                        html += '<div class="scheduled-meeting">\n' +
+                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
                                             '          <div class="scheduled-meeting-inner">\n' +
                                             '            <div class="scheduled-meeting-icon">\n' +
                                             '              <img src="images/schedule-meeting-icon.svg"\n' +
@@ -3951,7 +3953,7 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-                                        html += '<div class="scheduled-meeting">\n' +
+                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
                                             '          <div class="scheduled-meeting-inner">\n' +
                                             '            <div class="scheduled-meeting-icon">\n' +
                                             '              <img src="images/schedule-meeting-icon.svg"\n' +
