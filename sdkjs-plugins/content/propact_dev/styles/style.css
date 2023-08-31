@@ -183,7 +183,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .btn-markup:hover{background-color:#282756 !important; border-color: #282756 !important; color: #fff !important;}
 /* ======================================= Editor Css ======================================= */
 /* ===================================== Sanckbar CSS ======================================= */
-#snackbar { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1; left: 50%; bottom: 30px; font-size: 17px; }
+#snackbar { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1; left: 30%; bottom: 30px; font-size: 14px; }
 #snackbar.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
 @-webkit-keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
 @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
@@ -323,3 +323,27 @@ input[type=checkbox]:before { content: ''; position: absolute; right: 50%; top: 
 /* Custom CSS to decrease tooltip font size */
 .tooltip .tooltip-inner { font-size: 12px; }
 a.disabled { pointer-events: none; cursor: not-allowed; opacity: .5; }
+.chat-area .scheduled-meeting { width: 100%; float: left; margin: 0 0 15px 0; padding: 15px; background: #E9E9EE; border-radius: 10px; cursor: pointer; }
+.chat-area .scheduled-meeting .scheduled-meeting-inner { width: 100%; display: flex; border-bottom: none; }
+.chat-area .scheduled-meeting .scheduled-meeting-inner .scheduled-meeting-icon { width: 52px; margin: 0; padding: 0 12px 0 0; float: left; }
+.chat-area .scheduled-meeting .scheduled-meeting-inner .scheduled-meeting-content { width: calc(100% - 52px); float: left; margin: 0; padding: 0; }
+.chat-area .scheduled-meeting .scheduled-meeting-inner .scheduled-meeting-content h3 { font-size: 14px; font-weight: 500; color: #282756; margin: 0 0 8px 0; padding: 0; width: 100%; float: left; line-height: 20px; }
+.chat-area .scheduled-meeting .scheduled-meeting-inner .scheduled-meeting-content p { font-size: 12px; color: #282756; opacity: 70%; margin: 0 0 8px 0; padding: 0; width: 100%; float: left; font-weight: 400; }
+.chat-area .scheduled-meeting .scheduled-meeting-inner .scheduled-meeting-content span { width: auto; display: inline-block; margin: 0 10px 0 0; padding: 0; font-size: 12px; font-weight: 400; color: #282756; opacity: 70%; }
+.meeting-details { width: 100%; float: left; margin: 0; padding: 40px 12px 20px; position: absolute; left: 0; right: 0; bottom: 0; background: #fff; z-index: 9; box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1); border-radius: 10px 10px 4px 4px; }
+.meeting-details .meeting-details-inner { width: 100%; float: left; margin: 0 0 14px 0; padding: 0 0 14px 0; border-bottom: 1px solid #D1D1D1; }
+.meeting-details .meeting-details-inner .inner-title { width: 100%; float: left; margin: 0; padding: 0; }
+.meeting-details .meeting-details-inner .inner-title h4 { font-size: 16px; color: #282756; font-weight: 500; margin: 0 0 12px 0; padding: 0; float: left; width: 100%; line-height: 20px; }
+.meeting-details .meeting-details-inner .inner-title p { font-size: 14px; font-weight: 400; margin: 0 0 12px 0; padding: 0; line-height: 20px; color: #282756; width: 100%; float: left; }
+.meeting-details .meeting-details-inner .inner-title span { display: inline-block; font-size: 14px; font-weight: 400; margin: 0 10px 0 0; padding: 0; line-height: 20px; color: #282756; opacity: 70%; }
+.meeting-details .meeting-user-list { width: 100%; float: left; margin: 0; padding: 0; }
+.meeting-user-list .meeting-user-title { width: 100%; float: left; margin: 0 0 20px 0; padding: 0; }
+.meeting-details .meeting-user-list .meeting-user-title h4 { margin: 0; padding: 0; display: block; width: 100%; font-size: 14px; color: #282756; font-weight: 500; line-height: 20px; }
+.meeting-details .meeting-user-list .meeting-user-items { width: 100%; float: left; margin: 0; padding: 0; }
+.meeting-details .meeting-user-list .meeting-user-items ul { width: 100%; float: left; padding: 0; margin: 0; max-height: 170px; overflow: auto; -ms-overflow-style: none; scrollbar-width: none; }
+.meeting-details .meeting-user-list .meeting-user-items ul li { width: 100%; float: left; margin: 0 0 10px 0; padding: 0; }
+.meeting-details .meeting-user-list .meeting-user-items ul li .meeting-user-item { width: 100%; display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; }
+.meeting-details .meeting-user-list .meeting-user-items ul li .meeting-user-item .left-item { width: auto; display: inline-block; margin: 0 10px 0 0; padding: 0; }
+.meeting-details .meeting-user-list .meeting-user-items ul li .meeting-user-item .left-item img { width: 24px; height: 24px; object-fit: cover; object-position: center center; margin: 0 12px 0 0; padding: 0; border-radius: 50%; }
+.meeting-details .meeting-user-list .meeting-user-items ul li .meeting-user-item .left-item span { font-size: 14px; color: #282756; font-weight: 400; margin: 0; padding: 0; display: inline-block; }
+.meeting-details .meeting-user-list .submit-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 10px 0 0 0; }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="times-circle-icon" transform="translate(-363 -1083)">
+    <rect id="Rectangle_2923" data-name="Rectangle 2923" width="18" height="18" rx="9" transform="translate(363 1083)" fill="red"/>
+    <path id="add_FILL0_wght400_GRAD0_opsz48" d="M15,20a.519.519,0,0,1-.536-.536V15.536H10.536a.536.536,0,1,1,0-1.071h3.929V10.536a.536.536,0,1,1,1.071,0v3.929h3.929a.536.536,0,1,1,0,1.071H15.536v3.929A.519.519,0,0,1,15,20Z" transform="translate(372 1070.787) rotate(45)" fill="#fff" stroke="#fff" stroke-width="0.2"/>
+  </g>
+</svg>

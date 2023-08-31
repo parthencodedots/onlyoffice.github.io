@@ -322,9 +322,9 @@
                                 <img src="images/chat-header-icon3.svg" alt="send-icon">
                             </a>
                         </li>
-                        <li class="action-sameside" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Schedule Meeting">
-                            <a href="#">
+                        <li class="action-sameside">
+                            <a href="#" id="toggleScheduleMeeting" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Schedule Meeting" >
                                 <img src="images/chat-header-icon4.svg" alt="">
                             </a>
                         </li>
@@ -385,12 +385,11 @@
                             </a>
                         </li>
                         <li class="action-counterparty">
-                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Schedule Meeting">
+                            <a href="#" id="toggleScheduleMeetingA" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Schedule Meeting" >
                                 <img src="images/chat-header-icon4.svg" alt="">
                             </a>
                         </li>
-
                     </ul>
                     <a href="#" class="close-btn" id="btnRedirectClauseListsC" data-bs-toggle="tooltip"
                        data-bs-placement="top" title="Close">
@@ -673,7 +672,35 @@
                 </div>
             </div>
         </div>
+        <div class="position-confirmation-popup d-none" id="meetingPopup">
+            <div class="meeting-details">
+            <div class="meeting-details-inner invite-users-inner">
+                <img src="images/schedule_meeting-icon.svg" alt="Meeting">
+                <h3>Meeting Details</h3>
+                <div class="inner-title">
+                    <h4 id="meetingTitle">-</h4>
+                    <p id="meetingAgenda">-</p>
+                    <span id="meetingScheduleTime">-</span>
+                    <span id="MeetingTimings">-</span>
+                </div>
+            </div>
+            <div class="meeting-user-list">
+                <div class="meeting-user-title">
+                    <h4>
+                        <span id="participantCounts">1</span> Participants
+                    </h4>
+                </div>
+                <div class="meeting-user-items" id="meetingParticipantList">
+                </div>
+                <div class="submit-btn">
+                    <button type="submit" class="btn btn-secondary btn-meeting-close">Close</button>
+                    <button type="submit" id="btnMeetingView" class="btn btn-primary line-class-tmp btn-meeting-view">View</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
+    <div id="snackbar">Snackbar text</div>
 </div>
 </body>
 </html>

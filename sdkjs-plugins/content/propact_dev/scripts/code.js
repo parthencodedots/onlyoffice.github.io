@@ -71,6 +71,9 @@
 
     /**================================== Plugin Init Start ===============================*/
     window.Asc.plugin.init = function (text) {
+    
+    	var sDocumentEditingRestrictions = "readOnly";
+	window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
 
         //event "init" for plugin
         window.Asc.plugin.executeMethod("ShowButton", ["back", false]);
@@ -196,6 +199,7 @@
                 document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                 document.getElementById('inviteUserPopup').classList.add(displayNoneClass);
                 document.getElementById('inviteTeamPopup').classList.add(displayNoneClass);
+                document.getElementById('meetingPopup').classList.add(displayNoneClass);
             });
 
             const varBtnGoToSameSideChat = document.getElementById('btnGoToSameSideChat');
@@ -208,6 +212,7 @@
                 await getContractSectionMessageList('our');
                 let chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
+                document.getElementById("messageInput").value = "";
                 document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
                 document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
             });
@@ -222,6 +227,7 @@
                 await getContractSectionMessageList('Counterparty');
                 let chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
+                document.getElementById("messageInputCP").value = "";
                 document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
                 document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
             });
@@ -291,6 +297,7 @@
                 await getContractSectionMessageList('our');
                 let chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
+                document.getElementById("messageInput").value = "";
                 document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
                 document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
             });
@@ -305,6 +312,7 @@
                 await getContractSectionMessageList('Counterparty');
                 let chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
+                document.getElementById("messageInputCP").value = "";
                 document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
                 document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
             });
@@ -325,6 +333,7 @@
                 document.getElementById('sendDraftConfirmationPopup').classList.add(displayNoneClass);
                 document.getElementById('rejectDarftRequestPopup').classList.add(displayNoneClass);
                 document.getElementById('rejectDarftPopup').classList.add(displayNoneClass);
+                document.getElementById('meetingPopup').classList.add(displayNoneClass);
             });
 
             const varBtnRedirectClauseListsC = document.getElementById('btnRedirectClauseListsC');
@@ -343,6 +352,7 @@
                 document.getElementById('sendDraftConfirmationPopup').classList.add(displayNoneClass);
                 document.getElementById('rejectDarftRequestPopup').classList.add(displayNoneClass);
                 document.getElementById('rejectDarftPopup').classList.add(displayNoneClass);
+                document.getElementById('meetingPopup').classList.add(displayNoneClass);
             });
             // Contract sameside chat screen
 
@@ -507,6 +517,7 @@
                     selectedThreadID = $(this).data('id');
                     chatHistoryNextPage = 1;
                     chatHistoryHasNextPage = true;
+                    getSelectedContractSectionDetails();
                     getOpenContractUserDetails(socket, redirection = false);
                     await getContractSectionMessageHistory();
                     let chatRoomName = 'conversion_history_' + selectedCommentThereadID;
@@ -813,6 +824,24 @@
                 }
             });
 
+            document.getElementById('toggleScheduleMeeting').addEventListener('click', function () {
+                let meetingData = {
+                    contractId: documentID,
+                    contractSectionId: selectedThreadID,
+                    chatRoomName: loggedInUserDetails.userWebId + "_" + documentID
+                };
+                socket.emit('meeting-schedule', meetingData)
+            });
+
+            document.getElementById('toggleScheduleMeetingA').addEventListener('click', function () {
+                let meetingData = {
+                    contractId: documentID,
+                    contractSectionId: selectedThreadID,
+                    chatRoomName: loggedInUserDetails.userWebId + "_" + documentID
+                };
+                socket.emit('meeting-schedule', meetingData)
+            });
+
             document.getElementById('goBackToScreen').addEventListener('click', function () {
                 document.getElementById('inviteUserPopup').classList.add(displayNoneClass);
                 document.getElementById('inviteTeamPopup').classList.add(displayNoneClass);
@@ -886,6 +915,23 @@
             $(document).on('click', '.draft-request-reject', function () {
                 $('#rejectDraftRequestMessageId').val($(this).data('id'));
                 document.getElementById('rejectDarftRequestPopup').classList.remove(displayNoneClass);
+            });
+
+            $(document).on('click', '.scheduled-meeting', function() {
+                getContractMeetingDetails($(this).data('id'));
+                $('#btnMeetingView').attr('data-id', $(this).data('id'));
+            });
+
+            $(document).on('click', '.btn-meeting-close', function() {
+                document.getElementById('meetingPopup').classList.add(displayNoneClass);
+            });
+
+            $(document).on('click', '.btn-meeting-view', function() {
+                let meetingData = {
+                    meetingId: $(this).data('id'),
+                    chatRoomName: loggedInUserDetails.userWebId + "_" + documentID
+                };
+                socket.emit('scheduled-meeting-view', meetingData)
             });
 
             /** Invite counterparty form submit */
@@ -1494,6 +1540,24 @@
         }
 
         const formattedDate = `${day}<sup>${daySuffix}</sup> ${month} ${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        return formattedDate;
+    }
+
+    /**
+     * @param inputDate
+     * @returns {string}
+     */
+    function formatDateForMeeting(inputDate) {
+        const months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const date = new Date(inputDate);
+        const day = daysOfWeek[date.getDay()];
+        const dateT = date.getDate();
+        const month = months[date.getMonth()];
+        const formattedDate = `${day}, ${dateT} ${month}`;
         return formattedDate;
     }
 
@@ -2916,6 +2980,12 @@
                     // Handle the response data
                     const responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
+                        var x = document.getElementById("snackbar");
+                        x.textContent = responseData.message;
+                        x.className = "show";
+                        setTimeout(function() {
+                            x.classList.remove('show');
+                        }, 3000)
                         document.getElementById('divInviteCounterpartyPending').classList.add(displayNoneClass);
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
                     } else {
@@ -2952,6 +3022,12 @@
                     const responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         console.log(responseData.message);
+                        var x = document.getElementById("snackbar");
+                        x.textContent = responseData.message;
+                        x.className = "show";
+                        setTimeout(function() {
+                            x.classList.remove('show');
+                        }, 3000)
                     }
                 })
                 .catch(error => {
@@ -3333,7 +3409,19 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-
+                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
+                                            '          <div class="scheduled-meeting-inner">\n' +
+                                            '            <div class="scheduled-meeting-icon">\n' +
+                                            '              <img src="images/schedule-meeting-icon.svg"\n' +
+                                            '                alt="Schedule Meeting Icon" />\n' +
+                                            '            </div>\n' +
+                                            '            <div class="scheduled-meeting-content">\n' +
+                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <p>Scheduled Meeting</p>\n' +
+                                            '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
+                                            '            </div>\n' +
+                                            '          </div>\n' +
+                                            '        </div>';
                                     }
                                 } else {
                                     if (chatMessage.messageType == 'Normal') {
@@ -3487,7 +3575,19 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-
+                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
+                                            '          <div class="scheduled-meeting-inner">\n' +
+                                            '            <div class="scheduled-meeting-icon">\n' +
+                                            '              <img src="images/schedule-meeting-icon.svg"\n' +
+                                            '                alt="Schedule Meeting Icon" />\n' +
+                                            '            </div>\n' +
+                                            '            <div class="scheduled-meeting-content">\n' +
+                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <p>Scheduled Meeting</p>\n' +
+                                            '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
+                                            '            </div>\n' +
+                                            '          </div>\n' +
+                                            '        </div>';
                                     }
                                 }
                                 if (chatNextPage == 1) {
@@ -3700,6 +3800,20 @@
                                             '           </div>\n';
                                         html += '    </div>\n' +
                                             '</div>\n';
+                                    } else if (chatMessage.messageType == 'Meeting') {
+                                        html += '<div class="scheduled-meeting">\n' +
+                                            '          <div class="scheduled-meeting-inner">\n' +
+                                            '            <div class="scheduled-meeting-icon">\n' +
+                                            '              <img src="images/schedule-meeting-icon.svg"\n' +
+                                            '                alt="Schedule Meeting Icon" />\n' +
+                                            '            </div>\n' +
+                                            '            <div class="scheduled-meeting-content">\n' +
+                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <p>Scheduled Meeting</p>\n' +
+                                            '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
+                                            '            </div>\n' +
+                                            '          </div>\n' +
+                                            '        </div>';
                                     }
                                 } else {
                                     if (chatMessage.messageType == 'Normal') {
@@ -3831,141 +3945,21 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-
+                                        html += '<div class="scheduled-meeting">\n' +
+                                            '          <div class="scheduled-meeting-inner">\n' +
+                                            '            <div class="scheduled-meeting-icon">\n' +
+                                            '              <img src="images/schedule-meeting-icon.svg"\n' +
+                                            '                alt="Schedule Meeting Icon" />\n' +
+                                            '            </div>\n' +
+                                            '            <div class="scheduled-meeting-content">\n' +
+                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <p>Scheduled Meeting</p>\n' +
+                                            '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
+                                            '            </div>\n' +
+                                            '          </div>\n' +
+                                            '        </div>';
                                     }
                                 }
-                                // if (chatMessage.messageConfirmationFor == 'Same Side') {
-                                //     html += '<div class="message-wrapper reverse">\n';
-                                //     html += '<div class="profile-picture">\n' +
-                                //         '      <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                //         '      <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
-                                //         '      <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                //         '   </div>\n';
-                                //     if (chatMessage.messageType == 'Position Confirmation') {
-                                //         html += '<div class="request-row">\n' +
-                                //             '           <div class="request-content">\n' +
-                                //             '                <h4>Sent a position confirmation <br> request</h4>' +
-                                //             '                <div class="content-message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //             '       </div>\n' +
-                                //             '    </div>\n';
-                                //     } else if (chatMessage.messageType == 'Draft Request') {
-                                //         html += '<div class="request-row">\n' +
-                                //             '           <div class="request-content">\n' +
-                                //             '                <h4>Draft Request</h4>' +
-                                //             '                <div class="content-message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //             '       </div>\n' +
-                                //             '    </div>\n';
-                                //     } else if (chatMessage.messageType == 'Invite') {
-                                //         let inviteMessage = '';
-                                //         if (chatMessage.inviteType == 'Team' && chatMessage.invitedTeamDetails) {
-                                //             inviteMessage += chatMessage.invitedTeamDetails.teamName;
-                                //         } else {
-                                //             let invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
-                                //             inviteMessage += invitedUser.trim();
-                                //         }
-                                //         inviteMessage += ' ' + chatMessage.message + ' ' + chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName + ' in this contract section';
-                                //         html += '<strong>\n' +
-                                //             '      ' + inviteMessage + '\n' +
-                                //             '    </div>\n';
-                                //     } else if (chatMessage.messageType == 'Notification') {
-                                //         let userName = chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName;
-                                //         if (chatMessage.message == 'request_draft_counter') {
-                                //             let notificationMessage = userName + " has assigned opposite side to draft this contract section";
-                                //             html += '<strong>\n' +
-                                //                 '      ' + notificationMessage + '\n' +
-                                //                 '    </strong>\n';
-                                //         } else if (chatMessage.message == 'request_draft') {
-                                //             let notificationMessage;
-                                //             if (chatMessage.messageReceiverUser) {
-                                //                 let userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
-                                //                 notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this contract section";
-                                //             } else {
-                                //                 notificationMessage = userName.trim() + " has assigned a team member to draft this contract section";
-                                //             }
-                                //             html += '<strong>\n' +
-                                //                 '      ' + notificationMessage + '\n' +
-                                //                 '    </strong>\n';
-                                //         } else {
-                                //             let inviteMessage = '';
-                                //             inviteMessage += chatMessage.message + ' ' + userName;
-                                //             html += '<strong>\n' +
-                                //                 '      ' + inviteMessage + '\n' +
-                                //                 '    </strong>\n';
-                                //         }
-                                //     } else {
-                                //         html += '<div class="message-content">\n' +
-                                //             '      <div class="message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //             '    </div>\n';
-                                //     }
-                                //     html += '</div>\n';
-                                // } else {
-                                //     html += '<div class="message-wrapper ' + (chatMessage.messageType == 'Position Confirmation' || chatMessage.messageType == 'Draft Request' ? 'dark-gold-color' : 'light-gold-color') + ' ' + (chatMessage.messageType == 'Position Confirmation' && chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n';
-                                //     html += '<div class="profile-picture ' + (chatMessage.messageType == 'Notification' ? "d-none" : "") + '">\n' +
-                                //         '      <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                //         '      <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
-                                //         '      <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                //         '   </div>\n';
-                                //     if (chatMessage.messageType == 'Position Confirmation') {
-                                //         if (chatMessage.messageStatus == 'Reject') {
-                                //             html += '<div class="message-content">\n' +
-                                //                 '<h4>Position confirmation rejected</h4>' +
-                                //                 '<div class="message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //                 '</div>\n';
-                                //         } else if (chatMessage.messageStatus == 'Approve') {
-                                //             html += '<div class="message-content">\n' +
-                                //                 '<h4>Position confirmation approved</h4>' +
-                                //                 '<div class="message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //                 '</div>\n';
-                                //         } else {
-                                //             html += '<div class="message-content">\n' +
-                                //                 '<h4>Sent a position confirmation <br> request</h4>' +
-                                //                 '<div class="message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //                 '</div>\n';
-                                //         }
-                                //     } else if (chatMessage.messageType == 'Draft Request') {
-                                //         html += '<div class="message-content">\n' +
-                                //             '<h4>Draft Request</h4>' +
-                                //             '<div class="message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //             '</div>\n';
-                                //     } else if (chatMessage.messageType == 'Notification') {
-                                //         let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
-                                //         if (chatMessage.message == 'request_draft_counter') {
-                                //             let notificationMessage = userName.trim() + " has assigned opposite side to draft this contract section";
-                                //             html += '<strong>\n' +
-                                //                 '      ' + notificationMessage + '\n' +
-                                //                 '    </strong>\n';
-                                //         } else if (chatMessage.message == 'request_draft') {
-                                //             let userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
-                                //             let notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this contract section";
-                                //             html += '<strong>\n' +
-                                //                 '      ' + notificationMessage + '\n' +
-                                //                 '    </strong>\n';
-                                //         } else {
-                                //             let inviteMessage = '';
-                                //             inviteMessage += chatMessage.message + ' ' + userName.trim();
-                                //             html += '<strong>\n' +
-                                //                 '      ' + inviteMessage + '\n' +
-                                //                 '    </strong>\n';
-                                //         }
-                                //     } else if (chatMessage.messageType == 'Invite') {
-                                //         let inviteMessage = '';
-                                //         if (chatMessage.inviteType == 'Team' && chatMessage.invitedTeamDetails) {
-                                //             inviteMessage += chatMessage.invitedTeamDetails.teamName;
-                                //         } else {
-                                //             let invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
-                                //             inviteMessage += invitedUser.trim();
-                                //         }
-                                //         inviteMessage += ' ' + chatMessage.message + ' ' + chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName + ' in this contract section';
-                                //         html += '<strong>\n' +
-                                //             '      ' + inviteMessage + '\n' +
-                                //             '    </strong>\n';
-                                //     } else {
-                                //         html += '<div class="message-content">\n' +
-                                //             '      <div class="message">' + chatMessage.message.replaceAll(/\n/g, '<br>') + '</div>\n' +
-                                //             '    </div>\n';
-                                //     }
-                                //     html += '</div>\n';
-                                // }
                                 if (chatHistoryNextPage == 1) {
                                     var contentDiv = document.getElementById("chatHistoryArea");
                                     var newElement = document.createElement("div");
@@ -4286,6 +4280,7 @@
                             document.getElementById('chatCPBodyID').classList.add('contract-completed');
                         }
                         if (responseData.data.contractAssignedUsers && responseData.data.contractAssignedUsers.length > 0) {
+                            document.getElementById('toggleSendPositionConfirmation').closest("li").classList.remove(displayNoneClass);
                             let iHtml = '<ul>';
                             responseData.data.contractAssignedUsers.forEach((ele) => {
                                 iHtml += '<li>\n' +
@@ -4303,6 +4298,7 @@
                             iHtml += '</ul>';
                             document.getElementById('userTabContent').innerHTML = iHtml;
                         } else {
+                            document.getElementById('toggleSendPositionConfirmation').closest("li").classList.add(displayNoneClass);
                             let html = '<ul>' +
                                 '<li><p>No user selected</p></li>' +
                                 '</ul>';
@@ -4411,6 +4407,8 @@
                                 '           </div>\n';
                             html += '    </div>\n' +
                                 '</div>\n';
+                            var sDocumentEditingRestrictions = "readOnly";
+                            window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
                         } else {
                             html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                                 '       <div class="profile-picture">\n' +
@@ -4854,6 +4852,83 @@
                     oppositeChat.messageConfirmationFor =  'Opposite Side';
                     oppositeChat.chatRoomName = 'counter_' + selectedCommentThereadID;
                     socket.emit('contract_section_message', oppositeChat);
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error('Error:', error);
+                });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    async function getContractMeetingDetails(meetingID) {
+        try {
+            let meetingDetailsUrl = apiBaseUrl + '/meeting/getContractMeetingDetails/' + meetingID;
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + authToken
+            };
+            const requestOptions = {
+                method: 'GET',
+                headers: headers,
+            };
+            fetch(meetingDetailsUrl, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data
+                    const responseData = data;
+                    if (responseData && responseData.status == true && responseData.code == 200) {
+                        let response = responseData.data;
+                        console.log('data', response);
+
+                        let participantCount = response.meetingParticipants ? response.meetingParticipants.length : 0
+
+                        document.getElementById('meetingPopup').classList.remove(displayNoneClass);
+
+                        document.getElementById('meetingTitle').textContent = response.meetingTitle;
+                        document.getElementById('meetingAgenda').textContent = response.meetingAgenda;
+                        document.getElementById('meetingScheduleTime').textContent = formatDateForMeeting(response.meetingDate);
+                        document.getElementById('MeetingTimings').textContent = response.meetingStartTime + " - " + response.meetingEndTime;
+
+                        // document.getElementById('meetingOrganiserName').textContent = response.meetingOrganiser.firstName + " " + response.meetingOrganiser.lastName + "(Organiser)";
+                        // document.getElementById('meetingOrganiserImage').src = response.meetingOrganiser.imageUrl ?? 'images/no-profile-image.jpg';
+                        document.getElementById('participantCounts').textContent = participantCount;
+
+
+                        let iHtml = '<ul>';
+                        iHtml += '<li>\n' +
+                            '\t\t\t\t<div class="meeting-user-item">\n' +
+                            '\t\t\t\t\t\t\t\t<div class="left-item">\n' +
+                            '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (response.meetingOrganiser.imageUrl ?? 'images/no-profile-image.jpg') + '" alt="">\n' +
+                            '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + response.meetingOrganiser.firstName + " " + response.meetingOrganiser.lastName + '(Organiser)</span>\n' +
+                            '\t\t\t\t\t\t\t\t</div>\n' +
+                            '\t\t\t\t</div>\n' +
+                            '</li>';
+                        response.meetingParticipants.forEach((ele) => {
+                            let meetingStatus = 'images/pending-icon.svg'
+                            if (ele.meetingStatus == 'Accepted') {
+                                meetingStatus = 'images/check-circle.svg'
+                            } else if (ele.meetingStatus == 'Decline') {
+                                meetingStatus = 'images/times-circle-icon.svg'
+                            } else {
+                                meetingStatus = 'images/pending-icon.svg'
+                            }
+                            iHtml += '<li>\n' +
+                                '\t\t\t\t<div class="meeting-user-item">\n' +
+                                '\t\t\t\t\t\t\t\t<div class="left-item">\n' +
+                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userInfo.imageUrl ?? 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + ele.userInfo.firstName + " " + ele.userInfo.lastName + '</span>\n' +
+                                '\t\t\t\t\t\t\t\t</div>\n' +
+                                '\t\t\t\t\t\t\t\t<div class="meeting-status">\n' +
+                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + meetingStatus + '" alt="">\n' +
+                                '\t\t\t\t\t\t\t\t</div>\n' +
+                                '\t\t\t\t</div>\n' +
+                                '</li>';
+                        });
+                        iHtml += '</ul>';
+                        document.getElementById('meetingParticipantList').innerHTML = iHtml;
+                    }
                 })
                 .catch(error => {
                     // Handle any errors
