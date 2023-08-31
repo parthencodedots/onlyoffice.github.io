@@ -1850,7 +1850,7 @@
                             draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                         }
                     }
-                } else if (data.confirmationType == "Meeting") {
+                } else if (data.messageType == "Meeting") {
                     html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
                         '          <div class="scheduled-meeting-inner">\n' +
                         '            <div class="scheduled-meeting-icon">\n' +
@@ -2132,7 +2132,7 @@
                         '      <div class="message">Contract section Re-Opened by ' + data.actionperformedbyUser + '</div>\n' +
                         '   </div>\n' +
                         '</div>\n';
-                } else if (data.confirmationType == "Meeting") {
+                } else if (data.messageType == "Meeting") {
                     html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
                         '          <div class="scheduled-meeting-inner">\n' +
                         '            <div class="scheduled-meeting-icon">\n' +
@@ -2497,7 +2497,7 @@
                         if (draftConfirmSSElement) {
                             draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                         }
-                    } else if (data.confirmationType == "Meeting") {
+                    } else if (data.messageType == "Meeting") {
                         html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
                             '          <div class="scheduled-meeting-inner">\n' +
                             '            <div class="scheduled-meeting-icon">\n' +
