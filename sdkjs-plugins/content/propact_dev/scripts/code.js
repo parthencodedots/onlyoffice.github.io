@@ -2168,6 +2168,24 @@
             /** Socket On: user message get for conversion history */
             socket.on('receive_conversion_history_message', data => {
                 console.log('receive_conversion_history_message', data);
+                if (loggedInUserDetails.isCounterPartyCustomer == true || loggedInUserDetails.isCounterPartyUser == true) {
+                    let conversionTypeArr = ['OTCP'];
+                    if (openContractUserDetails && openContractUserDetails.canCommunicateWithCounterparty) {
+                        conversionTypeArr.push('OTM');
+                    }
+                    if (!conversionTypeArr.includes(data.conversationType)) {
+                        return false;
+                    }
+                } else {
+                    let conversionTypeArr = ['OTCC'];
+                    if (openContractUserDetails && openContractUserDetails.canCommunicateWithCounterparty) {
+                        conversionTypeArr.push('OTM');
+                    }
+                    console.log('asd', conversionTypeArr.includes(data.conversationType));
+                    if (!conversionTypeArr.includes(data.conversationType)) {
+                        return false;
+                    }
+                }
                 let htmlHistory = '';
                 if (data.chatWindow == 'Counterparty') {
                     if (data.messageType == "Invite") {
@@ -2498,7 +2516,7 @@
                             draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                         }
                     } else if (data.messageType == "Meeting") {
-                        html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
+                        htmlHistory += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
                             '          <div class="scheduled-meeting-inner">\n' +
                             '            <div class="scheduled-meeting-icon">\n' +
                             '              <img src="images/schedule-meeting-icon.svg"\n' +
@@ -3188,9 +3206,18 @@
                     document.getElementById("clauseForm").reset();
                     const responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
+
+                        let conversationType = 'OTM';
+                        if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && postData.with == "Our Team") {
+                            conversationType = 'OTCC';
+                        } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && postData.with == "Our Team") {
+                            conversationType = 'OTCP';
+                        }
+
                         socket.emit('contract_section_message', postData);
                         let generalChatData = postData;
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
+                        generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
                         if (postData.with == "Counterparty") {
@@ -4093,7 +4120,14 @@
                         socket.emit('contract_section_message', inviteMessage);
 
                         let generalChatData = inviteMessage;
+                        let conversationType = 'OTM';
+                        if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && generalChatData.with == "Our Team") {
+                            conversationType = 'OTCC';
+                        } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && generalChatData.with == "Our Team") {
+                            conversationType = 'OTCP';
+                        }
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
+                        generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
                         let data = {
@@ -4197,7 +4231,14 @@
                         socket.emit('contract_section_message', inviteMessage);
 
                         let generalChatData = inviteMessage;
+                        let conversationType = 'OTM';
+                        if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && generalChatData.with == "Our Team") {
+                            conversationType = 'OTCC';
+                        } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && generalChatData.with == "Our Team") {
+                            conversationType = 'OTCP';
+                        }
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
+                        generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
                         let html = '';
@@ -4425,7 +4466,14 @@
                         postData._id = responseData.data._id;
                         socket.emit('contract_section_message', postData);
                         let generalChatData = postData;
+                        let conversationType = 'OTM';
+                        if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && postData.with == "Our Team") {
+                            conversationType = 'OTCC';
+                        } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && postData.with == "Our Team") {
+                            conversationType = 'OTCP';
+                        }
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
+                        generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
                         let html = '';
@@ -4546,7 +4594,14 @@
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         socket.emit('contract_section_message', postData);
                         let generalChatData = postData;
+                        let conversationType = 'OTM';
+                        if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && postData.with == "Our Team") {
+                            conversationType = 'OTCC';
+                        } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && postData.with == "Our Team") {
+                            conversationType = 'OTCP';
+                        }
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
+                        generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
                         let html = '';
                         if (postData.messageType == 'Notification' && postData.confirmationType == 'position') {
