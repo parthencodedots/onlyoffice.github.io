@@ -3788,7 +3788,11 @@
                             chatNextPage = responseData.data.nextPage;
                             document.getElementById('mainLoader').classList.add(displayNoneClass);
 
+                        } else {
+                            document.getElementById('mainLoader').classList.add(displayNoneClass);
                         }
+                    } else {
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
                 .catch(error => {
@@ -4139,7 +4143,10 @@
                         } else {
                             document.getElementById('chatHistoryArea').innerHTML = '';
                             document.getElementById('mainLoader').classList.add(displayNoneClass);
+                            document.getElementById('mainLoader').classList.add(displayNoneClass);
                         }
+                    } else {
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
                 .catch(error => {
@@ -4638,6 +4645,8 @@
                         document.getElementById('sendDraftConfirmationPopup').classList.add(displayNoneClass);
                         document.getElementById('mainLoader').classList.add(displayNoneClass);
                         return true;
+                    } else {
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
                 .catch(error => {
@@ -5004,6 +5013,8 @@
                         document.getElementById('mainLoader').classList.add(displayNoneClass);
 
                         return true;
+                    } else {
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
                 .catch(error => {
@@ -5134,6 +5145,8 @@
                         });
                         iHtml += '</ul>';
                         document.getElementById('meetingParticipantList').innerHTML = iHtml;
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
+                    } else {
                         document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
