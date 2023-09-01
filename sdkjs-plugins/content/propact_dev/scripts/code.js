@@ -183,12 +183,38 @@
             // Create contract clause screen
             const varBtnContractCreateClose = document.getElementById('btnContractCreateClose');
             varBtnContractCreateClose.addEventListener('click', function () {
+                document.getElementById('clauseForm').reset();
+                if ($('#inviteteams').prop('checked')) {
+                    $('#inviteteams').click();
+                }
+                if ($('#inviteusers').prop('checked')) {
+                    $('#inviteusers').click();
+                }
+                let placeholderText = 'Select users and teams';
+                document.getElementById('inviteUsersInput').placeholder = placeholderText;
+                selectedInvitedTeams = [];
+                selectedInvitedUsers = [];
+                $('#inviteUsersInput').click();
+                $('#collapseTeams, #collapseUsers').collapse('hide');
                 document.getElementById('divContractLists').classList.remove(displayNoneClass);
                 document.getElementById('divContractCreate').classList.add(displayNoneClass);
             });
 
             const varBtnContractCreateCancel = document.getElementById('btnContractCreateCancel');
             varBtnContractCreateCancel.addEventListener('click', function () {
+                document.getElementById('clauseForm').reset();
+                if ($('#inviteteams').prop('checked')) {
+                    $('#inviteteams').click();
+                }
+                if ($('#inviteusers').prop('checked')) {
+                    $('#inviteusers').click();
+                }
+                let placeholderText = 'Select users and teams';
+                document.getElementById('inviteUsersInput').placeholder = placeholderText;
+                selectedInvitedTeams = [];
+                selectedInvitedUsers = [];
+                $('#inviteUsersInput').click();
+                $('#collapseTeams, #collapseUsers').collapse('hide');
                 document.getElementById('divContractLists').classList.remove(displayNoneClass);
                 document.getElementById('divContractCreate').classList.add(displayNoneClass);
             });
@@ -279,6 +305,13 @@
                 document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
                 document.getElementById('inviteUserPopup').classList.add(displayNoneClass);
                 document.getElementById('inviteTeamPopup').classList.add(displayNoneClass);
+                document.getElementById('sendPositionConfirmationPopup').classList.add(displayNoneClass);
+                document.getElementById('reconfirmPositionPopup').classList.add(displayNoneClass);
+                document.getElementById('rejectPositionPopup').classList.add(displayNoneClass);
+                document.getElementById('assignDraftRequestPopup').classList.add(displayNoneClass);
+                document.getElementById('sendDraftConfirmationPopup').classList.add(displayNoneClass);
+                document.getElementById('rejectDarftRequestPopup').classList.add(displayNoneClass);
+                document.getElementById('rejectDarftPopup').classList.add(displayNoneClass);
             });
 
             const varBtnGoToConversionHistoryA = document.getElementById('btnGoToConversionHistoryA');
@@ -290,6 +323,13 @@
                 document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
                 document.getElementById('inviteUserPopup').classList.add(displayNoneClass);
                 document.getElementById('inviteTeamPopup').classList.add(displayNoneClass);
+                document.getElementById('sendPositionConfirmationPopup').classList.add(displayNoneClass);
+                document.getElementById('reconfirmPositionPopup').classList.add(displayNoneClass);
+                document.getElementById('rejectPositionPopup').classList.add(displayNoneClass);
+                document.getElementById('assignDraftRequestPopup').classList.add(displayNoneClass);
+                document.getElementById('sendDraftConfirmationPopup').classList.add(displayNoneClass);
+                document.getElementById('rejectDarftRequestPopup').classList.add(displayNoneClass);
+                document.getElementById('rejectDarftPopup').classList.add(displayNoneClass);
             });
 
             const varBtnGoToSameSideA = document.getElementById('btnGoToSameSideA');
