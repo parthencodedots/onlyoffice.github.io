@@ -54,7 +54,8 @@
     var selectedThreadID = '';
     var loggedInUserDetails;
     let typingTimeout;
-    let tyingUserArray = [];
+    let tyingUserSSArray = [];
+    let tyingUserCPArray = [];
     let generalChatMessage = [];
     let withType;
     var counterPartyCustomerDetail;
@@ -484,6 +485,8 @@
                 $('#btncollapseUsersA').toggleClass('active');
                 var target = $('#btncollapseUsersA').attr('data-bs-target');
                 $(target).collapse('toggle');
+                document.getElementById('assignDraftRequestBox').classList.add(displayNoneClass);
+                toggleAssignDraftUsersDivShow = !toggleAssignDraftUsersDivShow;
             });
 
             function updateAssignDraftRequest(userID, userName) {
@@ -1616,19 +1619,19 @@
             /** Socket On: user typing for same side */
             socket.on('user_typing_notification_contract_section', data => {
                 if (data) {
-                    if (tyingUserArray.findIndex(x => x == data) == -1) {
-                        tyingUserArray.push(data);
+                    if (tyingUserSSArray.findIndex(x => x == data) == -1) {
+                        tyingUserSSArray.push(data);
                     }
                     let text = '';
-                    if (tyingUserArray.length == 1) {
-                        text = tyingUserArray[0] + " is typing...";
+                    if (tyingUserSSArray.length == 1) {
+                        text = tyingUserSSArray[0] + " is typing...";
                     }
-                    if (tyingUserArray.length == 2) {
-                        text = tyingUserArray[0] + " and " + tyingUserArray[1] + " is typing...";
+                    if (tyingUserSSArray.length == 2) {
+                        text = tyingUserSSArray[0] + " and " + tyingUserSSArray[1] + " is typing...";
                     }
-                    if (tyingUserArray.length > 2) {
-                        let otherUserCount = tyingUserArray.length - 2
-                        text = tyingUserArray[0] + ", " + tyingUserArray[1] + " and " + otherUserCount + " others are typing...";
+                    if (tyingUserSSArray.length > 2) {
+                        let otherUserCount = tyingUserSSArray.length - 2
+                        text = tyingUserSSArray[0] + ", " + tyingUserSSArray[1] + " and " + otherUserCount + " others are typing...";
                     }
 
                     clearTimeout(typingTimeout);
@@ -1636,25 +1639,27 @@
                 }
                 typingTimeout = setTimeout(() => {
                     document.getElementById('typingSpan').textContent = '';
+                    tyingUserSSArray = [];
                 }, 2000);
             });
 
             /** Socket On: user typing for counterparty side */
             socket.on('user_typing_notification_counter_contract_section', data => {
+                console.log('user_typing_notification_counter_contract_section', data);
                 if (data) {
-                    if (tyingUserArray.findIndex(x => x == data) == -1) {
-                        tyingUserArray.push(data);
+                    if (tyingUserCPArray.findIndex(x => x == data) == -1) {
+                        tyingUserCPArray.push(data);
                     }
                     let text = '';
-                    if (tyingUserArray.length == 1) {
-                        text = tyingUserArray[0] + " is typing...";
+                    if (tyingUserCPArray.length == 1) {
+                        text = tyingUserCPArray[0] + " is typing...";
                     }
-                    if (tyingUserArray.length == 2) {
-                        text = tyingUserArray[0] + " and " + tyingUserArray[1] + " is typing...";
+                    if (tyingUserCPArray.length == 2) {
+                        text = tyingUserCPArray[0] + " and " + tyingUserCPArray[1] + " is typing...";
                     }
-                    if (tyingUserArray.length > 2) {
-                        let otherUserCount = tyingUserArray.length - 2
-                        text = tyingUserArray[0] + ", " + tyingUserArray[1] + " and " + otherUserCount + " others are typing...";
+                    if (tyingUserCPArray.length > 2) {
+                        let otherUserCount = tyingUserCPArray.length - 2
+                        text = tyingUserCPArray[0] + ", " + tyingUserCPArray[1] + " and " + otherUserCount + " others are typing...";
                     }
 
                     clearTimeout(typingTimeout);
@@ -1662,6 +1667,7 @@
                 }
                 typingTimeout = setTimeout(() => {
                     document.getElementById('typingSpanCP').textContent = '';
+                    tyingUserCPArray = [];
                 }, 2000);
             });
 
@@ -1882,6 +1888,17 @@
                 var newElement = document.createElement("div");
                 newElement.innerHTML = html;
                 contentDiv.appendChild(newElement);
+
+                var scrollableDiv = document.getElementById('chatBodyID');
+                var scrollPositionFromBottom = scrollableDiv.scrollHeight - (scrollableDiv.scrollTop + scrollableDiv.clientHeight)
+                if (scrollPositionFromBottom <= 600) {
+                    const myDiv = document.getElementById("chatBodyID");
+                    const scrollToOptions = {
+                        top: myDiv.scrollHeight,
+                        behavior: 'smooth'
+                    };
+                    myDiv.scrollTo(scrollToOptions);
+                }
             });
 
             /** Socket On: user message get for same side */
@@ -2167,6 +2184,17 @@
                 var newElement = document.createElement("div");
                 newElement.innerHTML = html;
                 contentDiv.appendChild(newElement);
+
+                var scrollableDiv = document.getElementById('chatCPBodyID');
+                var scrollPositionFromBottom = scrollableDiv.scrollHeight - (scrollableDiv.scrollTop + scrollableDiv.clientHeight)
+                if (scrollPositionFromBottom <= 600) {
+                    const myDiv = document.getElementById("chatCPBodyID");
+                    const scrollToOptions = {
+                        top: myDiv.scrollHeight,
+                        behavior: 'smooth'
+                    };
+                    myDiv.scrollTo(scrollToOptions);
+                }
             });
 
             /** Socket On: user message get for conversion history */
@@ -2554,6 +2582,16 @@
                 var newHistoryElement = document.createElement("div");
                 newHistoryElement.innerHTML = htmlHistory;
                 contentHistoryDiv.appendChild(newHistoryElement);
+                var scrollableDiv = document.getElementById('chatHistoryBodyID');
+                var scrollPositionFromBottom = scrollableDiv.scrollHeight - (scrollableDiv.scrollTop + scrollableDiv.clientHeight)
+                if (scrollPositionFromBottom <= 600) {
+                    const myDiv = document.getElementById("chatHistoryBodyID");
+                    const scrollToOptions = {
+                        top: myDiv.scrollHeight,
+                        behavior: 'smooth'
+                    };
+                    myDiv.scrollTo(scrollToOptions);
+                }
             });
 
             socket.on('forward_new_clause_create', async function (data) {
@@ -2978,9 +3016,9 @@
                         });
                         document.getElementById('contractListItemsDiv').innerHTML += html;
                         /*if (!flagRedirectFirst && sectionID) {
-                            $('.contract-item[data-id="' + sectionID + '"]').click();
-                            flagRedirectFirst = true;
-                        }*/
+                        $('.contract-item[data-id="' + sectionID + '"]').click();
+                        flagRedirectFirst = true;
+                    }*/
                     } else {
                         let norecordhtml = '<p class="nodata-info">No clauses available</p>';
                         document.getElementById('contractListItemsDiv').innerHTML = norecordhtml;

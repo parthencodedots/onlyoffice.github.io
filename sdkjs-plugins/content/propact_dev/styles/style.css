@@ -234,6 +234,17 @@ div#divDraftingBox div#assignDraftRequestBoxB .accordion .accordion-collapse { d
 div#divDraftingBox div#assignDraftRequestBoxB .accordion .accordion-header { display: none;}
 div#divDraftingBox div#assignDraftRequestBoxB { margin: -4px 0 0 0;}
 div#divDraftingBox div#assignDraftRequestBoxB div#accordionExampleB .accordion-item { border-top: 0; border-radius: 0px 0px 6px 6px;}
+
+#frmAssignDraftRequest div#assignDraftRequestBox {margin: 0;}
+#frmAssignDraftRequest div#assignDraftRequestBox.d-none .accordion .accordion-collapse { display: none;}
+#frmAssignDraftRequest div#assignDraftRequestBox .accordion .accordion-collapse { display: block;}
+#frmAssignDraftRequest div#assignDraftRequestBox .accordion .accordion-header {display: none;}
+#frmAssignDraftRequest div#assignDraftRequestBox div#accordionExampleA { margin: -4px 0 0 0;}
+#frmAssignDraftRequest div#assignDraftRequestBox div#accordionExampleA .accordion-item { border-top: 0; border-radius: 0px 0px 6px 6px;}
+
+
+
+
 .filter-box .accordion-header { margin: 0;}
 .filter-box .filter-inner {width: 100%; margin: 0; padding: 0; display: block;}
 .filter-box .filter-inner li { margin: 0 0 15px 0;}
