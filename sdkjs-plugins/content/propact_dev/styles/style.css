@@ -288,6 +288,7 @@ a.disabled { pointer-events: none; cursor: not-allowed; opacity: .5; }
 .meeting-details .meeting-user-list .meeting-user-items ul li .meeting-user-item .left-item span { font-size: 14px; color: #282756; font-weight: 400; margin: 0; padding: 0; display: inline-block; }
 .meeting-details .meeting-user-list .submit-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 10px 0 0 0; }
 .form-control, .form-control[readonly], .form-control[disabled] { border-color: #DADDE0 !important; }
+.page-loader { position: absolute; top: 0; right: 0; width: 100%; height: 100%; background-color: #fff; background-image: url('../images/ajax-loader.gif'); background-size: 50px; background-repeat: no-repeat; background-position: 50%; z-index: 10000000; opacity: .6; }
 /*==================================== 22-08-2023 ====================================*/
 @media only screen and (max-width:375px){
     .chat-footer-inner .btn { margin: 0 4px;  padding: 10px 12px; min-width: auto;}

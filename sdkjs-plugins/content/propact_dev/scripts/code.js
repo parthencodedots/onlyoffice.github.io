@@ -158,11 +158,13 @@
             // Invite counterparty Pending screen
             const varBtnResendVerification = document.getElementById('btnResendVerification');
             varBtnResendVerification.addEventListener('click', function () {
+                document.getElementById('mainLoader').classList.remove(displayNoneClass);
                 resendCounterpartyInvitation();
             });
 
             const varBtnCancelInvitation = document.getElementById('btnCancelInvitation');
             varBtnCancelInvitation.addEventListener('click', function () {
+                document.getElementById('mainLoader').classList.remove(displayNoneClass);
                 cancelInvitation();
             });
             // Invite counterparty Pending screen
@@ -860,30 +862,37 @@
             });
 
             document.getElementById('goBackToScreenB').addEventListener('click', function () {
+                document.getElementById('frmSendPositionConfirmation').reset();
                 document.getElementById('sendPositionConfirmationPopup').classList.add(displayNoneClass);
             });
 
             document.getElementById('goBackToScreenD').addEventListener('click', function () {
+                document.getElementById('frmReconfirmPosition').reset();
                 document.getElementById('reconfirmPositionPopup').classList.add(displayNoneClass);
             });
 
             document.getElementById('goBackToScreenE').addEventListener('click', function () {
+                document.getElementById('frmRejectPosition').reset();
                 document.getElementById('rejectPositionPopup').classList.add(displayNoneClass);
             });
 
             document.getElementById('goBackToScreenF').addEventListener('click', function () {
+                document.getElementById('frmAssignDraftRequest').reset();
                 document.getElementById('assignDraftRequestPopup').classList.add(displayNoneClass);
             });
 
             document.getElementById('goBackToScreenG').addEventListener('click', function () {
+                document.getElementById('frmSendDraftConfirmation').reset();
                 document.getElementById('sendDraftConfirmationPopup').classList.add(displayNoneClass);
             });
 
             document.getElementById('goBackToScreenH').addEventListener('click', function () {
+                document.getElementById('frmRejectDraft').reset();
                 document.getElementById('rejectDarftPopup').classList.add(displayNoneClass);
             });
 
             document.getElementById('goBackToScreenI').addEventListener('click', function () {
+                document.getElementById('frmRejectDarftRequest').reset();
                 document.getElementById('rejectDarftRequestPopup').classList.add(displayNoneClass);
             });
 
@@ -945,6 +954,7 @@
             $("#inviteForm").validate({
                 submitHandler: function (form) {
                     // $(form).ajaxSubmit();
+                    document.getElementById('mainLoader').classList.remove(displayNoneClass);
                     inviteCounterparties();
                 }
             });
@@ -952,6 +962,7 @@
             /** Clause create form submit */
             $("#clauseForm").validate({
                 submitHandler: function (form) {
+                    document.getElementById('mainLoader').classList.remove(displayNoneClass);
                     createClauseSection(socket);
                 }
             });
@@ -1312,10 +1323,8 @@
                     draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                 }
             });
-
             flagJSLoad = true;
         }
-
     };
     /**================================== Plugin Init End =================================*/
 
@@ -3016,9 +3025,9 @@
                         });
                         document.getElementById('contractListItemsDiv').innerHTML += html;
                         /*if (!flagRedirectFirst && sectionID) {
-                        $('.contract-item[data-id="' + sectionID + '"]').click();
-                        flagRedirectFirst = true;
-                    }*/
+                    $('.contract-item[data-id="' + sectionID + '"]').click();
+                    flagRedirectFirst = true;
+                }*/
                     } else {
                         let norecordhtml = '<p class="nodata-info">No clauses available</p>';
                         document.getElementById('contractListItemsDiv').innerHTML = norecordhtml;
@@ -3056,6 +3065,7 @@
             .then(response => response.json())
             .then(data => {
                 // Handle the response data
+                document.getElementById('mainLoader').classList.add(displayNoneClass);
                 const responseData = data;
                 if (responseData && responseData.status == true && responseData.code == 200) {
                     document.getElementById("inviteForm").reset();
@@ -3069,6 +3079,7 @@
             .catch(error => {
                 // Handle any errors
                 console.error('Error:', error);
+                document.getElementById('mainLoader').classList.add(displayNoneClass);
             });
     }
 
@@ -3100,13 +3111,13 @@
                         }, 3000)
                         document.getElementById('divInviteCounterpartyPending').classList.add(displayNoneClass);
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
-                    } else {
-
                     }
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -3141,13 +3152,16 @@
                             x.classList.remove('show');
                         }, 3000)
                     }
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
 
     }
@@ -3213,14 +3227,19 @@
                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                         document.getElementById('divContractCreate').classList.add(displayNoneClass);
                         document.getElementById('divContractLists').classList.remove(displayNoneClass);
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
+                    } else {
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
             // throw error; // You can re-throw the error or handle it here
         }
     }
@@ -3232,6 +3251,7 @@
      */
     async function addContractSectionMessage(postData, socket) {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             var data = JSON.stringify(postData);
             const addContractSectionMessageUrl = apiBaseUrl + '/contractSection/addContractSectionMessage';
             const headers = {
@@ -3308,16 +3328,20 @@
                             };
                             myDiv.scrollTo(scrollToOptions);
                         }
-
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                         return true;
+                    } else {
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
@@ -3327,6 +3351,7 @@
      */
     async function getContractSectionMessageList(messageType = 'our') {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             let getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getContractSectionMessageList/' + selectedThreadID + '/' + messageType;
             let queryParam = [];
             // Set sortby created time
@@ -3761,6 +3786,7 @@
                             }
                             chatHasNextPage = responseData.data.hasNextPage;
                             chatNextPage = responseData.data.nextPage;
+                            document.getElementById('mainLoader').classList.add(displayNoneClass);
 
                         }
                     }
@@ -3768,9 +3794,11 @@
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
@@ -3780,6 +3808,7 @@
      */
     async function getContractSectionMessageHistory() {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             let getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getContractSectionMessageList/' + selectedThreadID + '/all';
             let queryParam = [];
             // Set sortby created time
@@ -4106,17 +4135,21 @@
                             }
                             chatHistoryHasNextPage = responseData.data.hasNextPage;
                             chatHistoryNextPage = responseData.data.nextPage;
+                            document.getElementById('mainLoader').classList.add(displayNoneClass);
                         } else {
                             document.getElementById('chatHistoryArea').innerHTML = '';
+                            document.getElementById('mainLoader').classList.add(displayNoneClass);
                         }
                     }
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
@@ -4125,6 +4158,7 @@
      */
     async function inviteMembersInContractSection(socket) {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             let postInviteUserSelect = [];
             inviteUserSelect.forEach((el) => {
                 postInviteUserSelect.push(el.itemId)
@@ -4220,14 +4254,17 @@
                     document.getElementById('inviteUserPopup').classList.add(displayNoneClass);
                     getSelectedContractSectionDetails();
                     inviteUserSelect = [];
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                     return true;
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
@@ -4236,6 +4273,7 @@
      */
     async function inviteTeamsInContractSection(socket) {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             let postInviteTeamSelect = [];
             inviteTeamSelect.forEach((el) => {
                 postInviteTeamSelect.push(el.itemId)
@@ -4325,14 +4363,17 @@
                     document.getElementById('inviteTeamPopup').classList.add(displayNoneClass);
                     getSelectedContractSectionDetails();
                     inviteTeamSelect = [];
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                     return true;
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
@@ -4488,6 +4529,7 @@
      */
     async function submitPositionConfirmation(postData, socket) {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             var data = JSON.stringify(postData);
             const addContractSectionMessageUrl = apiBaseUrl + '/contractSection/addContractSectionMessage';
             const headers = {
@@ -4594,15 +4636,18 @@
                         }
                         document.getElementById('sendPositionConfirmationPopup').classList.add(displayNoneClass);
                         document.getElementById('sendDraftConfirmationPopup').classList.add(displayNoneClass);
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                         return true;
                     }
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
@@ -4613,6 +4658,7 @@
      */
     async function updateContractSectionConfirmationStatus(postData, socket, formName = '') {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             var data = JSON.stringify(postData);
             const updateContractSectionConfirmationStatusUrl = apiBaseUrl + '/contractSection/updateContractSectionConfirmationStatus';
             const headers = {
@@ -4955,6 +5001,7 @@
                         clauseHasNextPage = true;
                         clauseLists = [];
                         getContractSectionList();
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
 
                         return true;
                     }
@@ -4962,9 +5009,11 @@
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
@@ -4975,6 +5024,7 @@
      */
     async function reOpenCompletedContractSection(reopenDetail, socket) {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             let reOpenCompletedContractSectionUrl = apiBaseUrl + '/contractSection/reOpenCompletedContractSection/' + reopenDetail.contractSectionId;
             const headers = {
                 'Content-Type': 'application/json',
@@ -5004,18 +5054,22 @@
                     oppositeChat.messageConfirmationFor =  'Opposite Side';
                     oppositeChat.chatRoomName = 'counter_' + selectedCommentThereadID;
                     socket.emit('contract_section_message', oppositeChat);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
     async function getContractMeetingDetails(meetingID) {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             let meetingDetailsUrl = apiBaseUrl + '/meeting/getContractMeetingDetails/' + meetingID;
             const headers = {
                 'Content-Type': 'application/json',
@@ -5080,14 +5134,17 @@
                         });
                         iHtml += '</ul>';
                         document.getElementById('meetingParticipantList').innerHTML = iHtml;
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                 });
         } catch (error) {
             console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
         }
     }
 
