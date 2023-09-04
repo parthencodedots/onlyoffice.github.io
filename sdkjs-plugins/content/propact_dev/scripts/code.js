@@ -23,7 +23,7 @@
     var flagSocketInit = false;
     var flagSocketFunctionInit = false;
     var fClickLabel = false;
-    var fClickBtnCur = false;
+    var fDisableWhenPluginLoading = false;
     var flagRedirectFirst = false;
     let flagJSLoad = false;
     var displayNoneClass = "d-none";
@@ -84,9 +84,9 @@
         documentMode = getDocumentMode(window.Asc.plugin.info.documentCallbackUrl);
         const splitArray = window.Asc.plugin.info.documentCallbackUrl.split('/');
         authToken = splitArray[11];
-        /*if (splitArray.length == 13) {
+        if (splitArray.length == 13) {
             sectionID = splitArray[12];
-        }*/
+        }
         /**====================== Get & Set variables ======================*/
 
         if (!flagSocketInit) {
@@ -112,6 +112,11 @@
                 if (!document.getElementById('btnCreateClause').classList.contains(disabledClass)) {
                     document.getElementById('btnCreateClause').classList.add(disabledClass);
                 }
+            }
+            if (!fDisableWhenPluginLoading) {
+                var sDocumentEditingRestrictions = "readOnly";
+                window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
+                fDisableWhenPluginLoading = true;
             }
         }
 
@@ -3064,10 +3069,12 @@
                                 '</div>';
                         });
                         document.getElementById('contractListItemsDiv').innerHTML += html;
-                        /*if (!flagRedirectFirst && sectionID) {
-                    $('.contract-item[data-id="' + sectionID + '"]').click();
-                    flagRedirectFirst = true;
-                }*/
+                        if (!flagRedirectFirst && sectionID) {
+                            setTimeout(function() {
+                                $('.contract-item[data-id="' + sectionID + '"]').click();
+                                flagRedirectFirst = true;
+                            }, 500);
+                        }
                     } else {
                         let norecordhtml = '<p class="nodata-info">No clauses available</p>';
                         document.getElementById('contractListItemsDiv').innerHTML = norecordhtml;
@@ -3263,7 +3270,7 @@
                             tagData: JSON.stringify(nContentControlProperties)
                         };
                         socket.emit('new_clause_created', data);
-                        location.reload(true);
+                        // location.reload(true);
                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                         document.getElementById('divContractCreate').classList.add(displayNoneClass);
                         document.getElementById('divContractLists').classList.remove(displayNoneClass);
