@@ -101,7 +101,8 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .message-wrapper.reverse .profile-picture .last-seen {margin: 0 6px 0 0;}
 .message-wrapper.reverse .profile-picture .name {margin: 0 8px 0 0;}
 .message-wrapper .profile-picture .last-seen { font-size: 12px; font-weight: 400; margin: 0 0 0 6px; padding: 0; display: inline-block; color: #282756; opacity: 50%;}
-.message-wrapper .profile-picture .name { font-size: 12px; font-weight: 400; color: #282756; margin: 0 0 0 8px; padding: 0; display: inline-block;}
+.message-wrapper .profile-picture .name { font-size: 12px; font-weight: 400; color: #282756; margin: 0 0 0 8px; padding: 0; display: inline-block; position: relative;}
+.message-wrapper .profile-picture .name small { display: block; line-height: normal; position: absolute;}
 .message-wrapper .profile-picture img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #79D7FA; object-fit: cover; object-position: center center;}
 .chat-body .chat-area .message-wrapper .message-content { width: auto; display: inline-block; text-align: left; max-width: 308px; background: #EFFAFF; padding: 12px; border-radius: 0 5px 5px 5px; margin: 8px 0 0 0px; min-width: 246px; position: relative;}
 .chat-body .chat-area .message-wrapper .message-content .message { font-size: 12px; font-weight: 400; line-height: 17px; color: #282756;}
@@ -343,7 +344,7 @@ a.disabled { pointer-events: none; cursor: not-allowed; opacity: .5; }
     .message-wrapper .profile-picture .name { font-size: 10px; margin: 0 0 0 4px; line-height: 16px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
     .message-wrapper .profile-picture .last-seen { font-size: 10px; margin: 0 0 0 4px; line-height: 16px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
     .message-wrapper.reverse .profile-picture .name,.message-wrapper.reverse .profile-picture .last-seen {margin: 0 4px 0 0;}
-    .message-wrapper .profile-picture .name small {display: none;}
+    .message-wrapper .profile-picture .name small {position: static;}
     .chat-body .chat-area .message-wrapper .message-content {padding: 6px;}
     .request-row .request-content {padding: 6px;}
     .conversation-left {flex-wrap: inherit;}

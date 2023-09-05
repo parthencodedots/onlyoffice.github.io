@@ -255,6 +255,7 @@
                 socket.emit('join_contract_section_chat_room', chatRoomName);
                 document.getElementById("messageInput").value = "";
                 document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
+                document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
                 document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
             });
 
@@ -270,6 +271,7 @@
                 socket.emit('join_contract_section_chat_room', chatRoomName);
                 document.getElementById("messageInputCP").value = "";
                 document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
+                document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
                 document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
             });
             // Contract chat history screen
@@ -2009,7 +2011,7 @@
                         html += '<div class="message-wrapper red-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2022,7 +2024,7 @@
                         html += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2034,7 +2036,7 @@
                         html += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2050,7 +2052,7 @@
                         html += '<div class="message-wrapper red-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2063,7 +2065,7 @@
                         html += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2283,7 +2285,7 @@
                             htmlHistory += '<div class="message-wrapper light-gold-color">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2292,7 +2294,7 @@
                             htmlHistory += '<div class="message-wrapper light-gold-color">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2302,7 +2304,7 @@
                         htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
@@ -2315,7 +2317,7 @@
                             htmlHistory += '<div class="message-wrapper red-color">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2328,7 +2330,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2339,7 +2341,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2352,7 +2354,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2363,7 +2365,7 @@
                                 htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                                     '       <div class="profile-picture">\n' +
                                     '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                    '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                    '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '       </div>\n' +
                                     '       <div class="request-row dudhiya-color">\n' +
@@ -2382,7 +2384,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2395,7 +2397,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2407,7 +2409,7 @@
                         htmlHistory += '<div class="message-wrapper red-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2420,7 +2422,7 @@
                         htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2434,7 +2436,7 @@
                             htmlHistory += '<div class="message-wrapper grey-color light-gold-color">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2447,7 +2449,7 @@
                         htmlHistory += '<div class="message-wrapper grey-color light-gold-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2458,7 +2460,7 @@
                         htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2472,7 +2474,7 @@
                         htmlHistory += '<div class="message-wrapper light-gold-color">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
@@ -2486,7 +2488,7 @@
                             htmlHistory += '<div class="message-wrapper reverse">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2495,7 +2497,7 @@
                             htmlHistory += '<div class="message-wrapper reverse">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2505,7 +2507,7 @@
                         htmlHistory += '<div class="message-wrapper reverse">\n' +
                             '<div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '   </div>\n' +
                             '<div class="request-row">\n' +
@@ -2582,7 +2584,7 @@
                         htmlHistory += '<div class="message-wrapper reverse ">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2627,7 +2629,7 @@
                         htmlHistory += '<div class="message-wrapper reverse">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.actionperformedbyUserRole == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
