@@ -434,7 +434,7 @@
 
             // Clause Lazyload functionality
             document.getElementById('contractListItemsDiv').onscroll = async function (e) {
-                if (document.getElementById('contractListItemsDiv').scrollTop + document.getElementById('contractListItemsDiv').offsetHeight >= (document.getElementById('contractListItemsDiv').scrollHeight - 5)) {
+                if (document.getElementById('contractListItemsDiv').scrollTop + document.getElementById('contractListItemsDiv').offsetHeight >= (document.getElementById('contractListItemsDiv').scrollHeight - 1)) {
                     if (clauseHasNextPage) {
                         await getContractSectionList();
                     }
@@ -3317,7 +3317,19 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    document.getElementById("clauseForm").reset();
+                    document.getElementById('clauseForm').reset();
+                    if ($('#inviteteams').prop('checked')) {
+                        $('#inviteteams').click();
+                    }
+                    if ($('#inviteusers').prop('checked')) {
+                        $('#inviteusers').click();
+                    }
+                    let placeholderText = 'Select users and teams';
+                    document.getElementById('inviteUsersInput').placeholder = placeholderText;
+                    selectedInvitedTeams = [];
+                    selectedInvitedUsers = [];
+                    $('#inviteUsersInput').click();
+                    $('#collapseTeams, #collapseUsers').collapse('hide');
                     const responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         var sDocumentEditingRestrictions = "none";
@@ -4383,6 +4395,7 @@
                         }
                     });
                     // Handle the response data
+                    document.getElementById('toggleInviteUserTeam').closest("li").classList.remove('active');
                     document.getElementById('inviteUserPopup').classList.add(displayNoneClass);
                     getSelectedContractSectionDetails();
                     inviteUserSelect = [];
@@ -4492,6 +4505,7 @@
                         }
                     });
                     // Handle the response data
+                    document.getElementById('toggleInviteUserTeam').closest("li").classList.remove('active');
                     document.getElementById('inviteTeamPopup').classList.add(displayNoneClass);
                     getSelectedContractSectionDetails();
                     inviteTeamSelect = [];
