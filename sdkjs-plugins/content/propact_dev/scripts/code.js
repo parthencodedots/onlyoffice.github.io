@@ -425,7 +425,7 @@
 
             // Clause Lazyload functionality
             document.getElementById('contractListItemsDiv').onscroll = async function (e) {
-                if (document.getElementById('contractListItemsDiv').scrollTop + document.getElementById('contractListItemsDiv').offsetHeight >= document.getElementById('contractListItemsDiv').scrollHeight) {
+                if (document.getElementById('contractListItemsDiv').scrollTop + document.getElementById('contractListItemsDiv').offsetHeight >= (document.getElementById('contractListItemsDiv').scrollHeight - 5)) {
                     if (clauseHasNextPage) {
                         await getContractSectionList();
                     }
