@@ -235,6 +235,9 @@
             varBtnRedirectClauseListsA.addEventListener('click', async function () {
                 selectedCommentThereadID = '';
                 $('.div-selected').removeClass('div-selected');
+                clauseNextPage = 1;
+                clauseHasNextPage = true;
+                clauseLists = [];
                 await getContractSectionList();
                 document.getElementById('divContractLists').classList.remove(displayNoneClass);
                 document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
@@ -378,6 +381,9 @@
             varBtnRedirectClauseListsB.addEventListener('click', async function () {
                 selectedCommentThereadID = '';
                 $('.div-selected').removeClass('div-selected');
+                clauseNextPage = 1;
+                clauseHasNextPage = true;
+                clauseLists = [];
                 await getContractSectionList();
                 document.getElementById('divContractLists').classList.remove(displayNoneClass);
                 document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
@@ -397,6 +403,9 @@
             varBtnRedirectClauseListsC.addEventListener('click', async function () {
                 selectedCommentThereadID = '';
                 $('.div-selected').removeClass('div-selected');
+                clauseNextPage = 1;
+                clauseHasNextPage = true;
+                clauseLists = [];
                 await getContractSectionList();
                 document.getElementById('divContractLists').classList.remove(displayNoneClass);
                 document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
@@ -2698,12 +2707,18 @@
                 if (data) {
                     console.log('forward_new_clause_create __data', data);
                     tagLists.push(JSON.parse(data));
+                    clauseNextPage = 1;
+                    clauseHasNextPage = true;
+                    clauseLists = [];
                     await getContractSectionList();
                 }
             });
 
             socket.on('forward_invite_clause', async function (data) {
                 if (data) {
+                    clauseNextPage = 1;
+                    clauseHasNextPage = true;
+                    clauseLists = [];
                     await getContractSectionList();
                 }
             });
@@ -2815,6 +2830,8 @@
                         if (documentMode != 'markup') {
                             getContractTeamAndUserList();
                         }
+                        clauseNextPage = 1;
+                        clauseHasNextPage = true;
                         clauseLists = [];
                         getContractSectionList();
                         setupSocket();
@@ -3322,6 +3339,9 @@
                         window.Asc.plugin.executeMethod("AddContentControl", [nContentControlType, nContentControlProperties]);
                         var sDocumentEditingRestrictions = "readOnly";
                         window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
+                        clauseNextPage = 1;
+                        clauseHasNextPage = true;
+                        clauseLists = [];
                         getContractSectionList();
                         let data = {
                             chatRoomName: documentID,
