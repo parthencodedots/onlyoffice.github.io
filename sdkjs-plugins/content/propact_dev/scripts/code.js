@@ -2213,6 +2213,26 @@
                         '      <div class="message">Contract section Re-Opened by ' + data.actionperformedbyUser + '</div>\n' +
                         '   </div>\n' +
                         '</div>\n';
+                    document.getElementById('chatBodyID').classList.remove('contract-completed');
+                    document.getElementById('chatCPBodyID').classList.remove('contract-completed');
+                    document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
+                    document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
+                    let actionSameSide = document.querySelectorAll('.action-sameside');
+                    actionSameSide.forEach(function (element) {
+                        element.classList.remove(displayNoneClass);
+                    });
+                    let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                    actionCounterparty.forEach(function (element) {
+                        element.classList.remove(displayNoneClass);
+                    });
+                    var draftConfirmCPElement = document.getElementById("draftConfirmCP");
+                    if (draftConfirmCPElement) {
+                        draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
+                    }
+                    var draftConfirmSSElement = document.getElementById("draftConfirmSS");
+                    if (draftConfirmSSElement) {
+                        draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
+                    }
                 } else if (data.messageType == "Meeting") {
                     html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
                         '          <div class="scheduled-meeting-inner">\n' +
@@ -2456,6 +2476,26 @@
                             '           <strong>Contract section Re-Opened by ' + data.actionperformedbyUser + '</strong>\n' +
                             '       </div>\n' +
                             '</div>';
+                        document.getElementById('chatBodyID').classList.remove('contract-completed');
+                        document.getElementById('chatCPBodyID').classList.remove('contract-completed');
+                        document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
+                        document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
+                        let actionSameSide = document.querySelectorAll('.action-sameside');
+                        actionSameSide.forEach(function (element) {
+                            element.classList.remove(displayNoneClass);
+                        });
+                        let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                        actionCounterparty.forEach(function (element) {
+                            element.classList.remove(displayNoneClass);
+                        });
+                        var draftConfirmCPElement = document.getElementById("draftConfirmCP");
+                        if (draftConfirmCPElement) {
+                            draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
+                        }
+                        var draftConfirmSSElement = document.getElementById("draftConfirmSS");
+                        if (draftConfirmSSElement) {
+                            draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
+                        }
                     } else if (data.messageType == "Draft Confirmation") {
                         htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                             '       <div class="profile-picture">\n' +
@@ -3011,13 +3051,12 @@
                 const responseData = data;
                 if (responseData && responseData.data) {
                     const resData = responseData.data;
-                    document.getElementById('contractListItemsDiv').innerHTML = '';
+                    if (clauseNextPage == 1) {
+                        document.getElementById('contractListItemsDiv').innerHTML = '';
+                    }
                     if (resData.data.length > 0) {
-                        clauseHasNextPage = resData.hasNextPage;
-                        clauseNextPage = resData.nextPage;
                         var result = resData.data;
                         var html = '';
-                        var html1 = '';
                         result.forEach((ele) => {
                             clauseLists.push(ele);
                             let commentID = ele.commentId;
@@ -3074,18 +3113,26 @@
                                 '\t\t\t</a>\n' +
                                 '</div>';
                         });
-                        document.getElementById('contractListItemsDiv').innerHTML += html;
+                        if (clauseNextPage == 1) {
+                            document.getElementById('contractListItemsDiv').innerHTML += html;
+                        } else {
+                            var newElement = document.createElement("div");
+                            newElement.innerHTML = html;
+                            document.getElementById('contractListItemsDiv').insertAdjacentElement("beforeend", newElement);
+                        }
                         if (!flagRedirectFirst && sectionID) {
                             setTimeout(function() {
                                 $('.contract-item[data-id="' + sectionID + '"]').click();
                                 if (chatWindow == 'SS') {
                                     $('#btnGoToSameSideChat').click();
-                                } else {
+                                } else if (chatWindow == 'CP') { 
                                     $('#btnGoToCounterparty').click();
                                 }
                                 flagRedirectFirst = true;
                             }, 500);
                         }
+                        clauseHasNextPage = resData.hasNextPage;
+                        clauseNextPage = resData.nextPage;
                     } else {
                         let norecordhtml = '<p class="nodata-info">No clauses available</p>';
                         document.getElementById('contractListItemsDiv').innerHTML = norecordhtml;
