@@ -70,7 +70,7 @@
     let openContractUserDetails;
     let selectedContractSectionDetails;
     let sectionID;
-    let chatWindow;
+    let chatWindow; 
 
 
     /**================================== Plugin Init Start ===============================*/
