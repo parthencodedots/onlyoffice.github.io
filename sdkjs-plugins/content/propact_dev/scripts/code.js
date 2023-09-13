@@ -70,7 +70,7 @@
     let openContractUserDetails;
     let selectedContractSectionDetails;
     let sectionID;
-    let chatWindow; 
+    let chatWindow;
 
 
     /**================================== Plugin Init Start ===============================*/
@@ -116,6 +116,10 @@
             } else {
                 if (!document.getElementById('btnCreateClause').classList.contains(disabledClass)) {
                     document.getElementById('btnCreateClause').classList.add(disabledClass);
+                }
+                if (!document.getElementById('divContractCreate').classList.contains('d-none')) {
+                    document.getElementById('divContractCreate').classList.add(disabledClass);
+                    document.getElementById('divContractLists').classList.remove(disabledClass);
                 }
             }
             if (!fDisableWhenPluginLoading) {
@@ -5309,57 +5313,69 @@
     async function redirectToMessageScreen() {
         try {
             if (selectedThreadID) {
-                document.getElementById('mainLoader').classList.remove(displayNoneClass);
-                let checkActionRequiredURL = apiBaseUrl + '/contractSection/getRequiredActionWindow/' + selectedThreadID + '?sort[createdAt]=-1&page=1&limit=500';
-                const headers = {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + authToken
-                };
-                const requestOptions = {
-                    method: 'GET',
-                    headers: headers,
-                };
-                fetch(checkActionRequiredURL, requestOptions)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle the response data
-                        const responseData = data;
-                        if (responseData && responseData.status == true && responseData.code == 200) {
-                            let response = responseData.data;
-                            console.log('data', response.data);
-                            if (response.total > 0) {
-                                document.getElementById('mainLoader').classList.add(displayNoneClass);
-                                let samesideMessage = response.data.filter(item => item.messageConfirmationFor == "Same Side");
-                                let counterpartyMessage = response.data.filter(item => item.messageConfirmationFor != "Same Side");
-                                if (samesideMessage && samesideMessage.length > 0) {
-                                    withType = 'Our Team';
-                                    messageConfirmationFor = 'Same Side';
-                                    document.getElementById('chatArea').innerHTML = '';
-                                    chatNextPage = 1;
-                                    chatHasNextPage = true;
-                                    getContractSectionMessageList('our');
-                                    let chatRoomName = getChatRoom(withType);
-                                    socket.emit('join_contract_section_chat_room', chatRoomName);
-                                    document.getElementById("messageInput").value = "";
-                                    document.getElementById('divContractLists').classList.add(displayNoneClass);
-                                    document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
-                                    document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
-                                    document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
-                                } else if (counterpartyMessage && counterpartyMessage.length > 0) {
-                                    withType = 'Counterparty';
-                                    messageConfirmationFor = 'Opposite Side';
-                                    document.getElementById('chatCPArea').innerHTML = '';
-                                    chatNextPage = 1;
-                                    chatHasNextPage = true;
-                                    getContractSectionMessageList('Counterparty');
-                                    let chatRoomName = getChatRoom(withType);
-                                    socket.emit('join_contract_section_chat_room', chatRoomName);
-                                    document.getElementById("messageInputCP").value = "";
-                                    document.getElementById('divContractLists').classList.add(displayNoneClass);
-                                    document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
-                                    document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
-                                    document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
+                console.log('selectedContractSectionDetails', selectedContractSectionDetails);
+                if (selectedContractSectionDetails && selectedContractSectionDetails.contractStatus && selectedContractSectionDetails.contractStatus == "Completed") {
+                    getContractSectionMessageHistory();
+                    document.getElementById('divContractLists').classList.add(displayNoneClass);
+                    document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
+                } else {
+                    document.getElementById('mainLoader').classList.remove(displayNoneClass);
+                    let checkActionRequiredURL = apiBaseUrl + '/contractSection/getRequiredActionWindow/' + selectedThreadID + '?sort[createdAt]=-1&page=1&limit=500';
+                    const headers = {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + authToken
+                    };
+                    const requestOptions = {
+                        method: 'GET',
+                        headers: headers,
+                    };
+                    fetch(checkActionRequiredURL, requestOptions)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response data
+                            const responseData = data;
+                            if (responseData && responseData.status == true && responseData.code == 200) {
+                                let response = responseData.data;
+                                console.log('data', response.data);
+                                if (response.total > 0) {
+                                    document.getElementById('mainLoader').classList.add(displayNoneClass);
+                                    let samesideMessage = response.data.filter(item => item.messageConfirmationFor == "Same Side");
+                                    let counterpartyMessage = response.data.filter(item => item.messageConfirmationFor != "Same Side");
+                                    if (samesideMessage && samesideMessage.length > 0) {
+                                        withType = 'Our Team';
+                                        messageConfirmationFor = 'Same Side';
+                                        document.getElementById('chatArea').innerHTML = '';
+                                        chatNextPage = 1;
+                                        chatHasNextPage = true;
+                                        getContractSectionMessageList('our');
+                                        let chatRoomName = getChatRoom(withType);
+                                        socket.emit('join_contract_section_chat_room', chatRoomName);
+                                        document.getElementById("messageInput").value = "";
+                                        document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                        document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
+                                        document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
+                                        document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
+                                    } else if (counterpartyMessage && counterpartyMessage.length > 0) {
+                                        withType = 'Counterparty';
+                                        messageConfirmationFor = 'Opposite Side';
+                                        document.getElementById('chatCPArea').innerHTML = '';
+                                        chatNextPage = 1;
+                                        chatHasNextPage = true;
+                                        getContractSectionMessageList('Counterparty');
+                                        let chatRoomName = getChatRoom(withType);
+                                        socket.emit('join_contract_section_chat_room', chatRoomName);
+                                        document.getElementById("messageInputCP").value = "";
+                                        document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                        document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
+                                        document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
+                                        document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
+                                    } else {
+                                        getContractSectionMessageHistory();
+                                        document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                        document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
+                                    }
                                 } else {
+                                    document.getElementById('mainLoader').classList.add(displayNoneClass);
                                     getContractSectionMessageHistory();
                                     document.getElementById('divContractLists').classList.add(displayNoneClass);
                                     document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
@@ -5370,18 +5386,13 @@
                                 document.getElementById('divContractLists').classList.add(displayNoneClass);
                                 document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
                             }
-                        } else {
+                        })
+                        .catch(error => {
+                            // Handle any errors
+                            console.error('Error:', error);
                             document.getElementById('mainLoader').classList.add(displayNoneClass);
-                            getContractSectionMessageHistory();
-                            document.getElementById('divContractLists').classList.add(displayNoneClass);
-                            document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
-                        }
-                    })
-                    .catch(error => {
-                        // Handle any errors
-                        console.error('Error:', error);
-                        document.getElementById('mainLoader').classList.add(displayNoneClass);
-                    });
+                        });
+                }
             }
         } catch (error) {
             console.error('Error fetching data:', error);
