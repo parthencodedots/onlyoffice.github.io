@@ -595,7 +595,6 @@
                     chatHistoryHasNextPage = true;
                     getSelectedContractSectionDetails();
                     getOpenContractUserDetails(socket, redirection = false);
-                    await getContractSectionMessageHistory();
                     let chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                     socket.emit('join_contract_section_chat_room', chatRoomName);
 
@@ -604,7 +603,6 @@
 
                     let chatRoomNameB = getChatRoom('Our Team');
                     socket.emit('join_contract_section_chat_room', chatRoomNameB);
-                    document.getElementById('divContractLists').classList.add(displayNoneClass);
 
                     var draftConfirmSSElement = document.getElementById("draftConfirmSS");
                     if (draftConfirmSSElement) {
@@ -614,7 +612,8 @@
                     if (draftConfirmCPElement) {
                         draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
                     }
-                    document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
+                    await redirectToMessageScreen();
+
                     document.getElementById('sendPositionConfirmationPopup').classList.add(displayNoneClass);
                     document.getElementById('toggleInviteUserTeam').closest("li").classList.remove('active');
                     window.Asc.plugin.executeMethod("SelectContentControl", [tagLists[tagExists].InternalId]);
@@ -3142,7 +3141,7 @@
                                 $('.contract-item[data-id="' + sectionID + '"]').click();
                                 if (chatWindow == 'SS') {
                                     $('#btnGoToSameSideChat').click();
-                                } else if (chatWindow == 'CP') { 
+                                } else if (chatWindow == 'CP') {
                                     $('#btnGoToCounterparty').click();
                                 }
                                 flagRedirectFirst = true;
@@ -3335,12 +3334,12 @@
                         var sDocumentEditingRestrictions = "none";
                         window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
                         var nContentControlType = 2;
-                        color = {
+                        var color = {
                             R: 104,
                             G: 215,
                             B: 248,
                         };
-                        nContentControlProperties = {
+                        var nContentControlProperties = {
                             "Id": randomNumber,
                             "Tag": commentID,
                             "Lock": 2,
@@ -4567,6 +4566,31 @@
                         document.getElementById('chatBodyID').classList.remove('contract-completed');
                         document.getElementById('chatCPBodyID').classList.remove('contract-completed');
                         let selectedContractSectionDetailsA = responseData.data;
+                        if (responseData.data.contractAssignedUsers && responseData.data.contractAssignedUsers.length > 0) {
+                            document.getElementById('toggleSendPositionConfirmation').closest("li").classList.remove(displayNoneClass);
+                            let iHtml = '<ul>';
+                            responseData.data.contractAssignedUsers.forEach((ele) => {
+                                iHtml += '<li>\n' +
+                                    '\t\t\t\t<div class="invite-user-inner">\n' +
+                                    '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userId && ele.userId.userImage ? IMAGE_USER_PATH_LINK + ele.userId.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                    '\t\t\t\t\t\t\t\t</div>\n' +
+                                    '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + ele.userId.firstName + ' ' + ele.userId.lastName + '</h3>\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + ele.userRole + '</span>\n' +
+                                    '\t\t\t\t\t\t\t\t</div>\n' +
+                                    '\t\t\t\t</div>\n' +
+                                    '</li>';
+                            });
+                            iHtml += '</ul>';
+                            document.getElementById('userTabContent').innerHTML = iHtml;
+                        } else {
+                            document.getElementById('toggleSendPositionConfirmation').closest("li").classList.add(displayNoneClass);
+                            let html = '<ul>' +
+                                '<li><p>No user selected</p></li>' +
+                                '</ul>';
+                            document.getElementById('userTabContent').innerHTML = html;
+                        }
                         if (selectedContractSectionDetailsA && selectedContractSectionDetailsA.contractSectionData && selectedContractSectionDetailsA.contractSectionData.contractStatus == "Completed") {
                             document.getElementById('sameSideTypeBox').classList.add(displayNoneClass);
                             document.getElementById('counterpartyTypeBox').classList.add(displayNoneClass);
@@ -4600,31 +4624,6 @@
 
                             document.getElementById('chatBodyID').classList.add('contract-completed');
                             document.getElementById('chatCPBodyID').classList.add('contract-completed');
-                        }
-                        if (responseData.data.contractAssignedUsers && responseData.data.contractAssignedUsers.length > 0) {
-                            document.getElementById('toggleSendPositionConfirmation').closest("li").classList.remove(displayNoneClass);
-                            let iHtml = '<ul>';
-                            responseData.data.contractAssignedUsers.forEach((ele) => {
-                                iHtml += '<li>\n' +
-                                    '\t\t\t\t<div class="invite-user-inner">\n' +
-                                    '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userId && ele.userId.userImage ? IMAGE_USER_PATH_LINK + ele.userId.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
-                                    '\t\t\t\t\t\t\t\t</div>\n' +
-                                    '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + ele.userId.firstName + ' ' + ele.userId.lastName + '</h3>\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + ele.userRole + '</span>\n' +
-                                    '\t\t\t\t\t\t\t\t</div>\n' +
-                                    '\t\t\t\t</div>\n' +
-                                    '</li>';
-                            });
-                            iHtml += '</ul>';
-                            document.getElementById('userTabContent').innerHTML = iHtml;
-                        } else {
-                            document.getElementById('toggleSendPositionConfirmation').closest("li").classList.add(displayNoneClass);
-                            let html = '<ul>' +
-                                '<li><p>No user selected</p></li>' +
-                                '</ul>';
-                            document.getElementById('userTabContent').innerHTML = html;
                         }
 
                         if (responseData.data.contractAssignedTeams && responseData.data.contractAssignedTeams.length > 0) {
@@ -5217,6 +5216,10 @@
         }
     }
 
+    /**
+     * @param meetingID
+     * @returns {Promise<void>}
+     */
     async function getContractMeetingDetails(meetingID) {
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
@@ -5300,6 +5303,91 @@
         }
     }
 
+    /**
+     * @returns {Promise<void>}
+     */
+    async function redirectToMessageScreen() {
+        try {
+            if (selectedThreadID) {
+                document.getElementById('mainLoader').classList.remove(displayNoneClass);
+                let checkActionRequiredURL = apiBaseUrl + '/contractSection/getRequiredActionWindow/' + selectedThreadID + '?sort[createdAt]=-1&page=1&limit=500';
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + authToken
+                };
+                const requestOptions = {
+                    method: 'GET',
+                    headers: headers,
+                };
+                fetch(checkActionRequiredURL, requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data
+                        const responseData = data;
+                        if (responseData && responseData.status == true && responseData.code == 200) {
+                            let response = responseData.data;
+                            console.log('data', response.data);
+                            if (response.total > 0) {
+                                document.getElementById('mainLoader').classList.add(displayNoneClass);
+                                let samesideMessage = response.data.filter(item => item.messageConfirmationFor == "Same Side");
+                                let counterpartyMessage = response.data.filter(item => item.messageConfirmationFor != "Same Side");
+                                if (samesideMessage && samesideMessage.length > 0) {
+                                    withType = 'Our Team';
+                                    messageConfirmationFor = 'Same Side';
+                                    document.getElementById('chatArea').innerHTML = '';
+                                    chatNextPage = 1;
+                                    chatHasNextPage = true;
+                                    getContractSectionMessageList('our');
+                                    let chatRoomName = getChatRoom(withType);
+                                    socket.emit('join_contract_section_chat_room', chatRoomName);
+                                    document.getElementById("messageInput").value = "";
+                                    document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                    document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
+                                    document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
+                                    document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
+                                } else if (counterpartyMessage && counterpartyMessage.length > 0) {
+                                    withType = 'Counterparty';
+                                    messageConfirmationFor = 'Opposite Side';
+                                    document.getElementById('chatCPArea').innerHTML = '';
+                                    chatNextPage = 1;
+                                    chatHasNextPage = true;
+                                    getContractSectionMessageList('Counterparty');
+                                    let chatRoomName = getChatRoom(withType);
+                                    socket.emit('join_contract_section_chat_room', chatRoomName);
+                                    document.getElementById("messageInputCP").value = "";
+                                    document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                    document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
+                                    document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
+                                    document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
+                                } else {
+                                    getContractSectionMessageHistory();
+                                    document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                    document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
+                                }
+                            } else {
+                                document.getElementById('mainLoader').classList.add(displayNoneClass);
+                                getContractSectionMessageHistory();
+                                document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
+                            }
+                        } else {
+                            document.getElementById('mainLoader').classList.add(displayNoneClass);
+                            getContractSectionMessageHistory();
+                            document.getElementById('divContractLists').classList.add(displayNoneClass);
+                            document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
+                        }
+                    })
+                    .catch(error => {
+                        // Handle any errors
+                        console.error('Error:', error);
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
+                    });
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
+        }
+    }
     /**================================ API Function End ==================================*/
 
 })(window, undefined);
