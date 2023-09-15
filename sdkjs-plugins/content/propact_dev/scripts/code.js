@@ -18,7 +18,7 @@
 
 
 (function (window, undefined) {
-    // Declare variables
+    // Declare variables 
     var flagInit = false;
     var flagSocketInit = false;
     var flagSocketFunctionInit = false;
