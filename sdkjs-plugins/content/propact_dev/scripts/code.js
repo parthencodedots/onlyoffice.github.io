@@ -25,7 +25,7 @@
     var fClickLabel = false;
     var fDisableWhenPluginLoading = false;
     var flagRedirectFirst = false;
-    let flagJSLoad = false;
+    var flagJSLoad = false;
     var displayNoneClass = "d-none";
     var disabledClass = "disabled";
     var toggleInviteUsersDivShow = true;
@@ -48,16 +48,16 @@
     var clauseHasNextPage = true;
     var searchText = '';
     var searchTimeout;
-    let tagLists = [];
-    let clauseLists = [];
+    var tagLists = [];
+    var clauseLists = [];
     var selectedCommentThereadID = '';
     var selectedThreadID = '';
     var loggedInUserDetails;
-    let typingTimeout;
-    let tyingUserSSArray = [];
-    let tyingUserCPArray = [];
-    let generalChatMessage = [];
-    let withType;
+    var typingTimeout;
+    var tyingUserSSArray = [];
+    var tyingUserCPArray = [];
+    var generalChatMessage = [];
+    var withType;
     var counterPartyCustomerDetail;
     var messageConfirmationFor;
     var chatRecordLimit = 10;
@@ -66,11 +66,11 @@
     var chatHistoryRecordLimit = 10;
     var chatHistoryNextPage = 1;
     var chatHistoryHasNextPage = true;
-    let socket = '';
-    let openContractUserDetails;
-    let selectedContractSectionDetails;
-    let sectionID;
-    let chatWindow;
+    var socket = '';
+    var openContractUserDetails;
+    var selectedContractSectionDetails;
+    var sectionID;
+    var chatWindow;
 
 
     /**================================== Plugin Init Start ===============================*/
@@ -84,7 +84,7 @@
         /**====================== Get & Set variables ======================*/
         documentID = getDocumentID(window.Asc.plugin.info.documentCallbackUrl);
         documentMode = getDocumentMode(window.Asc.plugin.info.documentCallbackUrl);
-        const splitArray = window.Asc.plugin.info.documentCallbackUrl.split('/');
+        var splitArray = window.Asc.plugin.info.documentCallbackUrl.split('/');
         authToken = splitArray[11];
         if (splitArray.length >= 13) {
             sectionID = splitArray[12];
@@ -136,8 +136,12 @@
             getOpenContractUserDetails(socket);
         }
 
-        const varBtnCreateClause = document.getElementById('btnCreateClause');
+        var varBtnCreateClause = document.getElementById('btnCreateClause');
         varBtnCreateClause.addEventListener('click', function () {
+            if (!document.getElementById('inviteUsersBox').classList.contains(displayNoneClass)) {
+                document.getElementById('inviteUsersBox').classList.add(displayNoneClass);
+                toggleInviteUsersDivShow = false;
+            }
             if (text) {
                 document.getElementById('divContractLists').classList.add(displayNoneClass);
                 document.getElementById('divContractCreate').classList.remove(displayNoneClass);
@@ -146,8 +150,13 @@
         });
 
         if (!flagJSLoad) {
+
+            setInterval(function () {
+                checkNewMessageAppear()
+            }, 15000);
+
             // Invite counterparty screen
-            const varBtnRedirectInviteCounterpartyForm = document.getElementById('btnRedirectInviteCounterpartyForm');
+            var varBtnRedirectInviteCounterpartyForm = document.getElementById('btnRedirectInviteCounterpartyForm');
             varBtnRedirectInviteCounterpartyForm.addEventListener('click', function () {
                 document.getElementById('divInviteCounterparty').classList.add(displayNoneClass);
                 document.getElementById('divInviteCounterpartyForm').classList.remove(displayNoneClass);
@@ -155,7 +164,7 @@
             // Invite counterparty screen
 
             // Invite counterparty Form screen
-            const varBtnRedirectInviteCounterpartyCancel = document.getElementById('btnRedirectInviteCounterpartyCancel');
+            var varBtnRedirectInviteCounterpartyCancel = document.getElementById('btnRedirectInviteCounterpartyCancel');
             varBtnRedirectInviteCounterpartyCancel.addEventListener('click', function () {
                 document.getElementById("inviteForm").reset();
                 var apiError = document.getElementsByClassName("api-error");
@@ -170,13 +179,13 @@
             // Invite counterparty Form screen
 
             // Invite counterparty Pending screen
-            const varBtnResendVerification = document.getElementById('btnResendVerification');
+            var varBtnResendVerification = document.getElementById('btnResendVerification');
             varBtnResendVerification.addEventListener('click', function () {
                 document.getElementById('mainLoader').classList.remove(displayNoneClass);
                 resendCounterpartyInvitation();
             });
 
-            const varBtnCancelInvitation = document.getElementById('btnCancelInvitation');
+            var varBtnCancelInvitation = document.getElementById('btnCancelInvitation');
             varBtnCancelInvitation.addEventListener('click', function () {
                 document.getElementById('mainLoader').classList.remove(displayNoneClass);
                 cancelInvitation();
@@ -184,9 +193,9 @@
             // Invite counterparty Pending screen
 
             // Contract clause lists screen
-            const varBtnMarkupMode = document.getElementById('btnMarkupMode');
+            var varBtnMarkupMode = document.getElementById('btnMarkupMode');
             varBtnMarkupMode.addEventListener('click', function () {
-                let data = {
+                var data = {
                     chatRoomName: loggedInUserDetails.userWebId + "_" + documentID,
                     documentMode: documentMode == 'markup' ? 'edit' : 'markup'
                 }
@@ -195,7 +204,7 @@
             // Contract clause lists screen
 
             // Create contract clause screen
-            const varBtnContractCreateClose = document.getElementById('btnContractCreateClose');
+            var varBtnContractCreateClose = document.getElementById('btnContractCreateClose');
             varBtnContractCreateClose.addEventListener('click', function () {
                 document.getElementById('clauseForm').reset();
                 if ($('#inviteteams').prop('checked')) {
@@ -204,7 +213,7 @@
                 if ($('#inviteusers').prop('checked')) {
                     $('#inviteusers').click();
                 }
-                let placeholderText = 'Select users and teams';
+                var placeholderText = 'Select users and teams';
                 document.getElementById('inviteUsersInput').placeholder = placeholderText;
                 selectedInvitedTeams = [];
                 selectedInvitedUsers = [];
@@ -214,7 +223,7 @@
                 document.getElementById('divContractCreate').classList.add(displayNoneClass);
             });
 
-            const varBtnContractCreateCancel = document.getElementById('btnContractCreateCancel');
+            var varBtnContractCreateCancel = document.getElementById('btnContractCreateCancel');
             varBtnContractCreateCancel.addEventListener('click', function () {
                 document.getElementById('clauseForm').reset();
                 if ($('#inviteteams').prop('checked')) {
@@ -223,7 +232,7 @@
                 if ($('#inviteusers').prop('checked')) {
                     $('#inviteusers').click();
                 }
-                let placeholderText = 'Select users and teams';
+                var placeholderText = 'Select users and teams';
                 document.getElementById('inviteUsersInput').placeholder = placeholderText;
                 selectedInvitedTeams = [];
                 selectedInvitedUsers = [];
@@ -235,7 +244,7 @@
             // Create contract clause screen
 
             // Contract chat history screen
-            const varBtnRedirectClauseListsA = document.getElementById('btnRedirectClauseListsA');
+            var varBtnRedirectClauseListsA = document.getElementById('btnRedirectClauseListsA');
             varBtnRedirectClauseListsA.addEventListener('click', async function () {
                 selectedCommentThereadID = '';
                 $('.div-selected').removeClass('div-selected');
@@ -250,7 +259,7 @@
                 document.getElementById('meetingPopup').classList.add(displayNoneClass);
             });
 
-            const varBtnGoToSameSideChat = document.getElementById('btnGoToSameSideChat');
+            var varBtnGoToSameSideChat = document.getElementById('btnGoToSameSideChat');
             varBtnGoToSameSideChat?.addEventListener('click', async function () {
                 withType = 'Our Team';
                 messageConfirmationFor = 'Same Side';
@@ -258,7 +267,7 @@
                 chatNextPage = 1;
                 chatHasNextPage = true;
                 await getContractSectionMessageList('our');
-                let chatRoomName = getChatRoom(withType);
+                var chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
                 document.getElementById("messageInput").value = "";
                 document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
@@ -266,7 +275,7 @@
                 document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
             });
 
-            const varBtnGoToCounterparty = document.getElementById('btnGoToCounterparty');
+            var varBtnGoToCounterparty = document.getElementById('btnGoToCounterparty');
             varBtnGoToCounterparty?.addEventListener('click', async function () {
                 withType = 'Counterparty';
                 messageConfirmationFor = 'Opposite Side';
@@ -274,7 +283,7 @@
                 chatNextPage = 1;
                 chatHasNextPage = true;
                 await getContractSectionMessageList('Counterparty');
-                let chatRoomName = getChatRoom(withType);
+                var chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
                 document.getElementById("messageInputCP").value = "";
                 document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
@@ -284,7 +293,7 @@
             // Contract chat history screen
 
             // Contract sameside chat screen
-            const varMessageInput = document.getElementById('messageInput');
+            var varMessageInput = document.getElementById('messageInput');
             varMessageInput?.addEventListener('keydown', function () {
                 var data = {
                     chatRoomName: getChatRoom(withType),
@@ -294,7 +303,7 @@
                 user_is_typing_contract_section(socket, data);
             });
 
-            const varMessageInputCP = document.getElementById('messageInputCP');
+            var varMessageInputCP = document.getElementById('messageInputCP');
             varMessageInputCP?.addEventListener('keydown', function () {
                 var data = {
                     chatRoomName: getChatRoom(withType),
@@ -304,7 +313,7 @@
                 user_is_typing_contract_section(socket, data);
             });
 
-            const varInputInviteEmailAddress = document.getElementById('inviteEmailAddress');
+            var varInputInviteEmailAddress = document.getElementById('inviteEmailAddress');
             varInputInviteEmailAddress?.addEventListener('keydown', function () {
                 var apiError = document.getElementsByClassName("api-error");
                 for (var i = 0; i < apiError.length; i++) {
@@ -315,7 +324,7 @@
 
             });
 
-            const varBtnGoToConversionHistory = document.getElementById('btnGoToConversionHistory');
+            var varBtnGoToConversionHistory = document.getElementById('btnGoToConversionHistory');
             varBtnGoToConversionHistory.addEventListener('click', function () {
                 chatHistoryNextPage = 1;
                 chatHistoryHasNextPage = true;
@@ -333,7 +342,7 @@
                 document.getElementById('rejectDarftPopup').classList.add(displayNoneClass);
             });
 
-            const varBtnGoToConversionHistoryA = document.getElementById('btnGoToConversionHistoryA');
+            var varBtnGoToConversionHistoryA = document.getElementById('btnGoToConversionHistoryA');
             varBtnGoToConversionHistoryA.addEventListener('click', function () {
                 chatHistoryNextPage = 1;
                 chatHistoryHasNextPage = true;
@@ -351,7 +360,7 @@
                 document.getElementById('rejectDarftPopup').classList.add(displayNoneClass);
             });
 
-            const varBtnGoToSameSideA = document.getElementById('btnGoToSameSideA');
+            var varBtnGoToSameSideA = document.getElementById('btnGoToSameSideA');
             varBtnGoToSameSideA.addEventListener('click', async function () {
                 withType = 'Our Team';
                 messageConfirmationFor = 'Same Side';
@@ -359,14 +368,14 @@
                 chatNextPage = 1;
                 chatHasNextPage = true;
                 await getContractSectionMessageList('our');
-                let chatRoomName = getChatRoom(withType);
+                var chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
                 document.getElementById("messageInput").value = "";
                 document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
                 document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
             });
 
-            const varBtnGoToCounterpartyA = document.getElementById('btnGoToCounterpartyA');
+            var varBtnGoToCounterpartyA = document.getElementById('btnGoToCounterpartyA');
             varBtnGoToCounterpartyA.addEventListener('click', async function () {
                 withType = 'Counterparty';
                 messageConfirmationFor = 'Opposite Side';
@@ -374,14 +383,14 @@
                 chatNextPage = 1;
                 chatHasNextPage = true;
                 await getContractSectionMessageList('Counterparty');
-                let chatRoomName = getChatRoom(withType);
+                var chatRoomName = getChatRoom(withType);
                 socket.emit('join_contract_section_chat_room', chatRoomName);
                 document.getElementById("messageInputCP").value = "";
                 document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
                 document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
             });
 
-            const varBtnRedirectClauseListsB = document.getElementById('btnRedirectClauseListsB');
+            var varBtnRedirectClauseListsB = document.getElementById('btnRedirectClauseListsB');
             varBtnRedirectClauseListsB.addEventListener('click', async function () {
                 selectedCommentThereadID = '';
                 $('.div-selected').removeClass('div-selected');
@@ -403,7 +412,7 @@
                 document.getElementById('meetingPopup').classList.add(displayNoneClass);
             });
 
-            const varBtnRedirectClauseListsC = document.getElementById('btnRedirectClauseListsC');
+            var varBtnRedirectClauseListsC = document.getElementById('btnRedirectClauseListsC');
             varBtnRedirectClauseListsC.addEventListener('click', async function () {
                 selectedCommentThereadID = '';
                 $('.div-selected').removeClass('div-selected');
@@ -545,8 +554,8 @@
             });
 
             $(document).on('click', '.draft-request-user', function () {
-                let userID = $(this).data('id');
-                let userName = $(this).data('name');
+                var userID = $(this).data('id');
+                var userName = $(this).data('name');
                 updateAssignDraftRequest(userID, userName);
                 document.getElementById('sendAssignDraftRequest').disabled = false;
                 $('#btncollapseUsersA').toggleClass('active');
@@ -563,8 +572,8 @@
             }
 
             $(document).on('click', '.assign-draft-request-user', function () {
-                let userID = $(this).data('id');
-                let userName = $(this).data('name');
+                var userID = $(this).data('id');
+                var userName = $(this).data('name');
                 updateAssignDraftRequestDropdown(userID, userName);
                 document.getElementById('sendAssignDraftRequest').disabled = false;
                 $('#btncollapseUsersB').toggleClass('active');
@@ -582,16 +591,16 @@
 
             $(document).on('click', '.contract-item', async function () {
                 fClickLabel = true;
-                let actionSameSide = document.querySelectorAll('.action-sameside');
+                var actionSameSide = document.querySelectorAll('.action-sameside');
                 actionSameSide.forEach(function (element) {
                     element.classList.remove(displayNoneClass);
                 });
-                let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                var actionCounterparty = document.querySelectorAll('.action-counterparty');
                 actionCounterparty.forEach(function (element) {
                     element.classList.remove(displayNoneClass);
                 });
                 var elementID = $(this).attr('id');
-                let tagExists = tagLists.findIndex((ele) => +ele.Id == +elementID);
+                var tagExists = tagLists.findIndex((ele) => +ele.Id == +elementID);
                 if (tagExists > -1) {
                     selectedCommentThereadID = tagLists[tagExists].Tag;
                     selectedThreadID = $(this).data('id');
@@ -599,13 +608,13 @@
                     chatHistoryHasNextPage = true;
                     getSelectedContractSectionDetails();
                     getOpenContractUserDetails(socket, redirection = false);
-                    let chatRoomName = 'conversion_history_' + selectedCommentThereadID;
+                    var chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                     socket.emit('join_contract_section_chat_room', chatRoomName);
 
-                    let chatRoomNameA = getChatRoom('Counterparty');
+                    var chatRoomNameA = getChatRoom('Counterparty');
                     socket.emit('join_contract_section_chat_room', chatRoomNameA);
 
-                    let chatRoomNameB = getChatRoom('Our Team');
+                    var chatRoomNameB = getChatRoom('Our Team');
                     socket.emit('join_contract_section_chat_room', chatRoomNameB);
 
                     var draftConfirmSSElement = document.getElementById("draftConfirmSS");
@@ -617,7 +626,7 @@
                         draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
                     }
                     await redirectToMessageScreen();
-
+                    await unreadMessageForThread();
                     document.getElementById('sendPositionConfirmationPopup').classList.add(displayNoneClass);
                     document.getElementById('toggleInviteUserTeam').closest("li").classList.remove('active');
                     window.Asc.plugin.executeMethod("SelectContentControl", [tagLists[tagExists].InternalId]);
@@ -635,13 +644,13 @@
                         document.getElementById('toggleSendPositionConfirmation').closest("li").classList.add(displayNoneClass);
                         document.getElementById('toggleSendPositionConfirmationA').closest("li").classList.add(displayNoneClass);
                     }
-                    let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
+                    var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                     if (getClauseDetails && getClauseDetails._id) {
                         await getSelectedContractSectionDetails();
                         if (getClauseDetails.assignedUser && getClauseDetails.assignedUser.length > 0) {
-                            let iHtml = '<ul>';
+                            var iHtml = '<ul>';
                             getClauseDetails.assignedUser.forEach((ele) => {
-                                let userDetails = inviteUserListIDs.find((el) => el._id == ele._id);
+                                var userDetails = inviteUserListIDs.find((el) => el._id == ele._id);
                                 if (userDetails) {
                                     iHtml += '<li>\n' +
                                         '\t\t\t\t<div class="invite-user-inner">\n' +
@@ -659,15 +668,15 @@
                             iHtml += '</ul>';
                             document.getElementById('userTabContent').innerHTML = iHtml;
                         } else {
-                            let html = '<ul>' +
+                            var html = '<ul>' +
                                 '<li><p>No user selected</p></li>' +
                                 '</ul>';
                             document.getElementById('userTabContent').innerHTML = html;
                         }
                         if (getClauseDetails.assignedTeam && getClauseDetails.assignedTeam.length > 0) {
-                            let iHtml = '<ul>';
+                            var iHtml = '<ul>';
                             getClauseDetails.assignedTeam.forEach((ele) => {
-                                let teamDetails = inviteTeamListIDs.find((el) => el._id == ele._id);
+                                var teamDetails = inviteTeamListIDs.find((el) => el._id == ele._id);
                                 if (teamDetails && teamDetails.itemName) {
                                     iHtml += '<li>\n' +
                                         '\t\t\t\t<div class="invite-user-inner">\n' +
@@ -681,7 +690,7 @@
                             iHtml += '</ul>';
                             document.getElementById('teamTabContent').innerHTML = iHtml;
                         } else {
-                            let html = '<ul>' +
+                            var html = '<ul>' +
                                 '<li><p>No team selected</p></li>' +
                                 '</ul>';
                             document.getElementById('teamTabContent').innerHTML = html;
@@ -708,7 +717,7 @@
                 }
             };
 
-            const varToggleInviteUserTeam = document.getElementById('toggleInviteUserTeam');
+            var varToggleInviteUserTeam = document.getElementById('toggleInviteUserTeam');
             varToggleInviteUserTeam.addEventListener('click', async function () {
                 if (varToggleInviteUserTeam.closest("li").classList.contains('active')) {
                     varToggleInviteUserTeam.closest("li").classList.remove('active');
@@ -719,9 +728,9 @@
             });
 
             document.getElementById('btnInviteUsers').addEventListener('click', function () {
-                let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
+                var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                 if (getClauseDetails) {
-                    let isAllInvited = [];
+                    var isAllInvited = [];
                     if (loggedInUserDetails.role == 'Counterparty' || loggedInUserDetails.role == 'Contract Creator') {
                         if (inviteUserListIDs.length !== selectedContractSectionDetails.contractAssignedUsers.length) {
                             isAllInvited.push(false);
@@ -764,7 +773,7 @@
                         inviteUserSelect = [];
                         inviteTeamSelect = [];
                         // Render the User Table
-                        let iHtml = '<h4>Select User</h4>\n';
+                        var iHtml = '<h4>Select User</h4>\n';
                         iHtml += '<div class="table-responsive">\n' +
                             '\t\t\t\t<table class="table table-hover">\n' +
                             '\t\t\t\t\t\t\t\t<thead class="thead-dark">\n' +
@@ -778,7 +787,7 @@
                             '\t\t\t\t\t\t\t\t</thead>\n' +
                             '\t\t\t\t\t\t\t\t<tbody>\n';
                         inviteUserListIDs.forEach((el) => {
-                            // let checkFindIndex = inviteUserListIDs.findIndex((e) => e.itemId == el);
+                            // var checkFindIndex = inviteUserListIDs.findIndex((e) => e.itemId == el);
                             if (!getClauseDetails.assignedUser.includes(el.itemId)) {
                                 iHtml += '\t\t\t\t\t\t\t\t<tr>\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<td>\n' +
@@ -801,9 +810,9 @@
             });
 
             document.getElementById('btnInviteUserTeams').addEventListener('click', function () {
-                let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
+                var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                 if (getClauseDetails) {
-                    let isAllInvited = [];
+                    var isAllInvited = [];
                     if (inviteTeamListIDs.length !== selectedContractSectionDetails.contractAssignedTeams.length) {
                         isAllInvited.push(false);
                     } else {
@@ -837,7 +846,7 @@
                         inviteUserSelect = [];
                         inviteTeamSelect = [];
                         // Render the Team Table
-                        let iHtml = '<h4>Select Team</h4>\n';
+                        var iHtml = '<h4>Select Team</h4>\n';
                         iHtml += '<div class="table-responsive">\n' +
                             '\t\t\t\t<table class="table table-hover">\n' +
                             '\t\t\t\t\t\t\t\t<thead class="thead-dark">\n' +
@@ -850,7 +859,7 @@
                             '\t\t\t\t\t\t\t\t</thead>\n' +
                             '\t\t\t\t\t\t\t\t<tbody>\n';
                         inviteTeamListIDs.forEach((el) => {
-                            // let checkFindIndex = inviteUserListIDs.findIndex((e) => e.itemId == el);
+                            // var checkFindIndex = inviteUserListIDs.findIndex((e) => e.itemId == el);
                             if (!getClauseDetails.assignedTeam.includes(el.itemId)) {
                                 iHtml += '\t\t\t\t\t\t\t\t<tr>\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<td>\n' +
@@ -872,7 +881,7 @@
             });
 
             document.getElementById('toggleSendPositionConfirmation').addEventListener('click', function () {
-                let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
+                var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                 if (openContractUserDetails && openContractUserDetails.openContractDetails && openContractUserDetails.openContractDetails.userWhoHasEditAccess == loggedInUserDetails._id && openContractUserDetails.canSendPositionConfirmation && getClauseDetails.isSectionInDraftMode) {
                     document.getElementById('sendDraftConfirmationPopup').classList.remove(displayNoneClass);
                 } else if (openContractUserDetails.canSendPositionConfirmation) {
@@ -882,7 +891,7 @@
 
             document.getElementById('toggleSendPositionConfirmationA').addEventListener('click', function () {
                 getOpenContractUserDetails(socket, redirection = false);
-                let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
+                var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                 if (openContractUserDetails && openContractUserDetails.openContractDetails && openContractUserDetails.canSendPositionConfirmation && getClauseDetails.isSectionInDraftMode) {
                     if (openContractUserDetails.openContractDetails.userWhoHasEditAccess == loggedInUserDetails._id || loggedInUserDetails.role == "Counterparty" || loggedInUserDetails.role == "Contract Creator") {
                         document.getElementById('sendDraftConfirmationPopup').classList.remove(displayNoneClass);
@@ -895,7 +904,7 @@
             });
 
             document.getElementById('toggleScheduleMeeting').addEventListener('click', function () {
-                let meetingData = {
+                var meetingData = {
                     contractId: documentID,
                     contractSectionId: selectedThreadID,
                     contractSectionThreadId: selectedCommentThereadID,
@@ -905,7 +914,7 @@
             });
 
             document.getElementById('toggleScheduleMeetingA').addEventListener('click', function () {
-                let meetingData = {
+                var meetingData = {
                     contractId: documentID,
                     contractSectionId: selectedThreadID,
                     contractSectionThreadId: selectedCommentThereadID,
@@ -996,17 +1005,17 @@
                 document.getElementById('rejectDarftRequestPopup').classList.remove(displayNoneClass);
             });
 
-            $(document).on('click', '.scheduled-meeting', function() {
+            $(document).on('click', '.scheduled-meeting', function () {
                 getContractMeetingDetails($(this).data('id'));
                 $('#btnMeetingView').attr('data-id', $(this).data('id'));
             });
 
-            $(document).on('click', '.btn-meeting-close', function() {
+            $(document).on('click', '.btn-meeting-close', function () {
                 document.getElementById('meetingPopup').classList.add(displayNoneClass);
             });
 
-            $(document).on('click', '.btn-meeting-view', function() {
-                let meetingData = {
+            $(document).on('click', '.btn-meeting-view', function () {
+                var meetingData = {
                     meetingId: $(this).data('id'),
                     chatRoomName: loggedInUserDetails.userWebId + "_" + documentID
                 };
@@ -1032,7 +1041,7 @@
 
             $("#frmSendPositionConfirmation").validate({
                 submitHandler: function (form, event) {
-                    const sendPositionConfirmation = {
+                    var sendPositionConfirmation = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": $('#inputSendPositionConfirmation').val(),
@@ -1058,7 +1067,7 @@
 
             $("#frmRejectPosition").validate({
                 submitHandler: function (form) {
-                    const rejectConfirmation = {
+                    var rejectConfirmation = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": $('#inputRejectPositionReason').val(),
@@ -1085,7 +1094,7 @@
 
             $("#frmReconfirmPosition").validate({
                 submitHandler: function (form) {
-                    let approveConfirmation = {
+                    var approveConfirmation = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": $('#inputPositionReason').val(),
@@ -1120,7 +1129,7 @@
 
             $("#frmAssignDraftRequest").validate({
                 submitHandler: function (form) {
-                    const assignDraftRequest = {
+                    var assignDraftRequest = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "status": "approved",
@@ -1146,7 +1155,7 @@
 
             $("#frmSendDraftConfirmation").validate({
                 submitHandler: function (form) {
-                    const sendDraftConfirmation = {
+                    var sendDraftConfirmation = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": $('#inputSendDraftConfirmation').val(),
@@ -1172,7 +1181,7 @@
 
             $("#frmRejectDraft").validate({
                 submitHandler: function (form) {
-                    const rejectConfirmation = {
+                    var rejectConfirmation = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": $('#inputRejectDraftReason').val(),
@@ -1199,7 +1208,7 @@
 
             $("#frmRejectDarftRequest").validate({
                 submitHandler: function (form) {
-                    const rejectConfirmation = {
+                    var rejectConfirmation = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": $('#inputRejectDraftRequestReason').val(),
@@ -1228,7 +1237,7 @@
                 chat_message = $('#messageInput').val();
                 document.getElementById("messageInput").value = "";
                 if (chat_message) {
-                    const addNewContractMessageDetail = {
+                    var addNewContractMessageDetail = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": chat_message,
@@ -1254,7 +1263,7 @@
                 chat_message = $('#messageInputCP').val();
                 document.getElementById("messageInputCP").value = "";
                 if (chat_message) {
-                    const addNewContractMessageDetail = {
+                    var addNewContractMessageDetail = {
                         "contractId": documentID,
                         "contractSectionId": selectedThreadID,
                         "message": chat_message,
@@ -1277,7 +1286,7 @@
             });
 
             $(document).on('click', '.approve-possition', function () {
-                const approveConfirmation = {
+                var approveConfirmation = {
                     "contractId": documentID,
                     "contractSectionId": selectedThreadID,
                     "with": withType,
@@ -1301,7 +1310,7 @@
             });
 
             $(document).on('click', '.draft-approve', function () {
-                const approveDraftConfirmation = {
+                var approveDraftConfirmation = {
                     "contractId": documentID,
                     "contractSectionId": selectedThreadID,
                     "with": withType,
@@ -1324,7 +1333,7 @@
             });
 
             $(document).on('click', '.draft-request-approve', function () {
-                const approvedDraftRequest = {
+                var approvedDraftRequest = {
                     "contractId": documentID,
                     "contractSectionId": selectedThreadID,
                     "with": withType,
@@ -1347,7 +1356,7 @@
             });
 
             $(document).on('click', '.btn-box-re-open', function () {
-                const reopenDetail = {
+                var reopenDetail = {
                     "contractId": documentID,
                     "contractSectionId": selectedThreadID,
                     "confirmationType": "Reopen",
@@ -1369,11 +1378,11 @@
                 document.getElementById('chatCPBodyID').classList.remove('contract-completed');
                 document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                 document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                let actionSameSide = document.querySelectorAll('.action-sameside');
+                var actionSameSide = document.querySelectorAll('.action-sameside');
                 actionSameSide.forEach(function (element) {
                     element.classList.remove(displayNoneClass);
                 });
-                let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                var actionCounterparty = document.querySelectorAll('.action-counterparty');
                 actionCounterparty.forEach(function (element) {
                     element.classList.remove(displayNoneClass);
                 });
@@ -1399,7 +1408,7 @@
             if (fBtnGetAll) {
                 fBtnGetAll = false;
                 for (var i = 0; i < returnValue.length; i++) {
-                    let tagExists = tagLists.findIndex((ele) => +ele.Id == +returnValue[i].Id);
+                    var tagExists = tagLists.findIndex((ele) => +ele.Id == +returnValue[i].Id);
                     if (tagExists < 0) {
                         tagLists.push(returnValue[i]);
                     }
@@ -1407,7 +1416,7 @@
             } else {
                 // document.getElementById("divG").innerHTML = "";
                 for (var i = 0; i < returnValue.length; i++) {
-                    let tagExists = tagLists.findIndex((ele) => +ele.Id == +returnValue[i].Id);
+                    var tagExists = tagLists.findIndex((ele) => +ele.Id == +returnValue[i].Id);
                     if (tagExists < 0) {
                         tagLists.push(returnValue[i]);
                     }
@@ -1415,7 +1424,7 @@
             }
         } else if (_plugin.info.methodName == "GetCurrentContentControl") {
             if (tagLists && tagLists.length > 0 && returnValue) {
-                let selectedTag = tagLists.findIndex((ele) => ele.InternalId == returnValue);
+                var selectedTag = tagLists.findIndex((ele) => ele.InternalId == returnValue);
                 if (selectedTag && selectedTag > -1 && tagLists[selectedTag].Id && document.getElementById(tagLists[selectedTag].Id)) {
                     selectedCommentThereadID = tagLists[selectedTag].Tag;
 
@@ -1442,7 +1451,7 @@
      * @returns {*|string}
      */
     function getDocumentID(url) {
-        const urlArr = url.split('/');
+        var urlArr = url.split('/');
         return urlArr[8];
     }
 
@@ -1451,7 +1460,7 @@
      * @returns {*|string}
      */
     function getDocumentMode(url) {
-        const urlArr = url.split('/');
+        var urlArr = url.split('/');
         return urlArr[10];
     }
 
@@ -1460,9 +1469,9 @@
      */
     function updateInviteTeamCheckbox() {
         $('.team-chkbox').each(function () {
-            let isChecked = $(this).prop("checked");
-            let dataID = $(this).parent().data('id');
-            let jsonData = inviteTeamListIDs.find((ele) => ele.itemId == dataID);
+            var isChecked = $(this).prop("checked");
+            var dataID = $(this).parent().data('id');
+            var jsonData = inviteTeamListIDs.find((ele) => ele.itemId == dataID);
             if (isChecked) {
                 if (selectedInvitedTeams.findIndex((ele) => ele.itemId == jsonData.itemId) < 0) {
                     selectedInvitedTeams.push(jsonData);
@@ -1483,9 +1492,9 @@
      */
     function updateInviteUserCheckbox() {
         $('.user-chkbox').each(function () {
-            let isChecked = $(this).prop("checked");
-            let dataID = $(this).parent().data('id');
-            let jsonData = inviteUserListIDs.find((ele) => ele.itemId == dataID);
+            var isChecked = $(this).prop("checked");
+            var dataID = $(this).parent().data('id');
+            var jsonData = inviteUserListIDs.find((ele) => ele.itemId == dataID);
             if (isChecked) {
                 if (selectedInvitedUsers.findIndex((ele) => ele.itemId == jsonData.itemId) < 0) {
                     selectedInvitedUsers.push(jsonData);
@@ -1505,8 +1514,8 @@
      * @desc Update the placeholder of Invite user input
      */
     function updateInviteUsersPlacehoder() {
-        let placeholderText = 'Select users and teams';
-        let placeholderTextArray = [];
+        var placeholderText = 'Select users and teams';
+        var placeholderTextArray = [];
         if (selectedInvitedUsers && selectedInvitedUsers.length > 0) {
             placeholderTextArray.push(selectedInvitedUsers.length + (selectedInvitedUsers.length == 1 ? ' User' : ' Users'));
         }
@@ -1524,9 +1533,9 @@
      */
     function updateInviteUserCheckbox2() {
         $('.invite-user-chkbox').each(function () {
-            let isChecked = $(this).prop("checked");
-            let dataID = $(this).parent().data('id');
-            let jsonData = inviteUserListIDs.find((ele) => ele.itemId == dataID);
+            var isChecked = $(this).prop("checked");
+            var dataID = $(this).parent().data('id');
+            var jsonData = inviteUserListIDs.find((ele) => ele.itemId == dataID);
             if (isChecked) {
                 if (inviteUserSelect.findIndex((ele) => ele.itemId == jsonData.itemId) < 0) {
                     inviteUserSelect.push(jsonData);
@@ -1547,9 +1556,9 @@
      */
     function updateInviteTeamCheckbox2() {
         $('.invite-team-chkbox').each(function () {
-            let isChecked = $(this).prop("checked");
-            let dataID = $(this).parent().data('id');
-            let jsonData = inviteTeamListIDs.find((ele) => ele.itemId == dataID);
+            var isChecked = $(this).prop("checked");
+            var dataID = $(this).parent().data('id');
+            var jsonData = inviteTeamListIDs.find((ele) => ele.itemId == dataID);
             if (isChecked) {
                 if (inviteTeamSelect.findIndex((ele) => ele.itemId == jsonData.itemId) < 0) {
                     inviteTeamSelect.push(jsonData);
@@ -1594,20 +1603,20 @@
      * @returns {string}
      */
     function formatDate(inputDate) {
-        const months = [
+        var months = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun",
             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
 
-        const date = new Date(inputDate);
-        const day = date.getDate();
-        const month = months[date.getMonth()];
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const period = hours >= 12 ? "PM" : "AM";
-        const formattedHours = hours % 12 || 12;
+        var date = new Date(inputDate);
+        var day = date.getDate();
+        var month = months[date.getMonth()];
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var period = hours >= 12 ? "PM" : "AM";
+        var formattedHours = hours % 12 || 12;
 
-        let daySuffix;
+        var daySuffix;
         if (day === 1 || day === 21 || day === 31) {
             daySuffix = "st";
         } else if (day === 2 || day === 22) {
@@ -1618,7 +1627,7 @@
             daySuffix = "th";
         }
 
-        const formattedDate = `${day}<sup>${daySuffix}</sup> ${month} ${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        var formattedDate = `${day}<sup>${daySuffix}</sup> ${month} ${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
         return formattedDate;
     }
 
@@ -1627,16 +1636,16 @@
      * @returns {string}
      */
     function formatDateForMeeting(inputDate) {
-        const months = [
+        var months = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun",
             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
-        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const date = new Date(inputDate);
-        const day = daysOfWeek[date.getDay()];
-        const dateT = date.getDate();
-        const month = months[date.getMonth()];
-        const formattedDate = `${day}, ${dateT} ${month}`;
+        var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var date = new Date(inputDate);
+        var day = daysOfWeek[date.getDay()];
+        var dateT = date.getDate();
+        var month = months[date.getMonth()];
+        var formattedDate = `${day}, ${dateT} ${month}`;
         return formattedDate;
     }
 
@@ -1668,14 +1677,14 @@
         /** Socket Emit: user typing on contract thread */
         if (!flagSocketFunctionInit) {
 
-            let chatRoomName = loggedInUserDetails.userWebId + "_" + documentID;
+            var chatRoomName = loggedInUserDetails.userWebId + "_" + documentID;
             socket.emit('join_chat_room', chatRoomName);
 
-            let chatRoomNameA = 'room_' + documentID;
+            var chatRoomNameA = 'room_' + documentID;
             console.log('chatRoomNameA', chatRoomNameA);
             socket.emit('join_chat_room', chatRoomNameA);
 
-            let documentChatRoomName = documentID;
+            var documentChatRoomName = documentID;
             socket.emit('join_chat_room', documentChatRoomName);
 
             function user_is_typing_contract_section(socket, data) {
@@ -1694,7 +1703,7 @@
                     if (tyingUserSSArray.findIndex(x => x == data) == -1) {
                         tyingUserSSArray.push(data);
                     }
-                    let text = '';
+                    var text = '';
                     if (tyingUserSSArray.length == 1) {
                         text = tyingUserSSArray[0] + " is typing...";
                     }
@@ -1702,7 +1711,7 @@
                         text = tyingUserSSArray[0] + " and " + tyingUserSSArray[1] + " is typing...";
                     }
                     if (tyingUserSSArray.length > 2) {
-                        let otherUserCount = tyingUserSSArray.length - 2
+                        var otherUserCount = tyingUserSSArray.length - 2
                         text = tyingUserSSArray[0] + ", " + tyingUserSSArray[1] + " and " + otherUserCount + " others are typing...";
                     }
 
@@ -1722,7 +1731,7 @@
                     if (tyingUserCPArray.findIndex(x => x == data) == -1) {
                         tyingUserCPArray.push(data);
                     }
-                    let text = '';
+                    var text = '';
                     if (tyingUserCPArray.length == 1) {
                         text = tyingUserCPArray[0] + " is typing...";
                     }
@@ -1730,7 +1739,7 @@
                         text = tyingUserCPArray[0] + " and " + tyingUserCPArray[1] + " is typing...";
                     }
                     if (tyingUserCPArray.length > 2) {
-                        let otherUserCount = tyingUserCPArray.length - 2
+                        var otherUserCount = tyingUserCPArray.length - 2
                         text = tyingUserCPArray[0] + ", " + tyingUserCPArray[1] + " and " + otherUserCount + " others are typing...";
                     }
 
@@ -1746,7 +1755,10 @@
             /** Socket On: user message get for same side */
             socket.on('receive_contract_section_message', data => {
                 console.log('receive_contract_section_message', data);
-                let html = '';
+                if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
+                    unreadMessageForThread()
+                }
+                var html = '';
                 if (data.messageType == "Invite") {
                     if (data.invitedUserName) {
                         html += '<strong class="message-wrapper grey-color">\n' +
@@ -1913,11 +1925,11 @@
                         document.getElementById('chatCPBodyID').classList.remove('contract-completed');
                         document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                         document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                        let actionSameSide = document.querySelectorAll('.action-sameside');
+                        var actionSameSide = document.querySelectorAll('.action-sameside');
                         actionSameSide.forEach(function (element) {
                             element.classList.remove(displayNoneClass);
                         });
-                        let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                        var actionCounterparty = document.querySelectorAll('.action-counterparty');
                         actionCounterparty.forEach(function (element) {
                             element.classList.remove(displayNoneClass);
                         });
@@ -1931,14 +1943,14 @@
                         }
                     }
                 } else if (data.messageType == "Meeting") {
-                    html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
+                    html += '<div class="scheduled-meeting" data-id="' + data.meetingId + '">\n' +
                         '          <div class="scheduled-meeting-inner">\n' +
                         '            <div class="scheduled-meeting-icon">\n' +
                         '              <img src="images/schedule-meeting-icon.svg"\n' +
                         '                alt="Schedule Meeting Icon" />\n' +
                         '            </div>\n' +
                         '            <div class="scheduled-meeting-content">\n' +
-                        '              <h3>'+data.meetingTitle+'</h3>\n' +
+                        '              <h3>' + data.meetingTitle + '</h3>\n' +
                         '              <p>Scheduled Meeting</p>\n' +
                         '              <span>' + formatDateForMeeting(data.meetingDate) + ' &#183; ' + data.meetingStartTime + ' - ' + data.meetingEndTime + '</span>\n' +
                         '            </div>\n' +
@@ -1964,8 +1976,8 @@
                 var scrollableDiv = document.getElementById('chatBodyID');
                 var scrollPositionFromBottom = scrollableDiv.scrollHeight - (scrollableDiv.scrollTop + scrollableDiv.clientHeight)
                 if (scrollPositionFromBottom <= 600) {
-                    const myDiv = document.getElementById("chatBodyID");
-                    const scrollToOptions = {
+                    var myDiv = document.getElementById("chatBodyID");
+                    var scrollToOptions = {
                         top: myDiv.scrollHeight,
                         behavior: 'smooth'
                     };
@@ -1976,7 +1988,10 @@
             /** Socket On: user message get for same side */
             socket.on('receive_counter_contract_section_message', data => {
                 console.log('receive_counter_contract_section_message', data);
-                let html = '';
+                if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
+                    unreadMessageForThread()
+                }
+                var html = '';
                 if (data.messageType == 'Position Confirmation') {
                     html += '<div class="message-wrapper ' + (data.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                         '       <div class="profile-picture">\n' +
@@ -2229,11 +2244,11 @@
                     document.getElementById('chatCPBodyID').classList.remove('contract-completed');
                     document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                     document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                    let actionSameSide = document.querySelectorAll('.action-sameside');
+                    var actionSameSide = document.querySelectorAll('.action-sameside');
                     actionSameSide.forEach(function (element) {
                         element.classList.remove(displayNoneClass);
                     });
-                    let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                    var actionCounterparty = document.querySelectorAll('.action-counterparty');
                     actionCounterparty.forEach(function (element) {
                         element.classList.remove(displayNoneClass);
                     });
@@ -2246,14 +2261,14 @@
                         draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                     }
                 } else if (data.messageType == "Meeting") {
-                    html += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
+                    html += '<div class="scheduled-meeting" data-id="' + data.meetingId + '">\n' +
                         '          <div class="scheduled-meeting-inner">\n' +
                         '            <div class="scheduled-meeting-icon">\n' +
                         '              <img src="images/schedule-meeting-icon.svg"\n' +
                         '                alt="Schedule Meeting Icon" />\n' +
                         '            </div>\n' +
                         '            <div class="scheduled-meeting-content">\n' +
-                        '              <h3>'+data.meetingTitle+'</h3>\n' +
+                        '              <h3>' + data.meetingTitle + '</h3>\n' +
                         '              <p>Scheduled Meeting</p>\n' +
                         '              <span>' + formatDateForMeeting(data.meetingDate) + ' &#183; ' + data.meetingStartTime + ' - ' + data.meetingEndTime + '</span>\n' +
                         '            </div>\n' +
@@ -2280,8 +2295,8 @@
                 var scrollableDiv = document.getElementById('chatCPBodyID');
                 var scrollPositionFromBottom = scrollableDiv.scrollHeight - (scrollableDiv.scrollTop + scrollableDiv.clientHeight)
                 if (scrollPositionFromBottom <= 600) {
-                    const myDiv = document.getElementById("chatCPBodyID");
-                    const scrollToOptions = {
+                    var myDiv = document.getElementById("chatCPBodyID");
+                    var scrollToOptions = {
                         top: myDiv.scrollHeight,
                         behavior: 'smooth'
                     };
@@ -2292,8 +2307,11 @@
             /** Socket On: user message get for conversion history */
             socket.on('receive_conversion_history_message', data => {
                 console.log('receive_conversion_history_message', data);
+                if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
+                    unreadMessageForThread()
+                }
                 if (loggedInUserDetails.isCounterPartyCustomer == true || loggedInUserDetails.isCounterPartyUser == true) {
-                    let conversionTypeArr = ['OTCP'];
+                    var conversionTypeArr = ['OTCP'];
                     if (openContractUserDetails && openContractUserDetails.canCommunicateWithCounterparty) {
                         conversionTypeArr.push('OTM');
                     }
@@ -2301,7 +2319,7 @@
                         return false;
                     }
                 } else {
-                    let conversionTypeArr = ['OTCC'];
+                    var conversionTypeArr = ['OTCC'];
                     if (openContractUserDetails && openContractUserDetails.canCommunicateWithCounterparty) {
                         conversionTypeArr.push('OTM');
                     }
@@ -2310,7 +2328,7 @@
                         return false;
                     }
                 }
-                let htmlHistory = '';
+                var htmlHistory = '';
                 if (data.chatWindow == 'Counterparty') {
                     if (data.messageType == "Invite") {
                         if (data.invitedUserName) {
@@ -2492,11 +2510,11 @@
                         document.getElementById('chatCPBodyID').classList.remove('contract-completed');
                         document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                         document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                        let actionSameSide = document.querySelectorAll('.action-sameside');
+                        var actionSameSide = document.querySelectorAll('.action-sameside');
                         actionSameSide.forEach(function (element) {
                             element.classList.remove(displayNoneClass);
                         });
-                        let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                        var actionCounterparty = document.querySelectorAll('.action-counterparty');
                         actionCounterparty.forEach(function (element) {
                             element.classList.remove(displayNoneClass);
                         });
@@ -2647,11 +2665,11 @@
                         document.getElementById('chatCPBodyID').classList.remove('contract-completed');
                         document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                         document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                        let actionSameSide = document.querySelectorAll('.action-sameside');
+                        var actionSameSide = document.querySelectorAll('.action-sameside');
                         actionSameSide.forEach(function (element) {
                             element.classList.remove(displayNoneClass);
                         });
-                        let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                        var actionCounterparty = document.querySelectorAll('.action-counterparty');
                         actionCounterparty.forEach(function (element) {
                             element.classList.remove(displayNoneClass);
                         });
@@ -2664,14 +2682,14 @@
                             draftConfirmSSElement.parentNode.removeChild(draftConfirmSSElement);
                         }
                     } else if (data.messageType == "Meeting") {
-                        htmlHistory += '<div class="scheduled-meeting" data-id="'+data.meetingId+'">\n' +
+                        htmlHistory += '<div class="scheduled-meeting" data-id="' + data.meetingId + '">\n' +
                             '          <div class="scheduled-meeting-inner">\n' +
                             '            <div class="scheduled-meeting-icon">\n' +
                             '              <img src="images/schedule-meeting-icon.svg"\n' +
                             '                alt="Schedule Meeting Icon" />\n' +
                             '            </div>\n' +
                             '            <div class="scheduled-meeting-content">\n' +
-                            '              <h3>'+data.meetingTitle+'</h3>\n' +
+                            '              <h3>' + data.meetingTitle + '</h3>\n' +
                             '              <p>Scheduled Meeting</p>\n' +
                             '              <span>' + formatDateForMeeting(data.meetingDate) + ' &#183; ' + data.meetingStartTime + ' - ' + data.meetingEndTime + '</span>\n' +
                             '            </div>\n' +
@@ -2697,8 +2715,8 @@
                 var scrollableDiv = document.getElementById('chatHistoryBodyID');
                 var scrollPositionFromBottom = scrollableDiv.scrollHeight - (scrollableDiv.scrollTop + scrollableDiv.clientHeight)
                 if (scrollPositionFromBottom <= 600) {
-                    const myDiv = document.getElementById("chatHistoryBodyID");
-                    const scrollToOptions = {
+                    var myDiv = document.getElementById("chatHistoryBodyID");
+                    var scrollToOptions = {
                         top: myDiv.scrollHeight,
                         behavior: 'smooth'
                     };
@@ -2753,12 +2771,12 @@
      * @desc Get open contract and user details
      */
     function getOpenContractUserDetails(socket, redirection = true) {
-        const getContractUserDetailsUrl = apiBaseUrl + '/contract/getOpenContractUserDetails/' + documentID;
-        const headers = {
+        var getContractUserDetailsUrl = apiBaseUrl + '/contract/getOpenContractUserDetails/' + documentID;
+        var headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken
         };
-        const requestOptions = {
+        var requestOptions = {
             method: 'GET',
             headers: headers,
         };
@@ -2766,7 +2784,7 @@
             .then(response => response.json())
             .then(data => {
                 // Handle the response data
-                const responseData = data;
+                var responseData = data;
                 if (responseData && responseData.status == true && responseData.code == 200 && responseData.data) {
                     if (responseData.data.openContractDetails && responseData.data.openContractDetails.counterPartyInviteStatus == 'Accepted') {
                         if (documentMode !== 'markup') {
@@ -2781,7 +2799,7 @@
                     flagInit = true;
                     openContractUserDetails = responseData.data;
                     if (selectedThreadID) {
-                        let getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
+                        var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                         if (openContractUserDetails && openContractUserDetails.openContractDetails && openContractUserDetails.canSendPositionConfirmation && getClauseDetails && getClauseDetails.isSectionInDraftMode) {
                             if (openContractUserDetails.openContractDetails.userWhoHasEditAccess == loggedInUserDetails._id || loggedInUserDetails.role == "Counterparty" || loggedInUserDetails.role == "Contract Creator") {
                                 document.getElementById('toggleSendPositionConfirmationA').setAttribute('title', 'Send for Draft Confirmation');
@@ -2857,12 +2875,12 @@
      * @desc Get contract team and user list for clause create form
      */
     function getContractTeamAndUserList(popup = 'inviteuser') {
-        const getContractTeamAndUserListUrl = apiBaseUrl + '/meeting/getContractTeamAndUserList/' + documentID;
-        const headers = {
+        var getContractTeamAndUserListUrl = apiBaseUrl + '/meeting/getContractTeamAndUserList/' + documentID;
+        var headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken
         };
-        const requestOptions = {
+        var requestOptions = {
             method: 'GET',
             headers: headers,
         };
@@ -2870,7 +2888,7 @@
             .then(response => response.json())
             .then(data => {
                 // Handle the response data
-                const responseData = data;
+                var responseData = data;
                 if (responseData && responseData.data) {
                     if (popup == 'inviteuser') {
                         var teamLists = responseData.data.filter((ele) => {
@@ -3040,10 +3058,10 @@
      * @desc Get list of contract sections
      */
     async function getContractSectionList() {
-        let getContractSectionListUrl = apiBaseUrl + '/contractSection/getSelectedStatusContractSection/all/' + documentID;
+        var getContractSectionListUrl = apiBaseUrl + '/contractSection/getSelectedStatusContractSection/all/' + documentID;
         //?filter[description]=Test&sort[createdAt]=-1&page=1&limit=6
         getContractSectionListUrl += '?';
-        let queryParam = [];
+        var queryParam = [];
         // Search text
         if (searchText) {
             queryParam.push('filter[search_text]=' + searchText);
@@ -3056,11 +3074,11 @@
         queryParam.push('limit=' + clauseRecordLimit);
         // Set queryparams
         getContractSectionListUrl += queryParam.join('&');
-        const headers = {
+        var headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken
         };
-        const requestOptions = {
+        var requestOptions = {
             method: 'GET',
             headers: headers,
         };
@@ -3068,9 +3086,9 @@
             .then(response => response.json())
             .then(data => {
                 // Handle the response data
-                const responseData = data;
+                var responseData = data;
                 if (responseData && responseData.data) {
-                    const resData = responseData.data;
+                    var resData = responseData.data;
                     if (clauseNextPage == 1) {
                         document.getElementById('contractListItemsDiv').innerHTML = '';
                     }
@@ -3079,13 +3097,14 @@
                         var html = '';
                         result.forEach((ele) => {
                             clauseLists.push(ele);
-                            let commentID = ele.commentId;
+                            var commentID = ele.commentId;
                             html += '<div class="contract-item" data-id="' + ele._id + '" data-commentid="' + commentID + '" id="' + commentID.split('-').pop() + '">\n' +
-                                '\t\t\t<a href="#">\n' +
-                                '\t\t\t\t\t\t<div class="contract-top">\n' +
+                                '\t\t\t<a href="#">\n';
+                            html += '\t\t\t\t\t\t<span class="notification-no '+ (ele.hasUnreadMessage ? '' : displayNoneClass) +'"></span>';
+                            html += '\t\t\t\t\t\t<div class="contract-top">\n' +
                                 '\t\t\t\t\t\t\t\t\t<h3>' + ele.contractSection + '</h3>\n' +
                                 '\t\t\t\t\t\t\t\t\t<p>' + ele.contractDescription + '</p>\n';
-                            let contractStatusColorCode = 'active-color';
+                            var contractStatusColorCode = 'active-color';
                             if (ele.contractStatus == 'Drafting') {
                                 contractStatusColorCode = 'fuchsia-color';
                             } else if (ele.contractStatus == 'Under Negotiation') {
@@ -3141,7 +3160,7 @@
                             document.getElementById('contractListItemsDiv').insertAdjacentElement("beforeend", newElement);
                         }
                         if (!flagRedirectFirst && sectionID) {
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 $('.contract-item[data-id="' + sectionID + '"]').click();
                                 if (chatWindow == 'SS') {
                                     $('#btnGoToSameSideChat').click();
@@ -3154,7 +3173,7 @@
                         clauseHasNextPage = resData.hasNextPage;
                         clauseNextPage = resData.nextPage;
                     } else {
-                        let norecordhtml = '<p class="nodata-info">No clauses available</p>';
+                        var norecordhtml = '<p class="nodata-info">No clauses available</p>';
                         document.getElementById('contractListItemsDiv').innerHTML = norecordhtml;
                     }
                 }
@@ -3169,43 +3188,50 @@
      * @desc Invite the counterparty
      */
     function inviteCounterparties() {
-        var form = document.getElementById('inviteForm');
-        var data = JSON.stringify({
-            firstName: form.elements['firstName'].value,
-            lastName: form.elements['lastName'].value,
-            email: form.elements['email'].value,
-            organizationName: form.elements['organisationName'].value
-        });
-        const inviteCounterpartiesUrl = apiBaseUrl + '/contract/inviteCounterPartyUser/' + documentID;
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + authToken
-        };
-        const requestOptions = {
-            method: 'POST',
-            headers: headers,
-            body: data
-        };
-        fetch(inviteCounterpartiesUrl, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response data
-                document.getElementById('mainLoader').classList.add(displayNoneClass);
-                const responseData = data;
-                if (responseData && responseData.status == true && responseData.code == 200) {
-                    document.getElementById("inviteForm").reset();
-                    document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
-                    document.getElementById('divInviteCounterpartyForm').classList.add(displayNoneClass);
-                    getOpenContractUserDetails();
-                } else if (responseData && responseData.status == false && responseData.message) {
-                    $('#inviteEmailAddress').parent().append('<label class="error api-error">' + responseData.message + '</label>');
-                }
-            })
-            .catch(error => {
-                // Handle any errors
-                console.error('Error:', error);
-                document.getElementById('mainLoader').classList.add(displayNoneClass);
+        try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
+            var form = document.getElementById('inviteForm');
+            var data = JSON.stringify({
+                firstName: form.elements['firstName'].value,
+                lastName: form.elements['lastName'].value,
+                email: form.elements['email'].value,
+                organizationName: form.elements['organisationName'].value
             });
+            var inviteCounterpartiesUrl = apiBaseUrl + '/contract/inviteCounterPartyUser/' + documentID;
+            var headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + authToken
+            };
+            var requestOptions = {
+                method: 'POST',
+                headers: headers,
+                body: data
+            };
+            fetch(inviteCounterpartiesUrl, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data
+                    document.getElementById('mainLoader').classList.remove(displayNoneClass);
+                    var responseData = data;
+                    if (responseData && responseData.status == true && responseData.code == 200) {
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
+                        document.getElementById("inviteForm").reset();
+                        document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
+                        document.getElementById('divInviteCounterpartyForm').classList.add(displayNoneClass);
+                        getOpenContractUserDetails();
+                    } else if (responseData && responseData.status == false && responseData.message) {
+                        $('#inviteEmailAddress').parent().append('<label class="error api-error">' + responseData.message + '</label>');
+                        document.getElementById('mainLoader').classList.add(displayNoneClass);
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
+                });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     }
 
     /**
@@ -3213,12 +3239,13 @@
      */
     function cancelInvitation() {
         try {
-            const cancelInvitationsUrl = apiBaseUrl + '/contract/cancelInvitationEmail/' + documentID;
-            const headers = {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
+            var cancelInvitationsUrl = apiBaseUrl + '/contract/cancelInvitationEmail/' + documentID;
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'GET',
                 headers: headers,
             };
@@ -3226,12 +3253,12 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         var x = document.getElementById("snackbar");
                         x.textContent = responseData.message;
                         x.className = "show";
-                        setTimeout(function() {
+                        setTimeout(function () {
                             x.classList.remove('show');
                         }, 3000)
                         document.getElementById('divInviteCounterpartyPending').classList.add(displayNoneClass);
@@ -3254,12 +3281,13 @@
      */
     function resendCounterpartyInvitation() {
         try {
-            const resendCounterpartyInvitationUrl = apiBaseUrl + '/contract/resendInvitationEmail/' + documentID;
-            const headers = {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
+            var resendCounterpartyInvitationUrl = apiBaseUrl + '/contract/resendInvitationEmail/' + documentID;
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'GET',
                 headers: headers,
             };
@@ -3267,13 +3295,13 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         console.log(responseData.message);
                         var x = document.getElementById("snackbar");
                         x.textContent = responseData.message;
                         x.className = "show";
-                        setTimeout(function() {
+                        setTimeout(function () {
                             x.classList.remove('show');
                         }, 3000)
                     }
@@ -3296,6 +3324,7 @@
      */
     function createClauseSection(socket) {
         try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
             var randomNumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
             var commentID = Date.now() + '-' + randomNumber;
             var form = document.getElementById('clauseForm');
@@ -3306,12 +3335,12 @@
                 assignedTeamAndUserDetails: [...selectedInvitedTeams, ...selectedInvitedUsers],
                 commentId: commentID
             });
-            const createClauseSectionUrl = apiBaseUrl + '/contractSection/createNewContractSection';
-            const headers = {
+            var createClauseSectionUrl = apiBaseUrl + '/contractSection/createNewContractSection';
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'POST',
                 headers: headers,
                 body: data
@@ -3327,13 +3356,13 @@
                     if ($('#inviteusers').prop('checked')) {
                         $('#inviteusers').click();
                     }
-                    let placeholderText = 'Select users and teams';
+                    var placeholderText = 'Select users and teams';
                     document.getElementById('inviteUsersInput').placeholder = placeholderText;
                     selectedInvitedTeams = [];
                     selectedInvitedUsers = [];
                     $('#inviteUsersInput').click();
                     $('#collapseTeams, #collapseUsers').collapse('hide');
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         var sDocumentEditingRestrictions = "none";
                         window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
@@ -3358,7 +3387,7 @@
                         clauseHasNextPage = true;
                         clauseLists = [];
                         getContractSectionList();
-                        let data = {
+                        var data = {
                             chatRoomName: documentID,
                             tagData: JSON.stringify(nContentControlProperties)
                         };
@@ -3393,12 +3422,12 @@
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
             var data = JSON.stringify(postData);
-            const addContractSectionMessageUrl = apiBaseUrl + '/contractSection/addContractSectionMessage';
-            const headers = {
+            var addContractSectionMessageUrl = apiBaseUrl + '/contractSection/addContractSectionMessage';
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'POST',
                 headers: headers,
                 body: data
@@ -3408,10 +3437,10 @@
                 .then(data => {
                     // Handle the response data
                     document.getElementById("clauseForm").reset();
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
 
-                        let conversationType = 'OTM';
+                        var conversationType = 'OTM';
                         if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && postData.with == "Our Team") {
                             conversationType = 'OTCC';
                         } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && postData.with == "Our Team") {
@@ -3419,20 +3448,20 @@
                         }
 
                         socket.emit('contract_section_message', postData);
-                        let generalChatData = postData;
+                        var generalChatData = postData;
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
                         if (postData.with == "Counterparty") {
-                            const myTextarea = document.getElementById("messageInputCP");
+                            var myTextarea = document.getElementById("messageInputCP");
                             myTextarea.value = "";
                         } else {
-                            const myTextarea = document.getElementById("messageInput");
+                            var myTextarea = document.getElementById("messageInput");
                             myTextarea.value = "";
                         }
 
-                        let html = '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
+                        var html = '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
@@ -3449,8 +3478,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatCPBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatCPBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -3461,8 +3490,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -3492,8 +3521,8 @@
     async function getContractSectionMessageList(messageType = 'our') {
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
-            let getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getContractSectionMessageList/' + selectedThreadID + '/' + messageType;
-            let queryParam = [];
+            var getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getContractSectionMessageList/' + selectedThreadID + '/' + messageType;
+            var queryParam = [];
             // Set sortby created time
             queryParam.push('sort[createdAt]=-1');
             // Set pageSize
@@ -3502,11 +3531,11 @@
             queryParam.push('limit=' + chatRecordLimit);
             // Set queryparams
             getContractSectionMessageListUrl += '?' + queryParam.join('&');
-            const headers = {
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'GET',
                 headers: headers,
             };
@@ -3514,16 +3543,16 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200 && responseData.data) {
                         if (responseData.data.data.length > 0) {
-                            let result;
+                            var result;
                             if (chatNextPage == 1) {
                                 if (messageType == 'our') {
                                     document.getElementById('chatArea').innerHTML = '';
                                     result = responseData?.data?.data.reverse();
-                                    const myDiv = document.getElementById("chatBodyID");
-                                    const scrollToOptions = {
+                                    var myDiv = document.getElementById("chatBodyID");
+                                    var scrollToOptions = {
                                         top: myDiv.scrollHeight,
                                         behavior: 'smooth'
                                     };
@@ -3531,8 +3560,8 @@
                                 } else {
                                     document.getElementById('chatCPArea').innerHTML = '';
                                     result = responseData?.data?.data.reverse();
-                                    const myDiv = document.getElementById("chatCPBodyID");
-                                    const scrollToOptions = {
+                                    var myDiv = document.getElementById("chatCPBodyID");
+                                    var scrollToOptions = {
                                         top: myDiv.scrollHeight,
                                         behavior: 'smooth'
                                     };
@@ -3541,7 +3570,7 @@
                             } else {
                                 result = responseData?.data?.data;
                             }
-                            let setLastHeight;
+                            var setLastHeight;
                             if (messageType == 'our') {
                                 setLastHeight = document.getElementById('chatArea').scrollHeight;
                             } else {
@@ -3549,7 +3578,7 @@
                             }
 
                             result.forEach((chatMessage) => {
-                                let html = '';
+                                var html = '';
                                 if (chatMessage.from == loggedInUserDetails._id) {
                                     if (chatMessage.messageType == 'Normal') {
                                         html += '<div class="message-wrapper reverse ' + (messageType == "Counterparty" ? "light-gold-color" : "") + '">\n' +
@@ -3592,8 +3621,8 @@
                                         html += '    </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Draft Edit Request') {
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
-                                        let receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                         html += '<div class="message-wrapper reverse ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
@@ -3650,13 +3679,13 @@
                                         html += '    </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Notification') {
-                                        let notificationMessage;
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var notificationMessage;
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
                                             notificationMessage = userName.trim() + " has assigned opposite side to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
-                                                let userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                                var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                                 notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this contract section";
                                             } else {
                                                 notificationMessage = userName.trim() + " has assigned a team member to draft this contract section";
@@ -3675,12 +3704,12 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Invite') {
-                                        let inviteMessage = '';
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var inviteMessage = '';
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.inviteType == 'Team' && chatMessage.invitedTeamDetails) {
                                             inviteMessage += chatMessage.invitedTeamDetails.teamName;
                                         } else {
-                                            let invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
+                                            var invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
                                             inviteMessage += invitedUser.trim();
                                         }
                                         inviteMessage += ' ' + chatMessage.message + ' ' + userName.trim() + ' in this contract section';
@@ -3695,14 +3724,14 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
+                                        html += '<div class="scheduled-meeting" data-id="' + chatMessage.meetingId + '">\n' +
                                             '          <div class="scheduled-meeting-inner">\n' +
                                             '            <div class="scheduled-meeting-icon">\n' +
                                             '              <img src="images/schedule-meeting-icon.svg"\n' +
                                             '                alt="Schedule Meeting Icon" />\n' +
                                             '            </div>\n' +
                                             '            <div class="scheduled-meeting-content">\n' +
-                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <h3>' + chatMessage.meetingDetails.meetingTitle + '</h3>\n' +
                                             '              <p>Scheduled Meeting</p>\n' +
                                             '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
                                             '            </div>\n' +
@@ -3752,8 +3781,8 @@
                                             '</div>\n';
                                         // chatMessage.companyId != loggedInUserInfo.company._id
                                     } else if (chatMessage.messageType == 'Draft Edit Request') {
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
-                                        let receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                         html += '<div class="message-wrapper ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
@@ -3816,13 +3845,13 @@
                                         html += '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Notification') {
-                                        let notificationMessage = '';
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var notificationMessage = '';
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
                                             notificationMessage = userName.trim() + " has assigned opposite side to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
-                                                let userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                                var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                                 notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this contract section";
                                             } else {
                                                 notificationMessage = userName.trim() + " has assigned a team member to draft this contract section";
@@ -3841,12 +3870,12 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Invite') {
-                                        let inviteMessage = '';
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var inviteMessage = '';
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.inviteType == 'Team' && chatMessage.invitedTeamDetails) {
                                             inviteMessage += chatMessage.invitedTeamDetails.teamName;
                                         } else {
-                                            let invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
+                                            var invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
                                             inviteMessage += invitedUser.trim();
                                         }
                                         inviteMessage += ' ' + chatMessage.message + ' ' + userName.trim() + ' in this contract section';
@@ -3861,14 +3890,14 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
+                                        html += '<div class="scheduled-meeting" data-id="' + chatMessage.meetingId + '">\n' +
                                             '          <div class="scheduled-meeting-inner">\n' +
                                             '            <div class="scheduled-meeting-icon">\n' +
                                             '              <img src="images/schedule-meeting-icon.svg"\n' +
                                             '                alt="Schedule Meeting Icon" />\n' +
                                             '            </div>\n' +
                                             '            <div class="scheduled-meeting-content">\n' +
-                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <h3>' + chatMessage.meetingDetails.meetingTitle + '</h3>\n' +
                                             '              <p>Scheduled Meeting</p>\n' +
                                             '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
                                             '            </div>\n' +
@@ -3905,13 +3934,13 @@
                                 }
                             });
 
-                            let myDiv;
+                            var myDiv;
                             if (messageType == 'our') {
                                 myDiv = document.getElementById("chatBodyID");
                             } else {
                                 myDiv = document.getElementById("chatCPBodyID");
                             }
-                            const scrollToOptions = {
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -3953,8 +3982,8 @@
     async function getContractSectionMessageHistory() {
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
-            let getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getContractSectionMessageList/' + selectedThreadID + '/all';
-            let queryParam = [];
+            var getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getContractSectionMessageList/' + selectedThreadID + '/all';
+            var queryParam = [];
             // Set sortby created time
             queryParam.push('sort[createdAt]=-1');
             // Set pageSize
@@ -3963,11 +3992,11 @@
             queryParam.push('limit=' + chatHistoryRecordLimit);
             // Set queryparams
             getContractSectionMessageListUrl += '?' + queryParam.join('&');
-            const headers = {
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'GET',
                 headers: headers,
             };
@@ -3975,15 +4004,15 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200 && responseData.data) {
                         if (responseData.data.data.length > 0) {
-                            let result;
+                            var result;
                             if (chatHistoryNextPage == 1) {
                                 document.getElementById('chatHistoryArea').innerHTML = '';
                                 result = responseData?.data?.data.reverse();
-                                const myDiv = document.getElementById("chatHistoryBodyID");
-                                const scrollToOptions = {
+                                var myDiv = document.getElementById("chatHistoryBodyID");
+                                var scrollToOptions = {
                                     top: myDiv.scrollHeight,
                                     behavior: 'smooth'
                                 };
@@ -3991,9 +4020,9 @@
                             } else {
                                 result = responseData?.data?.data;
                             }
-                            let setLastHeight = document.getElementById('chatHistoryArea').scrollHeight;
+                            var setLastHeight = document.getElementById('chatHistoryArea').scrollHeight;
                             result.forEach((chatMessage) => {
-                                let html = '';
+                                var html = '';
                                 if (chatMessage.chatWindow == 'Counterparty') {
                                     if (chatMessage.messageType == 'Normal') {
                                         html += '<div class="message-wrapper light-gold-color">\n' +
@@ -4022,13 +4051,13 @@
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Notification') {
                                         if (chatMessage.message != 'Ignore') {
-                                            let notificationMessage;
-                                            let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                            var notificationMessage;
+                                            var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                             if (chatMessage.message == 'request_draft_counter') {
                                                 notificationMessage = userName.trim() + " has assigned opposite side to draft this contract section";
                                             } else if (chatMessage.message == 'request_draft') {
                                                 if (chatMessage && chatMessage.messageReceiverUser) {
-                                                    let userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                                    var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                                     notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this contract section";
                                                 } else {
                                                     notificationMessage = userName.trim() + " has assigned a team member to draft this contract section";
@@ -4048,8 +4077,8 @@
                                                 '</div>\n';
                                         }
                                     } else if (chatMessage.messageType == 'Draft Edit Request') {
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
-                                        let receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                         html += '<div class="message-wrapper ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
@@ -4095,14 +4124,14 @@
                                         html += '    </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
+                                        html += '<div class="scheduled-meeting" data-id="' + chatMessage.meetingId + '">\n' +
                                             '          <div class="scheduled-meeting-inner">\n' +
                                             '            <div class="scheduled-meeting-icon">\n' +
                                             '              <img src="images/schedule-meeting-icon.svg"\n' +
                                             '                alt="Schedule Meeting Icon" />\n' +
                                             '            </div>\n' +
                                             '            <div class="scheduled-meeting-content">\n' +
-                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <h3>' + chatMessage.meetingDetails.meetingTitle + '</h3>\n' +
                                             '              <p>Scheduled Meeting</p>\n' +
                                             '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
                                             '            </div>\n' +
@@ -4136,8 +4165,8 @@
                                         html += '    </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Draft Edit Request') {
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
-                                        let receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                         html += '<div class="message-wrapper reverse ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
@@ -4194,13 +4223,13 @@
                                         html += '    </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Notification') {
-                                        let notificationMessage;
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var notificationMessage;
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
                                             notificationMessage = userName.trim() + " has assigned opposite side to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
-                                                let userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                                var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
                                                 notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this contract section";
                                             } else {
                                                 notificationMessage = userName.trim() + " has assigned a team member to draft this contract section";
@@ -4219,12 +4248,12 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Invite') {
-                                        let inviteMessage = '';
-                                        let userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                        var inviteMessage = '';
+                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.inviteType == 'Team' && chatMessage.invitedTeamDetails) {
                                             inviteMessage += chatMessage.invitedTeamDetails.teamName;
                                         } else {
-                                            let invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
+                                            var invitedUser = chatMessage.invitedUserDetails.firstName + " " + chatMessage.invitedUserDetails.lastName;
                                             inviteMessage += invitedUser.trim();
                                         }
                                         inviteMessage += ' ' + chatMessage.message + ' ' + userName.trim() + ' in this contract section';
@@ -4239,14 +4268,14 @@
                                             '       </div>\n' +
                                             '</div>\n';
                                     } else if (chatMessage.messageType == 'Meeting') {
-                                        html += '<div class="scheduled-meeting" data-id="'+chatMessage.meetingId+'">\n' +
+                                        html += '<div class="scheduled-meeting" data-id="' + chatMessage.meetingId + '">\n' +
                                             '          <div class="scheduled-meeting-inner">\n' +
                                             '            <div class="scheduled-meeting-icon">\n' +
                                             '              <img src="images/schedule-meeting-icon.svg"\n' +
                                             '                alt="Schedule Meeting Icon" />\n' +
                                             '            </div>\n' +
                                             '            <div class="scheduled-meeting-content">\n' +
-                                            '              <h3>'+chatMessage.meetingDetails.meetingTitle+'</h3>\n' +
+                                            '              <h3>' + chatMessage.meetingDetails.meetingTitle + '</h3>\n' +
                                             '              <p>Scheduled Meeting</p>\n' +
                                             '              <span>' + formatDateForMeeting(chatMessage.meetingDetails.meetingDate) + ' &#183; ' + chatMessage.meetingDetails.meetingStartTime + ' - ' + chatMessage.meetingDetails.meetingEndTime + '</span>\n' +
                                             '            </div>\n' +
@@ -4267,8 +4296,8 @@
                                     contentDiv.insertBefore(newElement, contentDiv.firstChild);
                                 }
                             })
-                            const myDiv = document.getElementById("chatHistoryBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatHistoryBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -4306,17 +4335,17 @@
     async function inviteMembersInContractSection(socket) {
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
-            let postInviteUserSelect = [];
+            var postInviteUserSelect = [];
             inviteUserSelect.forEach((el) => {
                 postInviteUserSelect.push(el.itemId)
             });
             var data = JSON.stringify({"selectedMemberToInvite": postInviteUserSelect});
-            const inviteMembersInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/user';
-            const headers = {
+            var inviteMembersInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/user';
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'POST',
                 headers: headers,
                 body: data
@@ -4325,7 +4354,7 @@
                 .then(response => response.json())
                 .then(data => {
                     inviteUserSelect.forEach((el) => {
-                        let inviteMessage = {
+                        var inviteMessage = {
                             "contractId": documentID,
                             "contractSectionId": selectedThreadID,
                             "message": "invited by",
@@ -4344,8 +4373,8 @@
                         };
                         socket.emit('contract_section_message', inviteMessage);
 
-                        let generalChatData = inviteMessage;
-                        let conversationType = 'OTM';
+                        var generalChatData = inviteMessage;
+                        var conversationType = 'OTM';
                         if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && generalChatData.with == "Our Team") {
                             conversationType = 'OTCC';
                         } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && generalChatData.with == "Our Team") {
@@ -4355,13 +4384,13 @@
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
-                        let data = {
+                        var data = {
                             chatRoomName: documentID,
                             usertype: withType
                         };
                         socket.emit('invite_clause', data);
 
-                        let html = '';
+                        var html = '';
                         html += '<strong class="message-wrapper reverse ' + (inviteMessage.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
@@ -4377,8 +4406,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatCPBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatCPBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -4389,8 +4418,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -4422,17 +4451,17 @@
     async function inviteTeamsInContractSection(socket) {
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
-            let postInviteTeamSelect = [];
+            var postInviteTeamSelect = [];
             inviteTeamSelect.forEach((el) => {
                 postInviteTeamSelect.push(el.itemId)
             });
             var data = JSON.stringify({"selectedMemberToInvite": postInviteTeamSelect});
-            const inviteTeamsInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/team';
-            const headers = {
+            var inviteTeamsInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/team';
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'POST',
                 headers: headers,
                 body: data
@@ -4441,7 +4470,7 @@
                 .then(response => response.json())
                 .then(data => {
                     inviteTeamSelect.forEach((el) => {
-                        let inviteMessage = {
+                        var inviteMessage = {
                             "contractId": documentID,
                             "contractSectionId": selectedThreadID,
                             "message": "invited by",
@@ -4460,8 +4489,8 @@
                         };
                         socket.emit('contract_section_message', inviteMessage);
 
-                        let generalChatData = inviteMessage;
-                        let conversationType = 'OTM';
+                        var generalChatData = inviteMessage;
+                        var conversationType = 'OTM';
                         if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && generalChatData.with == "Our Team") {
                             conversationType = 'OTCC';
                         } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && generalChatData.with == "Our Team") {
@@ -4471,7 +4500,7 @@
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
-                        let html = '';
+                        var html = '';
                         html += '<strong class="message-wrapper reverse ' + (inviteMessage.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
@@ -4487,8 +4516,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatCPBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatCPBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -4499,8 +4528,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -4531,12 +4560,12 @@
      */
     async function getSelectedContractSectionDetails() {
         try {
-            let getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getSelectedContractSectionDetails/' + selectedCommentThereadID;
-            const headers = {
+            var getContractSectionMessageListUrl = apiBaseUrl + '/contractSection/getSelectedContractSectionDetails/' + selectedCommentThereadID;
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'GET',
                 headers: headers,
             };
@@ -4544,18 +4573,18 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    const responseData = data;
+                    var responseData = data;
                     document.getElementById('userTabContent').innerHTML = '';
                     document.getElementById('teamTabContent').innerHTML = '';
                     if (responseData && responseData.data) {
                         selectedContractSectionDetails = responseData.data;
                         document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                         document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                        // let actionSameSide = document.querySelectorAll('.action-sameside');
+                        // var actionSameSide = document.querySelectorAll('.action-sameside');
                         // actionSameSide.forEach(function (element) {
                         //     element.classList.remove(displayNoneClass);
                         // });
-                        // let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                        // var actionCounterparty = document.querySelectorAll('.action-counterparty');
                         // actionCounterparty.forEach(function (element) {
                         //     element.classList.remove(displayNoneClass);
                         // });
@@ -4569,10 +4598,10 @@
                         }
                         document.getElementById('chatBodyID').classList.remove('contract-completed');
                         document.getElementById('chatCPBodyID').classList.remove('contract-completed');
-                        let selectedContractSectionDetailsA = responseData.data;
+                        var selectedContractSectionDetailsA = responseData.data;
                         if (responseData.data.contractAssignedUsers && responseData.data.contractAssignedUsers.length > 0) {
                             document.getElementById('toggleSendPositionConfirmation').closest("li").classList.remove(displayNoneClass);
-                            let iHtml = '<ul>';
+                            var iHtml = '<ul>';
                             responseData.data.contractAssignedUsers.forEach((ele) => {
                                 iHtml += '<li>\n' +
                                     '\t\t\t\t<div class="invite-user-inner">\n' +
@@ -4590,7 +4619,7 @@
                             document.getElementById('userTabContent').innerHTML = iHtml;
                         } else {
                             document.getElementById('toggleSendPositionConfirmation').closest("li").classList.add(displayNoneClass);
-                            let html = '<ul>' +
+                            var html = '<ul>' +
                                 '<li><p>No user selected</p></li>' +
                                 '</ul>';
                             document.getElementById('userTabContent').innerHTML = html;
@@ -4598,11 +4627,11 @@
                         if (selectedContractSectionDetailsA && selectedContractSectionDetailsA.contractSectionData && selectedContractSectionDetailsA.contractSectionData.contractStatus == "Completed") {
                             document.getElementById('sameSideTypeBox').classList.add(displayNoneClass);
                             document.getElementById('counterpartyTypeBox').classList.add(displayNoneClass);
-                            let actionSameSide = document.querySelectorAll('.action-sameside');
+                            var actionSameSide = document.querySelectorAll('.action-sameside');
                             actionSameSide.forEach(function (element) {
                                 element.classList.add(displayNoneClass);
                             });
-                            let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                            var actionCounterparty = document.querySelectorAll('.action-counterparty');
                             actionCounterparty.forEach(function (element) {
                                 element.classList.add(displayNoneClass);
                             });
@@ -4631,7 +4660,7 @@
                         }
 
                         if (responseData.data.contractAssignedTeams && responseData.data.contractAssignedTeams.length > 0) {
-                            let iHtml = '<ul>';
+                            var iHtml = '<ul>';
                             responseData.data.contractAssignedTeams.forEach((ele) => {
                                 iHtml += '<li>\n' +
                                     '\t\t\t\t<div class="invite-user-inner">\n' +
@@ -4644,19 +4673,19 @@
                             iHtml += '</ul>';
                             document.getElementById('teamTabContent').innerHTML = iHtml;
                         } else {
-                            let html = '<ul>' +
+                            var html = '<ul>' +
                                 '<li><p>No team selected</p></li>' +
                                 '</ul>';
                             document.getElementById('teamTabContent').innerHTML = html;
                         }
                         return selectedContractSectionDetailsA;
                     } else {
-                        let htmlA = '<ul>' +
+                        var htmlA = '<ul>' +
                             '<li><p>No user selected</p></li>' +
                             '</ul>';
                         document.getElementById('userTabContent').innerHTML = htmlA;
 
-                        let htmlB = '<ul>' +
+                        var htmlB = '<ul>' +
                             '<li><p>No team selected</p></li>' +
                             '</ul>';
                         document.getElementById('teamTabContent').innerHTML = htmlB;
@@ -4680,12 +4709,12 @@
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
             var data = JSON.stringify(postData);
-            const addContractSectionMessageUrl = apiBaseUrl + '/contractSection/addContractSectionMessage';
-            const headers = {
+            var addContractSectionMessageUrl = apiBaseUrl + '/contractSection/addContractSectionMessage';
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'POST',
                 headers: headers,
                 body: data
@@ -4696,12 +4725,12 @@
                     // Handle the response data
                     document.getElementById("frmSendPositionConfirmation").reset();
                     document.getElementById("frmSendDraftConfirmation").reset();
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         postData._id = responseData.data._id;
                         socket.emit('contract_section_message', postData);
-                        let generalChatData = postData;
-                        let conversationType = 'OTM';
+                        var generalChatData = postData;
+                        var conversationType = 'OTM';
                         if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && postData.with == "Our Team") {
                             conversationType = 'OTCC';
                         } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && postData.with == "Our Team") {
@@ -4711,7 +4740,7 @@
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
-                        let html = '';
+                        var html = '';
                         if (postData.messageType == 'Position Confirmation') {
                             html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                                 '       <div class="profile-picture">\n' +
@@ -4764,8 +4793,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatCPBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatCPBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -4776,8 +4805,8 @@
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
 
-                            const myDiv = document.getElementById("chatBodyID");
-                            const scrollToOptions = {
+                            var myDiv = document.getElementById("chatBodyID");
+                            var scrollToOptions = {
                                 top: myDiv.scrollHeight,
                                 behavior: 'smooth'
                             };
@@ -4811,12 +4840,12 @@
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
             var data = JSON.stringify(postData);
-            const updateContractSectionConfirmationStatusUrl = apiBaseUrl + '/contractSection/updateContractSectionConfirmationStatus';
-            const headers = {
+            var updateContractSectionConfirmationStatusUrl = apiBaseUrl + '/contractSection/updateContractSectionConfirmationStatus';
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'POST',
                 headers: headers,
                 body: data
@@ -4831,11 +4860,11 @@
                     document.getElementById("frmRejectDraft").reset();
                     document.getElementById("frmRejectDarftRequest").reset();
 
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         socket.emit('contract_section_message', postData);
-                        let generalChatData = postData;
-                        let conversationType = 'OTM';
+                        var generalChatData = postData;
+                        var conversationType = 'OTM';
                         if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && postData.with == "Our Team") {
                             conversationType = 'OTCC';
                         } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && postData.with == "Our Team") {
@@ -4844,7 +4873,7 @@
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
-                        let html = '';
+                        var html = '';
                         if (postData.messageType == 'Notification' && postData.confirmationType == 'position') {
                             if (postData.status == 'rejected') {
                                 html += '<div class="message-wrapper reverse red-color">\n' +
@@ -5013,11 +5042,11 @@
                                     document.getElementById('chatBodyID').classList.add('contract-completed');
                                     document.getElementById('sameSideTypeBox').classList.add(displayNoneClass);
                                     document.getElementById('counterpartyTypeBox').classList.add(displayNoneClass);
-                                    let actionSameSide = document.querySelectorAll('.action-sameside');
+                                    var actionSameSide = document.querySelectorAll('.action-sameside');
                                     actionSameSide.forEach(function (element) {
                                         element.classList.add(displayNoneClass);
                                     });
-                                    let actionCounterparty = document.querySelectorAll('.action-counterparty');
+                                    var actionCounterparty = document.querySelectorAll('.action-counterparty');
                                     actionCounterparty.forEach(function (element) {
                                         element.classList.add(displayNoneClass);
                                     });
@@ -5095,8 +5124,8 @@
                                 newElement.innerHTML = html;
                                 contentDiv.appendChild(newElement);
 
-                                const myDiv = document.getElementById("chatBodyID");
-                                const scrollToOptions = {
+                                var myDiv = document.getElementById("chatBodyID");
+                                var scrollToOptions = {
                                     top: myDiv.scrollHeight,
                                     behavior: 'smooth'
                                 };
@@ -5107,8 +5136,8 @@
                                 newElement.innerHTML = html;
                                 contentDiv.appendChild(newElement);
 
-                                const myDiv = document.getElementById("chatCPBodyID");
-                                const scrollToOptions = {
+                                var myDiv = document.getElementById("chatCPBodyID");
+                                var scrollToOptions = {
                                     top: myDiv.scrollHeight,
                                     behavior: 'smooth'
                                 };
@@ -5121,8 +5150,8 @@
                                 newElement.innerHTML = html;
                                 contentDiv.appendChild(newElement);
 
-                                const myDiv = document.getElementById("chatCPBodyID");
-                                const scrollToOptions = {
+                                var myDiv = document.getElementById("chatCPBodyID");
+                                var scrollToOptions = {
                                     top: myDiv.scrollHeight,
                                     behavior: 'smooth'
                                 };
@@ -5133,8 +5162,8 @@
                                 newElement.innerHTML = html;
                                 contentDiv.appendChild(newElement);
 
-                                const myDiv = document.getElementById("chatBodyID");
-                                const scrollToOptions = {
+                                var myDiv = document.getElementById("chatBodyID");
+                                var scrollToOptions = {
                                     top: myDiv.scrollHeight,
                                     behavior: 'smooth'
                                 };
@@ -5178,12 +5207,12 @@
     async function reOpenCompletedContractSection(reopenDetail, socket) {
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
-            let reOpenCompletedContractSectionUrl = apiBaseUrl + '/contractSection/reOpenCompletedContractSection/' + reopenDetail.contractSectionId;
-            const headers = {
+            var reOpenCompletedContractSectionUrl = apiBaseUrl + '/contractSection/reOpenCompletedContractSection/' + reopenDetail.contractSectionId;
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'GET',
                 headers: headers,
             };
@@ -5191,20 +5220,20 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    const responseData = data;
+                    var responseData = data;
 
                     // Send the message to contract section same side
                     socket.emit('contract_section_message', reopenDetail);
 
                     // Send the message to contract history section
-                    let generalChatData = reopenDetail;
+                    var generalChatData = reopenDetail;
                     generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                     socket.emit('conversion_history_message', generalChatData);
 
                     // Send the message to contract counterparty side
-                    let oppositeChat = reopenDetail;
+                    var oppositeChat = reopenDetail;
                     oppositeChat.with = 'Counterparty';
-                    oppositeChat.messageConfirmationFor =  'Opposite Side';
+                    oppositeChat.messageConfirmationFor = 'Opposite Side';
                     oppositeChat.chatRoomName = 'counter_' + selectedCommentThereadID;
                     socket.emit('contract_section_message', oppositeChat);
                     document.getElementById('mainLoader').classList.add(displayNoneClass);
@@ -5227,12 +5256,12 @@
     async function getContractMeetingDetails(meetingID) {
         try {
             document.getElementById('mainLoader').classList.remove(displayNoneClass);
-            let meetingDetailsUrl = apiBaseUrl + '/meeting/getContractMeetingDetails/' + meetingID;
-            const headers = {
+            var meetingDetailsUrl = apiBaseUrl + '/meeting/getContractMeetingDetails/' + meetingID;
+            var headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authToken
             };
-            const requestOptions = {
+            var requestOptions = {
                 method: 'GET',
                 headers: headers,
             };
@@ -5240,12 +5269,12 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response data
-                    const responseData = data;
+                    var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
-                        let response = responseData.data;
+                        var response = responseData.data;
                         console.log('data', response);
 
-                        let participantCount = response.meetingParticipants ? response.meetingParticipants.length : 0
+                        var participantCount = response.meetingParticipants ? response.meetingParticipants.length : 0
 
                         document.getElementById('meetingPopup').classList.remove(displayNoneClass);
 
@@ -5259,7 +5288,7 @@
                         document.getElementById('participantCounts').textContent = participantCount;
 
 
-                        let iHtml = '<ul>';
+                        var iHtml = '<ul>';
                         iHtml += '<li>\n' +
                             '\t\t\t\t<div class="meeting-user-item">\n' +
                             '\t\t\t\t\t\t\t\t<div class="left-item">\n' +
@@ -5269,7 +5298,7 @@
                             '\t\t\t\t</div>\n' +
                             '</li>';
                         response.meetingParticipants.forEach((ele) => {
-                            let meetingStatus = 'images/pending-icon.svg'
+                            var meetingStatus = 'images/pending-icon.svg'
                             if (ele.meetingStatus == 'Accepted') {
                                 meetingStatus = 'images/check-circle.svg'
                             } else if (ele.meetingStatus == 'Decline') {
@@ -5320,12 +5349,12 @@
                     document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
                 } else {
                     document.getElementById('mainLoader').classList.remove(displayNoneClass);
-                    let checkActionRequiredURL = apiBaseUrl + '/contractSection/getRequiredActionWindow/' + selectedThreadID + '?sort[createdAt]=-1&page=1&limit=500';
-                    const headers = {
+                    var checkActionRequiredURL = apiBaseUrl + '/contractSection/getRequiredActionWindow/' + selectedThreadID + '?sort[createdAt]=-1&page=1&limit=500';
+                    var headers = {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + authToken
                     };
-                    const requestOptions = {
+                    var requestOptions = {
                         method: 'GET',
                         headers: headers,
                     };
@@ -5333,14 +5362,14 @@
                         .then(response => response.json())
                         .then(data => {
                             // Handle the response data
-                            const responseData = data;
+                            var responseData = data;
                             if (responseData && responseData.status == true && responseData.code == 200) {
-                                let response = responseData.data;
+                                var response = responseData.data;
                                 console.log('data', response.data);
                                 if (response.total > 0) {
                                     document.getElementById('mainLoader').classList.add(displayNoneClass);
-                                    let samesideMessage = response.data.filter(item => item.messageConfirmationFor == "Same Side");
-                                    let counterpartyMessage = response.data.filter(item => item.messageConfirmationFor != "Same Side");
+                                    var samesideMessage = response.data.filter(item => item.messageConfirmationFor == "Same Side");
+                                    var counterpartyMessage = response.data.filter(item => item.messageConfirmationFor != "Same Side");
                                     if (samesideMessage && samesideMessage.length > 0) {
                                         withType = 'Our Team';
                                         messageConfirmationFor = 'Same Side';
@@ -5348,7 +5377,7 @@
                                         chatNextPage = 1;
                                         chatHasNextPage = true;
                                         getContractSectionMessageList('our');
-                                        let chatRoomName = getChatRoom(withType);
+                                        var chatRoomName = getChatRoom(withType);
                                         socket.emit('join_contract_section_chat_room', chatRoomName);
                                         document.getElementById("messageInput").value = "";
                                         document.getElementById('divContractLists').classList.add(displayNoneClass);
@@ -5362,7 +5391,7 @@
                                         chatNextPage = 1;
                                         chatHasNextPage = true;
                                         getContractSectionMessageList('Counterparty');
-                                        let chatRoomName = getChatRoom(withType);
+                                        var chatRoomName = getChatRoom(withType);
                                         socket.emit('join_contract_section_chat_room', chatRoomName);
                                         document.getElementById("messageInputCP").value = "";
                                         document.getElementById('divContractLists').classList.add(displayNoneClass);
@@ -5397,6 +5426,113 @@
         } catch (error) {
             console.error('Error fetching data:', error);
             document.getElementById('mainLoader').classList.add(displayNoneClass);
+        }
+    }
+
+    /**
+     * @returns {Promise<void>}
+     */
+    async function unreadMessageForThread() {
+        try {
+            document.getElementById('mainLoader').classList.remove(displayNoneClass);
+            var data = JSON.stringify({
+                contractSectionId: selectedThreadID
+            });
+            var unreadMessageThreadUrl = apiBaseUrl + '/contractSection/updateUnreadMessageStatus/';
+            var headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + authToken
+            };
+            var requestOptions = {
+                method: 'POST',
+                headers: headers,
+                body: data
+            };
+            fetch(unreadMessageThreadUrl, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
+                    var responseData = data;
+                    if (responseData && responseData.status == true && responseData.code == 200) {
+                        return true;
+                    } else {
+                        console.error('Error fetching data:', responseData);
+                    }
+                    return true;
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error('Error:', error);
+                    document.getElementById('mainLoader').classList.add(displayNoneClass);
+                });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            document.getElementById('mainLoader').classList.add(displayNoneClass);
+        }
+    }
+
+    /**
+     * @returns {Promise<void>}
+     */
+    function checkNewMessageAppear()
+    {
+        try {
+            if (!document.getElementById('divContractLists').classList.contains(displayNoneClass) && document.querySelectorAll('.contract-item').length > 0) {
+                var limit = clauseRecordLimit * clauseRecordLimit;
+                var getContractSectionListUrl = apiBaseUrl + '/contractSection/getSelectedStatusContractSection/all/' + documentID;
+                //?filter[description]=Test&sort[createdAt]=-1&page=1&limit=6
+                getContractSectionListUrl += '?';
+                var queryParam = [];
+                // Search text
+                if (searchText) {
+                    queryParam.push('filter[search_text]=' + searchText);
+                }
+                // Set sortby created time
+                queryParam.push('sort[createdAt]=-1');
+                // Set pageSize
+                queryParam.push('page= 1');
+                // Set recordLimit
+                queryParam.push('limit=' + limit);
+                // Set queryparams
+                getContractSectionListUrl += queryParam.join('&');
+                var headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + authToken
+                };
+                var requestOptions = {
+                    method: 'GET',
+                    headers: headers,
+                };
+                fetch(getContractSectionListUrl, requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data
+                        var responseData = data;
+                        if (responseData && responseData.data) {
+                            var resData = responseData.data;
+                            console.log('resData', resData.data);
+                            var divElements = document.querySelectorAll('.contract-item');
+
+                            divElements.forEach(function(element) {
+                                console.log('getAttribute', element.dataset.id);
+                                var clauseItemTemp = resData.data.filter((ele) => ele._id === element.dataset.id);
+                                if (clauseItemTemp && clauseItemTemp.length > 0 && clauseItemTemp[0].hasUnreadMessage) {
+                                    element.querySelector('.notification-no').classList.remove(displayNoneClass);
+                                } else {
+                                    element.querySelector('.notification-no').classList.add(displayNoneClass);
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        // Handle any errors
+                        console.error('Error:', error);
+
+                    });
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
     }
     /**================================ API Function End ==================================*/
