@@ -15,10 +15,8 @@
  * limitations under the License.
  *
  */
-
-
 (function (window, undefined) {
-    // Declare variables 
+    // Declare variables
     var flagInit = false;
     var flagSocketInit = false;
     var flagSocketFunctionInit = false;
@@ -96,7 +94,7 @@
 
         if (!flagSocketInit) {
             socket = io.connect(baseUrl,
-                {auth: {authToken}}
+                { auth: { authToken } }
             );
             flagSocketInit = true;
         }
@@ -158,6 +156,7 @@
             // Invite counterparty screen
             var varBtnRedirectInviteCounterpartyForm = document.getElementById('btnRedirectInviteCounterpartyForm');
             varBtnRedirectInviteCounterpartyForm.addEventListener('click', function () {
+                document.getElementById('divContractLists').classList.add(displayNoneClass);
                 document.getElementById('divInviteCounterparty').classList.add(displayNoneClass);
                 document.getElementById('divInviteCounterpartyForm').classList.remove(displayNoneClass);
             });
@@ -174,6 +173,7 @@
                     label.classList.remove("label"); // Remove class
                 }
                 document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
+                document.getElementById('divContractLists').classList.remove(displayNoneClass);
                 document.getElementById('divInviteCounterpartyForm').classList.add(displayNoneClass);
             });
             // Invite counterparty Form screen
@@ -1658,7 +1658,7 @@
     }
 
     socket = io.connect(baseUrl,
-        {auth: {authToken}}
+        { auth: { authToken } }
     );
 
     /**
@@ -2815,6 +2815,12 @@
                     document.title = "ProPact | " + openContractUserDetails.loggedInUserDetails.firstName + " " + openContractUserDetails.loggedInUserDetails.lastName + " " + openContractUserDetails.loggedInUserDetails.role;
                     if (responseData.data.loggedInUserDetails) {
                         loggedInUserDetails = responseData.data.loggedInUserDetails;
+                        document.getElementById('userProfileImage').src = responseData.data.loggedInUserDetails.imageUrl ?? 'images/no-profile-image.jpg';
+                        document.getElementById('userProfileImageA').src = responseData.data.loggedInUserDetails.imageUrl ?? 'images/no-profile-image.jpg';
+                        document.getElementById('userProfileName').textContent = responseData.data.loggedInUserDetails.firstName + " " + responseData.data.loggedInUserDetails.lastName;
+                        document.getElementById('userProfileNameA').textContent = responseData.data.loggedInUserDetails.firstName + " " + responseData.data.loggedInUserDetails.lastName;
+                        document.getElementById('userProfilerole').textContent = responseData.data.loggedInUserDetails.role;
+                        document.getElementById('userProfileroleA').textContent = responseData.data.loggedInUserDetails.role;
                     }
 
                     if (responseData.data.invitationDetail && responseData.data.invitationDetail._id) {
@@ -2826,6 +2832,21 @@
                         document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
                         document.getElementById('organizationName').textContent = responseData.data.invitationDetail.organizationName;
                         document.getElementById('counterpartyName').textContent = responseData.data.invitationDetail.firstName + " " + responseData.data.invitationDetail.lastName;
+                        if (redirection) {
+                            document.getElementById('btnMarkupMode').classList.add(displayNoneClass);
+                            $('#btnMarkupMode').parent().addClass('justify-content-end');
+                            document.getElementById('divContractLists').classList.remove(displayNoneClass);
+                            if (documentMode != 'markup') {
+                                getContractTeamAndUserList();
+                            }
+                            clauseNextPage = 1;
+                            clauseHasNextPage = true;
+                            clauseLists = [];
+                            getContractSectionList();
+                        }
+                        document.getElementById('btnGoToCounterparty').classList.add(displayNoneClass);
+                        document.getElementById('btnGoToCounterpartyA').classList.add(displayNoneClass);
+                        $('#chatFooterInner').addClass('justify-content-end');
                     } else if (responseData.data.oppositeUser && responseData.data.oppositeUser._id) {
                         counterPartyCustomerDetail = responseData.data.oppositeUser;
                         if (redirection == true) {
@@ -2835,16 +2856,10 @@
                             document.getElementById('divContractLists').classList.remove(displayNoneClass);
                             document.getElementById('contractCounterpartySection').classList.remove(disabledClass);
                         }
-                        document.getElementById('userProfileImage').src = responseData.data.loggedInUserDetails.imageUrl ?? 'images/no-profile-image.jpg';
-                        document.getElementById('userProfileImageA').src = responseData.data.loggedInUserDetails.imageUrl ?? 'images/no-profile-image.jpg';
                         document.getElementById('oppsiteUserProfileImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
                         document.getElementById('counterpartyImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
                         document.getElementById('counterpartyImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
-                        document.getElementById('userProfileName').textContent = responseData.data.loggedInUserDetails.firstName + " " + responseData.data.loggedInUserDetails.lastName;
-                        document.getElementById('userProfileNameA').textContent = responseData.data.loggedInUserDetails.firstName + " " + responseData.data.loggedInUserDetails.lastName;
                         document.getElementById('oppsiteUserProfileName').textContent = responseData.data.oppositeUser.firstName + " " + responseData.data.oppositeUser.lastName;
-                        document.getElementById('userProfilerole').textContent = responseData.data.loggedInUserDetails.role;
-                        document.getElementById('userProfileroleA').textContent = responseData.data.loggedInUserDetails.role;
                         document.getElementById('oppsiteUserProfilerole').textContent = responseData.data.oppositeUser.role;
                         document.getElementById('organizationName').textContent = responseData.data.oppositeUser.company.companyName;
                         document.getElementById('counterpartyName').textContent = responseData.data.oppositeUser.firstName + " " + responseData.data.oppositeUser.lastName;
@@ -2861,6 +2876,24 @@
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
                         if (!loggedInUserDetails.isCustomer) {
                             document.getElementById('btnRedirectInviteCounterpartyForm').classList.add('disabled');
+                        }
+                        document.getElementById('btnGoToCounterparty').classList.add(displayNoneClass);
+                        document.getElementById('btnGoToCounterpartyA').classList.add(displayNoneClass);
+                        $('#chatFooterInner').addClass('justify-content-end');
+                        if (documentMode != 'markup') {
+                            getContractTeamAndUserList();
+                        }
+                        if (redirection) {
+                            document.getElementById('btnMarkupMode').classList.add(displayNoneClass);
+                            $('#btnMarkupMode').parent().addClass('justify-content-end');
+                            document.getElementById('divContractLists').classList.remove(displayNoneClass);
+                            if (documentMode != 'markup') {
+                                getContractTeamAndUserList();
+                            }
+                            clauseNextPage = 1;
+                            clauseHasNextPage = true;
+                            clauseLists = [];
+                            getContractSectionList();
                         }
                     }
                 }
@@ -3100,7 +3133,7 @@
                             var commentID = ele.commentId;
                             html += '<div class="contract-item" data-id="' + ele._id + '" data-commentid="' + commentID + '" id="' + commentID.split('-').pop() + '">\n' +
                                 '\t\t\t<a href="#">\n';
-                            html += '\t\t\t\t\t\t<span class="notification-no '+ (ele.hasUnreadMessage ? '' : displayNoneClass) +'"></span>';
+                            html += '\t\t\t\t\t\t<span class="notification-no ' + (ele.hasUnreadMessage ? '' : displayNoneClass) + '"></span>';
                             html += '\t\t\t\t\t\t<div class="contract-top">\n' +
                                 '\t\t\t\t\t\t\t\t\t<h3>' + ele.contractSection + '</h3>\n' +
                                 '\t\t\t\t\t\t\t\t\t<p>' + ele.contractDescription + '</p>\n';
@@ -4339,7 +4372,7 @@
             inviteUserSelect.forEach((el) => {
                 postInviteUserSelect.push(el.itemId)
             });
-            var data = JSON.stringify({"selectedMemberToInvite": postInviteUserSelect});
+            var data = JSON.stringify({ "selectedMemberToInvite": postInviteUserSelect });
             var inviteMembersInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/user';
             var headers = {
                 'Content-Type': 'application/json',
@@ -4455,7 +4488,7 @@
             inviteTeamSelect.forEach((el) => {
                 postInviteTeamSelect.push(el.itemId)
             });
-            var data = JSON.stringify({"selectedMemberToInvite": postInviteTeamSelect});
+            var data = JSON.stringify({ "selectedMemberToInvite": postInviteTeamSelect });
             var inviteTeamsInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/team';
             var headers = {
                 'Content-Type': 'application/json',
@@ -5475,8 +5508,7 @@
     /**
      * @returns {Promise<void>}
      */
-    function checkNewMessageAppear()
-    {
+    function checkNewMessageAppear() {
         try {
             if (!document.getElementById('divContractLists').classList.contains(displayNoneClass) && document.querySelectorAll('.contract-item').length > 0) {
                 var limit = clauseRecordLimit * clauseRecordLimit;
@@ -5514,7 +5546,7 @@
                             console.log('resData', resData.data);
                             var divElements = document.querySelectorAll('.contract-item');
 
-                            divElements.forEach(function(element) {
+                            divElements.forEach(function (element) {
                                 console.log('getAttribute', element.dataset.id);
                                 var clauseItemTemp = resData.data.filter((ele) => ele._id === element.dataset.id);
                                 if (clauseItemTemp && clauseItemTemp.length > 0 && clauseItemTemp[0].hasUnreadMessage) {
@@ -5536,5 +5568,4 @@
         }
     }
     /**================================ API Function End ==================================*/
-
 })(window, undefined);
