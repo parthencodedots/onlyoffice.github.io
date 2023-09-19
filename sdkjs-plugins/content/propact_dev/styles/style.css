@@ -85,7 +85,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .conversation-left .user-inner { float: left; margin: 0; padding: 0;}
 .conversation-left .user-inner .user-name { font-size: 12px; color: #282756; font-weight: 600; margin: 0 0 0px 0; padding: 0; display: block; line-height: 22px;}
 .conversation-left .user-inner p { font-size: 12px; line-height: 16px; margin: 0; padding: 0; display: block;}
-.create-contract-inner { width: 100%; margin: 0; padding: 20px; float: left;}
+.create-contract-inner { width: 100%; margin: 0; padding: 20px; float: left; height: calc(100vh - 62px); overflow: auto;}
 .form-group textarea.form-control { min-height: 95px; margin: 0; padding: 12px;}
 .create-contract-inner .submit-btn { float: right; margin:10px 0 0 0; padding: 0; clear: both;}
 .create-contract-inner .submit-btn .btn {margin: 0 0 0 14px;}
@@ -196,9 +196,9 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .form-group .form-control.invite-users-input { background-image: url(../images/select_Icon.svg); background-repeat: no-repeat; background-position: 99.5%; padding-right: 32px; cursor: pointer; }
 .accordion-button:focus { z-index: unset; border-color: transparent; box-shadow: none; }
 .form-control:focus { background-color: transparent; border-color: #DADDE0; outline: 0; box-shadow: none; }
-.chat-body::-webkit-scrollbar, .contract-list-items::-webkit-scrollbar { width: 0.25em; z-index: 99999999; }
-.chat-body::-webkit-scrollbar-track, .contract-list-items::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
-.chat-body::-webkit-scrollbar-thumb, .contract-list-items::-webkit-scrollbar-thumb { background-color: darkgrey; outline: 1px solid slategrey; }
+.chat-body::-webkit-scrollbar, .contract-list-items::-webkit-scrollbar, .create-contract-inner::-webkit-scrollbar { width: 0.25em; z-index: 99999999; }
+.chat-body::-webkit-scrollbar-track, .contract-list-items::-webkit-scrollbar-track, .create-contract-inner::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
+.chat-body::-webkit-scrollbar-thumb, .contract-list-items::-webkit-scrollbar-thumb, .create-contract-inner::-webkit-scrollbar-thumb { background-color: darkgrey; outline: 1px solid slategrey; }
 div.div-selected { background: #d5d5d5 !important; }
 .chat-body .chat-area .message-wrapper.reverse .message, .reverse .message, .reverse .content-message {direction: ltr;}
 .small, small { font-size: 0.75em; }
@@ -292,6 +292,8 @@ a.disabled { pointer-events: none; cursor: not-allowed; opacity: .5; }
 .meeting-details .meeting-user-list .submit-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 10px 0 0 0; }
 .form-control, .form-control[readonly], .form-control[disabled] { border-color: #DADDE0 !important; }
 .page-loader { position: absolute; top: 0; right: 0; width: 100%; height: 100%; background-color: #fff; background-image: url('../images/ajax-loader.gif'); background-size: 50px; background-repeat: no-repeat; background-position: 50%; z-index: 10000000; opacity: .6; }
+.displayed-invitecp { height: calc(100vh - 240px) }
+.displayed-invitecp-pending { height: calc(100vh - 320px) }
 /*==================================== 22-08-2023 ====================================*/
 @media only screen and (max-width:375px){
     .chat-footer-inner .btn { margin: 0 4px;  padding: 10px 12px; min-width: auto;}

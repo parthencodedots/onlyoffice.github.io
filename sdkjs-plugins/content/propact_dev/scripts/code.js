@@ -130,9 +130,6 @@
         /**
          * @desc Get the open contract and user details
          */
-        /**
-         * @desc Get the open contract and user details
-         */
         if (documentID && authToken && !flagInit) {
             getOpenContractUserDetails(socket);
         }
@@ -2842,8 +2839,11 @@
                         }
                         document.getElementById('divInviteCounterparty').classList.add(displayNoneClass);
                         document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
+                        document.getElementById('contractListItemsDiv').classList.add('displayed-invitecp-pending');
+                        document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp');
                         document.getElementById('organizationName').textContent = responseData.data.invitationDetail.organizationName;
-                        document.getElementById('counterpartyName').textContent = responseData.data.invitationDetail.firstName + " " + responseData.data.invitationDetail.lastName;
+                        document.getElementById('counterpartyName').textContent = responseData.data.invitationDetail.firstName + " " + responseData.data.invitationDetail.lastName + " - Counterparty";
+                        document.getElementById('counterpartyEmail').textContent = responseData.data.invitationDetail.email;
                         if (redirection) {
                             document.getElementById('btnMarkupMode').classList.add(displayNoneClass);
                             $('#btnMarkupMode').parent().addClass('justify-content-end');
@@ -2867,6 +2867,8 @@
                             document.getElementById('invitationActionPara').classList.add(displayNoneClass);
                             document.getElementById('divContractLists').classList.remove(displayNoneClass);
                             document.getElementById('contractCounterpartySection').classList.remove(disabledClass);
+                            document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp-pending');
+                            document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp');
                         }
                         document.getElementById('oppsiteUserProfileImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
                         document.getElementById('counterpartyImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
@@ -2885,6 +2887,8 @@
                     } else if ((responseData.data.openContractDetails && responseData.data.openContractDetails.counterPartyInviteStatus && responseData.data.openContractDetails.counterPartyInviteStatus == 'Pending') || responseData.data.counterPartyInviteStatus == 'Pending') {
                         setupSocket();
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
+                        document.getElementById('contractListItemsDiv').classList.add('displayed-invitecp');
+                        document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp-pending');
                         if (!loggedInUserDetails.isCustomer) {
                             document.getElementById('btnRedirectInviteCounterpartyForm').classList.add('disabled');
                         }
@@ -3262,6 +3266,8 @@
                         document.getElementById("inviteForm").reset();
                         document.getElementById('divInviteCounterpartyPending').classList.remove(displayNoneClass);
                         document.getElementById('divInviteCounterpartyForm').classList.add(displayNoneClass);
+                        document.getElementById('contractListItemsDiv').classList.add('displayed-invitecp-pending');
+                        document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp');
                         getOpenContractUserDetails();
                     } else if (responseData && responseData.status == false && responseData.message) {
                         $('#inviteEmailAddress').parent().append('<label class="error api-error">' + responseData.message + '</label>');
@@ -3307,6 +3313,8 @@
                         }, 3000)
                         document.getElementById('divInviteCounterpartyPending').classList.add(displayNoneClass);
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
+                        document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp-pending');
+                        document.getElementById('contractListItemsDiv').classList.add('displayed-invitecp');
                     }
                     document.getElementById('mainLoader').classList.add(displayNoneClass);
                 })
