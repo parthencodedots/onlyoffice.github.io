@@ -130,6 +130,9 @@
         /**
          * @desc Get the open contract and user details
          */
+        /**
+         * @desc Get the open contract and user details
+         */
         if (documentID && authToken && !flagInit) {
             getOpenContractUserDetails(socket);
         }
@@ -1048,7 +1051,7 @@
                         "with": withType,
                         "messageType": 'Position Confirmation',
                         "companyId": loggedInUserDetails.company._id,
-                        "oppositeCompanyId": counterPartyCustomerDetail.company._id,
+                        "oppositeCompanyId": counterPartyCustomerDetail && counterPartyCustomerDetail.company._id ? counterPartyCustomerDetail.company._id : null,
                         "threadID": selectedCommentThereadID,
                         "status": 'send',
                         "messageStatus": 'None',
@@ -1074,7 +1077,7 @@
                         "with": withType,
                         "messageType": 'Notification',
                         "companyId": loggedInUserDetails.company._id,
-                        "oppositeCompanyId": counterPartyCustomerDetail.company._id,
+                        "oppositeCompanyId": counterPartyCustomerDetail && counterPartyCustomerDetail.company._id ? counterPartyCustomerDetail.company._id : null,
                         "threadID": selectedCommentThereadID,
                         "status": 'rejected',
                         "confirmationType": "position",
@@ -1244,7 +1247,7 @@
                         "with": withType,
                         "messageType": 'Normal',
                         "companyId": loggedInUserDetails.company._id,
-                        "oppositeCompanyId": counterPartyCustomerDetail.company._id,
+                        "oppositeCompanyId": counterPartyCustomerDetail && counterPartyCustomerDetail.company._id ? counterPartyCustomerDetail.company._id : null,
                         "threadID": selectedCommentThereadID,
                         "status": 'send',
                         "actionperformedbyUser": loggedInUserDetails.firstName + " " + loggedInUserDetails.lastName,
@@ -1292,7 +1295,7 @@
                     "with": withType,
                     "messageType": 'Notification',
                     "companyId": loggedInUserDetails.company._id,
-                    "oppositeCompanyId": counterPartyCustomerDetail.company._id,
+                    "oppositeCompanyId": counterPartyCustomerDetail && counterPartyCustomerDetail.company._id ? counterPartyCustomerDetail.company._id : null,
                     "threadID": selectedCommentThereadID,
                     "status": 'approved',
                     "confirmationType": "position",
@@ -1444,6 +1447,12 @@
         fClickLabel = false;
     };
     /**================== Plugin event_onTargetPositionChanged End ========================*/
+
+    window.Asc.plugin.executeMethod ("GetSelectedText", [{"Numbering": false, "Math": false, "TableCellSeparator": '\n', "ParaSeparator": '\n', "TabSymbol": String.fromCharCode(9)}], function (data) {
+        sText = data;
+        console.log('sText', sText);
+        // ExecTypograf (sText);
+    });
 
     /**============================== Utils Function Start ================================*/
     /**
@@ -2822,6 +2831,9 @@
                         document.getElementById('userProfilerole').textContent = responseData.data.loggedInUserDetails.role;
                         document.getElementById('userProfileroleA').textContent = responseData.data.loggedInUserDetails.role;
                     }
+                    if (documentMode != 'markup') {
+                        getContractTeamAndUserList();
+                    }
 
                     if (responseData.data.invitationDetail && responseData.data.invitationDetail._id) {
                         setupSocket();
@@ -2863,14 +2875,13 @@
                         document.getElementById('oppsiteUserProfilerole').textContent = responseData.data.oppositeUser.role;
                         document.getElementById('organizationName').textContent = responseData.data.oppositeUser.company.companyName;
                         document.getElementById('counterpartyName').textContent = responseData.data.oppositeUser.firstName + " " + responseData.data.oppositeUser.lastName;
-                        if (documentMode != 'markup') {
-                            getContractTeamAndUserList();
-                        }
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
                         getContractSectionList();
                         setupSocket();
+                        document.getElementById('btnMarkupMode').classList.remove(displayNoneClass);
+                        $('#btnMarkupMode').parent().removeClass('justify-content-end');
                     } else if ((responseData.data.openContractDetails && responseData.data.openContractDetails.counterPartyInviteStatus && responseData.data.openContractDetails.counterPartyInviteStatus == 'Pending') || responseData.data.counterPartyInviteStatus == 'Pending') {
                         setupSocket();
                         document.getElementById('divInviteCounterparty').classList.remove(displayNoneClass);
@@ -4394,7 +4405,7 @@
                             "with": withType,
                             "messageType": 'Invite',
                             "companyId": loggedInUserDetails.company._id,
-                            "oppositeCompanyId": counterPartyCustomerDetail.company._id,
+                            "oppositeCompanyId": counterPartyCustomerDetail && counterPartyCustomerDetail.company._id ? counterPartyCustomerDetail.company._id : null,
                             "threadID": selectedCommentThereadID,
                             "status": 'None',
                             "actionperformedbyUser": loggedInUserDetails.firstName + " " + loggedInUserDetails.lastName,
@@ -4510,7 +4521,7 @@
                             "with": withType,
                             "messageType": 'Invite',
                             "companyId": loggedInUserDetails.company._id,
-                            "oppositeCompanyId": counterPartyCustomerDetail.company._id,
+                            "oppositeCompanyId": counterPartyCustomerDetail && counterPartyCustomerDetail.company._id ? counterPartyCustomerDetail.company._id : null,
                             "threadID": selectedCommentThereadID,
                             "status": 'None',
                             "actionperformedbyUser": loggedInUserDetails.firstName + " " + loggedInUserDetails.lastName,
