@@ -1445,7 +1445,7 @@
     };
     /**================== Plugin event_onTargetPositionChanged End ========================*/
 
-    window.Asc.plugin.executeMethod ("GetSelectedText", [{"Numbering": false, "Math": false, "TableCellSeparator": '\n', "ParaSeparator": '\n', "TabSymbol": String.fromCharCode(9)}], function (data) {
+    window.Asc.plugin.executeMethod("GetSelectedText", [{"Numbering": false, "Math": false, "TableCellSeparator": '\n', "ParaSeparator": '\n', "TabSymbol": String.fromCharCode(9)}], function (data) {
         sText = data;
         console.log('sText', sText);
         // ExecTypograf (sText);
