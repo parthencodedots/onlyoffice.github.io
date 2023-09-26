@@ -609,12 +609,7 @@
                     selectedCommentThereadID = $(this).data('commentid');
                     selectedThreadID = $(this).data('id');
                     chatWindow = $(this).data('chatwindow');
-                    chatHistoryNextPage = 1;
-                    chatHistoryHasNextPage = true;
-                    getSelectedContractSectionDetails();
-                    if (!flagRedirectClauseCreate) {
-                        getOpenContractUserDetails(socket, redirection = false);
-                    }
+
                     var chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                     socket.emit('join_contract_section_chat_room', chatRoomName);
 
@@ -632,13 +627,11 @@
                     if (draftConfirmCPElement) {
                         draftConfirmCPElement.parentNode.removeChild(draftConfirmCPElement);
                     }
+
                     if (!flagRedirectClauseCreate) {
                         await redirectToMessageScreen();
                         await unreadMessageForThread();
                     } else {
-                        getContractSectionMessageHistory();
-                        document.getElementById('divContractLists').classList.add(displayNoneClass);
-                        document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
                         withType = 'Our Team';
                         messageConfirmationFor = 'Same Side';
                         document.getElementById('chatArea').innerHTML = '';
@@ -648,6 +641,7 @@
                         var chatRoomName = getChatRoom(withType);
                         socket.emit('join_contract_section_chat_room', chatRoomName);
                         document.getElementById("messageInput").value = "";
+                        document.getElementById('divContractLists').classList.add(displayNoneClass);
                         document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
                         document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
@@ -676,7 +670,7 @@
                     }
                     var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                     if (getClauseDetails && getClauseDetails._id) {
-                        await getSelectedContractSectionDetails();
+                        // await getSelectedContractSectionDetails();
                         if (getClauseDetails.assignedUser && getClauseDetails.assignedUser.length > 0) {
                             var iHtml = '<ul>';
                             getClauseDetails.assignedUser.forEach((ele) => {
