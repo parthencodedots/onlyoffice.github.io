@@ -155,7 +155,7 @@
 
             setInterval(function () {
                 checkNewMessageAppear()
-            }, 15000);
+            }, 5000);
 
             // Invite counterparty screen
             var varBtnRedirectInviteCounterpartyForm = document.getElementById('btnRedirectInviteCounterpartyForm');
@@ -608,6 +608,7 @@
                 if (tagExists > -1 || 1) {
                     selectedCommentThereadID = $(this).data('commentid');
                     selectedThreadID = $(this).data('id');
+                    chatWindow = $(this).data('chatwindow');
                     chatHistoryNextPage = 1;
                     chatHistoryHasNextPage = true;
                     getSelectedContractSectionDetails();
@@ -1706,7 +1707,7 @@
             socket.emit('join_chat_room', chatRoomName);
 
             var chatRoomNameA = 'room_' + documentID;
-            console.log('chatRoomNameA', chatRoomNameA);
+            // console.log('chatRoomNameA', chatRoomNameA);
             socket.emit('join_chat_room', chatRoomNameA);
 
             var documentChatRoomName = documentID;
@@ -1751,7 +1752,7 @@
 
             /** Socket On: user typing for counterparty side */
             socket.on('user_typing_notification_counter_contract_section', data => {
-                console.log('user_typing_notification_counter_contract_section', data);
+                // console.log('user_typing_notification_counter_contract_section', data);
                 if (data) {
                     if (tyingUserCPArray.findIndex(x => x == data) == -1) {
                         tyingUserCPArray.push(data);
@@ -1779,7 +1780,7 @@
 
             /** Socket On: user message get for same side */
             socket.on('receive_contract_section_message', data => {
-                console.log('receive_contract_section_message', data);
+                // console.log('receive_contract_section_message', data);
                 if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
                     unreadMessageForThread()
                 }
@@ -2012,7 +2013,7 @@
 
             /** Socket On: user message get for same side */
             socket.on('receive_counter_contract_section_message', data => {
-                console.log('receive_counter_contract_section_message', data);
+                // console.log('receive_counter_contract_section_message', data);
                 if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
                     unreadMessageForThread()
                 }
@@ -2331,7 +2332,7 @@
 
             /** Socket On: user message get for conversion history */
             socket.on('receive_conversion_history_message', data => {
-                console.log('receive_conversion_history_message', data);
+                // console.log('receive_conversion_history_message', data);
                 if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
                     unreadMessageForThread()
                 }
@@ -2348,7 +2349,7 @@
                     if (openContractUserDetails && openContractUserDetails.canCommunicateWithCounterparty) {
                         conversionTypeArr.push('OTM');
                     }
-                    console.log('asd', conversionTypeArr.includes(data.conversationType));
+                    // console.log('asd', conversionTypeArr.includes(data.conversationType));
                     if (!conversionTypeArr.includes(data.conversationType)) {
                         return false;
                     }
@@ -2751,7 +2752,7 @@
 
             socket.on('forward_new_clause_create', async function (data) {
                 if (data) {
-                    console.log('forward_new_clause_create __data', data);
+                    // console.log('forward_new_clause_create __data', data);
                     tagLists.push(JSON.parse(data));
                     clauseNextPage = 1;
                     clauseHasNextPage = true;
@@ -3173,7 +3174,7 @@
                         result.forEach((ele) => {
                             clauseLists.push(ele);
                             var commentID = ele.commentId;
-                            html += '<div class="contract-item" data-id="' + ele._id + '" data-commentid="' + commentID + '" id="' + commentID.split('-').pop() + '">\n' +
+                            html += '<div class="contract-item" data-id="' + ele._id + '" data-commentid="' + commentID + '" data-chatwindow="' + (ele.unreadMessageSide ? ele.unreadMessageSide : '-')  + '" id="' + commentID.split('-').pop() + '">\n' +
                                 '\t\t\t<a href="#">\n';
                             html += '\t\t\t\t\t\t<span class="notification-no ' + (ele.hasUnreadMessage ? '' : displayNoneClass) + '"></span>';
                             html += '\t\t\t\t\t\t<div class="contract-top">\n' +
@@ -3382,7 +3383,7 @@
                     // Handle the response data
                     var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
-                        console.log(responseData.message);
+                        // console.log(responseData.message);
                         var x = document.getElementById("snackbar");
                         x.textContent = responseData.message;
                         x.className = "show";
@@ -4749,7 +4750,7 @@
                             var newElement = document.createElement("div");
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
-                            console.log('loggedinuser', loggedInUserDetails);
+                            // console.log('loggedinuser', loggedInUserDetails);
                             htmlA = '';
                             htmlA += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                                 '   <div class="position-text">' + selectedContractSectionDetailsA.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.lastName + '</div>\n';
@@ -5379,7 +5380,7 @@
                     var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         var response = responseData.data;
-                        console.log('data', response);
+                        // console.log('data', response);
 
                         var participantCount = response.meetingParticipants ? response.meetingParticipants.length : 0
 
@@ -5444,12 +5445,12 @@
     }
 
     /**
-     * @returns {Promise<void>} 
+     * @returns {Promise<void>}
      */
     async function redirectToMessageScreen() {
         try {
             if (selectedThreadID) {
-                console.log('selectedContractSectionDetails', selectedContractSectionDetails);
+                // console.log('selectedContractSectionDetails', selectedContractSectionDetails);
                 if (selectedContractSectionDetails && selectedContractSectionDetails.contractStatus && selectedContractSectionDetails.contractStatus == "Completed") {
                     getContractSectionMessageHistory();
                     document.getElementById('divContractLists').classList.add(displayNoneClass);
@@ -5472,7 +5473,7 @@
                             var responseData = data;
                             if (responseData && responseData.status == true && responseData.code == 200) {
                                 var response = responseData.data;
-                                console.log('data', response.data);
+                                // console.log('data', response.data);
                                 if (response.total > 0) {
                                     document.getElementById('mainLoader').classList.add(displayNoneClass);
                                     var draftEditRequest = response.data.filter(item => item.messageConfirmationFor == "Same Side" && item.messageType == "Draft Edit Request");
@@ -5527,18 +5528,36 @@
                                     }
                                 } else {
                                     document.getElementById('mainLoader').classList.add(displayNoneClass);
-                                    getContractSectionMessageHistory();
                                     if (chatWindow == 'SS') {
+                                        withType = 'Our Team';
+                                        messageConfirmationFor = 'Same Side';
+                                        document.getElementById('chatArea').innerHTML = '';
+                                        chatNextPage = 1;
+                                        chatHasNextPage = true;
+                                        getContractSectionMessageList('our');
+                                        var chatRoomName = getChatRoom(withType);
+                                        socket.emit('join_contract_section_chat_room', chatRoomName);
+                                        document.getElementById("messageInput").value = "";
                                         document.getElementById('divContractLists').classList.add(displayNoneClass);
                                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                                         document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
                                         document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
                                     } else if (chatWindow == 'CP') {
+                                        withType = 'Counterparty';
+                                        messageConfirmationFor = 'Opposite Side';
+                                        document.getElementById('chatCPArea').innerHTML = '';
+                                        chatNextPage = 1;
+                                        chatHasNextPage = true;
+                                        getContractSectionMessageList('Counterparty');
+                                        var chatRoomName = getChatRoom(withType);
+                                        socket.emit('join_contract_section_chat_room', chatRoomName);
+                                        document.getElementById("messageInputCP").value = "";
                                         document.getElementById('divContractLists').classList.add(displayNoneClass);
                                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                                         document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
                                         document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
                                     } else {
+                                        getContractSectionMessageHistory();
                                         document.getElementById('divContractLists').classList.add(displayNoneClass);
                                         document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
                                         document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
@@ -5646,14 +5665,15 @@
                         var responseData = data;
                         if (responseData && responseData.data) {
                             var resData = responseData.data;
-                            console.log('resData', resData.data);
+                            // console.log('resData', resData.data);
                             var divElements = document.querySelectorAll('.contract-item');
 
                             divElements.forEach(function (element) {
-                                console.log('getAttribute', element.dataset.id);
+                                // console.log('getAttribute', element.dataset.id);
                                 var clauseItemTemp = resData.data.filter((ele) => ele._id === element.dataset.id);
                                 if (clauseItemTemp && clauseItemTemp.length > 0 && clauseItemTemp[0].hasUnreadMessage) {
                                     element.querySelector('.notification-no').classList.remove(displayNoneClass);
+                                    element.setAttribute('data-chatwindow', clauseItemTemp[0].unreadMessageSide ? clauseItemTemp[0].unreadMessageSide : '-')
                                 } else {
                                     element.querySelector('.notification-no').classList.add(displayNoneClass);
                                 }
