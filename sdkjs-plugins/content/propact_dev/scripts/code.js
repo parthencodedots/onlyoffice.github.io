@@ -630,7 +630,6 @@
 
                     if (!flagRedirectClauseCreate) {
                         await redirectToMessageScreen();
-                        await unreadMessageForThread();
                     } else {
                         withType = 'Our Team';
                         messageConfirmationFor = 'Same Side';
@@ -720,6 +719,7 @@
                             document.getElementById('teamTabContent').innerHTML = html;
                         }
                     }
+                    await unreadMessageForThread();
                     flagRedirectClauseCreate = false;
                 }
             });
