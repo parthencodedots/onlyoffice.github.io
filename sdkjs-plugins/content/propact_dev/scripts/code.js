@@ -39,7 +39,7 @@
     var selectedInvitedTeams = [];
     var inviteUserSelect = [];
     var inviteTeamSelect = [];
-    var baseUrl = 'http://localhost:3000';
+    var baseUrl = 'https://propact.digitaldilemma.com.au:3000';
     var apiBaseUrl = baseUrl + '/api/v1/app';
     var IMAGE_USER_PATH_LINK = 'https://propact.s3.amazonaws.com/';
     var clauseRecordLimit = 10;
