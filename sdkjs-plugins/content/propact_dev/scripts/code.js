@@ -69,7 +69,7 @@
     var openContractUserDetails;
     var selectedContractSectionDetails;
     var sectionID;
-    var chatWindow;
+    var chatWindows;
     var splitArray;
     var contractCreatorDetails;
     var contractCounterpartyDetails;
@@ -92,7 +92,7 @@
             sectionID = splitArray[12];
         }
         if (splitArray.length >= 14) {
-            chatWindow = splitArray[13];
+            chatWindows = splitArray[13];
         }
         /**====================== Get & Set variables ======================*/
 
@@ -608,7 +608,7 @@
                 if (tagExists > -1 || 1) {
                     selectedCommentThereadID = $(this).data('commentid');
                     selectedThreadID = $(this).data('id');
-                    chatWindow = $(this).data('chatwindow');
+                    chatWindows = $(this).data('chatwindow');
 
                     var chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                     socket.emit('join_contract_section_chat_room', chatRoomName);
@@ -3237,9 +3237,9 @@
                         if (!flagRedirectFirst && sectionID) {
                             setTimeout(function () {
                                 $('.contract-item[data-id="' + sectionID + '"]').click();
-                                if (chatWindow == 'SS') {
+                                if (chatWindows == 'SS') {
                                     $('#btnGoToSameSideChat').click();
-                                } else if (chatWindow == 'CP') {
+                                } else if (chatWindows == 'CP') {
                                     $('#btnGoToCounterparty').click();
                                 }
                                 flagRedirectFirst = true;
@@ -5461,6 +5461,8 @@
             if (selectedThreadID) {
                 // console.log('selectedContractSectionDetails', selectedContractSectionDetails);
                 if (selectedContractSectionDetails && selectedContractSectionDetails.contractStatus && selectedContractSectionDetails.contractStatus == "Completed") {
+                    chatHistoryNextPage = 1;
+                    chatHistoryHasNextPage = true;
                     getContractSectionMessageHistory();
                     document.getElementById('divContractLists').classList.add(displayNoneClass);
                     document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
@@ -5531,13 +5533,15 @@
                                         document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
                                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                                     } else {
+                                        chatHistoryNextPage = 1;
+                                        chatHistoryHasNextPage = true;
                                         getContractSectionMessageHistory();
                                         document.getElementById('divContractLists').classList.add(displayNoneClass);
                                         document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
                                     }
                                 } else {
                                     document.getElementById('mainLoader').classList.add(displayNoneClass);
-                                    if (chatWindow == 'SS') {
+                                    if (chatWindows == 'SS') {
                                         withType = 'Our Team';
                                         messageConfirmationFor = 'Same Side';
                                         document.getElementById('chatArea').innerHTML = '';
@@ -5551,7 +5555,7 @@
                                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                                         document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
                                         document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
-                                    } else if (chatWindow == 'CP') {
+                                    } else if (chatWindows == 'CP') {
                                         withType = 'Counterparty';
                                         messageConfirmationFor = 'Opposite Side';
                                         document.getElementById('chatCPArea').innerHTML = '';
@@ -5566,6 +5570,8 @@
                                         document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
                                         document.getElementById('divContractCounterpartyChat').classList.remove(displayNoneClass);
                                     } else {
+                                        chatHistoryNextPage = 1;
+                                        chatHistoryHasNextPage = true;
                                         getContractSectionMessageHistory();
                                         document.getElementById('divContractLists').classList.add(displayNoneClass);
                                         document.getElementById('divContractSameSideChat').classList.add(displayNoneClass);
@@ -5575,6 +5581,8 @@
                                 }
                             } else {
                                 document.getElementById('mainLoader').classList.add(displayNoneClass);
+                                chatHistoryNextPage = 1;
+                                chatHistoryHasNextPage = true;
                                 getContractSectionMessageHistory();
                                 document.getElementById('divContractLists').classList.add(displayNoneClass);
                                 document.getElementById('divContractChatHistory').classList.remove(displayNoneClass);
