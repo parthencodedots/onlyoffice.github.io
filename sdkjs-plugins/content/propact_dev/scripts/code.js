@@ -610,6 +610,10 @@
                     selectedCommentThereadID = $(this).data('commentid');
                     selectedThreadID = $(this).data('id');
                     clauseChatWindows = $(this).data('chatwindow');
+                    getSelectedContractSectionDetails();
+                    if (!flagRedirectClauseCreate) {
+                        getOpenContractUserDetails(socket, redirection = false);
+                    }
 
                     var chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                     socket.emit('join_contract_section_chat_room', chatRoomName);
