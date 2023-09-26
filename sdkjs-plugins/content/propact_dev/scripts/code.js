@@ -39,7 +39,7 @@
     var selectedInvitedTeams = [];
     var inviteUserSelect = [];
     var inviteTeamSelect = [];
-    var baseUrl = 'https://propact.digitaldilemma.com.au:3000';
+    var baseUrl = 'http://localhost:3000';
     var apiBaseUrl = baseUrl + '/api/v1/app';
     var IMAGE_USER_PATH_LINK = 'https://propact.s3.amazonaws.com/';
     var clauseRecordLimit = 10;
@@ -668,6 +668,11 @@
                     if (openContractUserDetails.canSendPositionConfirmation == false) {
                         document.getElementById('toggleSendPositionConfirmation').closest("li").classList.add(displayNoneClass);
                         document.getElementById('toggleSendPositionConfirmationA').closest("li").classList.add(displayNoneClass);
+                    }
+                    if (openContractUserDetails.openContractDetails.counterPartyInviteStatus != 'Accepted') {
+                        document.getElementById('btnGoToCounterparty').classList.add(displayNoneClass);
+                        document.getElementById('btnGoToCounterpartyA').classList.add(displayNoneClass);
+                        $('#chatFooterInner').addClass('justify-content-end');
                     }
                     var getClauseDetails = clauseLists.find((ele) => ele._id == selectedThreadID);
                     if (getClauseDetails && getClauseDetails._id) {
@@ -3250,6 +3255,16 @@
                                 flagRedirectClauseCreate = true;
                                 $('.contract-item[data-commentid="' + commentThreadID + '"]').click();
                                 $('#btnGoToSameSideChat').click();
+                                if (!openContractUserDetails.canCommunicateWithCounterparty) {
+                                    document.getElementById('btnGoToCounterparty').classList.add(displayNoneClass);
+                                    document.getElementById('btnGoToCounterpartyA').classList.add(displayNoneClass);
+                                    $('#chatFooterInner').addClass('justify-content-end');
+                                }
+                                if (openContractUserDetails.openContractDetails.counterPartyInviteStatus != 'Accepted') {
+                                    document.getElementById('btnGoToCounterparty').classList.add(displayNoneClass);
+                                    document.getElementById('btnGoToCounterpartyA').classList.add(displayNoneClass);
+                                    $('#chatFooterInner').addClass('justify-content-end');
+                                }
                             }, 500);
                         }
                         clauseHasNextPage = resData.hasNextPage;
