@@ -70,6 +70,7 @@
     var selectedContractSectionDetails;
     var sectionID;
     var chatWindows;
+    var clauseChatWindows;
     var splitArray;
     var contractCreatorDetails;
     var contractCounterpartyDetails;
@@ -608,7 +609,7 @@
                 if (tagExists > -1 || 1) {
                     selectedCommentThereadID = $(this).data('commentid');
                     selectedThreadID = $(this).data('id');
-                    chatWindows = $(this).data('chatwindow');
+                    clauseChatWindows = $(this).data('chatwindow');
 
                     var chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                     socket.emit('join_contract_section_chat_room', chatRoomName);
@@ -5541,7 +5542,7 @@
                                     }
                                 } else {
                                     document.getElementById('mainLoader').classList.add(displayNoneClass);
-                                    if (chatWindows == 'SS') {
+                                    if (chatWindows == 'SS' || clauseChatWindows == 'SS') {
                                         withType = 'Our Team';
                                         messageConfirmationFor = 'Same Side';
                                         document.getElementById('chatArea').innerHTML = '';
@@ -5555,7 +5556,7 @@
                                         document.getElementById('divContractChatHistory').classList.add(displayNoneClass);
                                         document.getElementById('divContractSameSideChat').classList.remove(displayNoneClass);
                                         document.getElementById('divContractCounterpartyChat').classList.add(displayNoneClass);
-                                    } else if (chatWindows == 'CP') {
+                                    } else if (chatWindows == 'CP' || clauseChatWindows == 'CP') {
                                         withType = 'Counterparty';
                                         messageConfirmationFor = 'Opposite Side';
                                         document.getElementById('chatCPArea').innerHTML = '';
