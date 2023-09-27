@@ -161,7 +161,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .request-row .request-btn .reject-btn { background: #FF0000; color: #fff;}
 
 .conversation-right > ul li .invite-user-tabs { width: 100%; position: absolute; background: #fff;  box-shadow: 0 3px 10px #0000001a; border-radius: 10px; min-width: 250px; left: auto; right: 0; top: 34px; padding: 20px 12px; transition: all .6s ease .1s; opacity: 0; transform: translateY(-15px); visibility:hidden; pointer-events: none; z-index: 99;}
-.conversation-right > ul li .invite-user-tabs:after{ background: url(../images/Polygon_icon.svg) no-repeat center center; content: ""; position: absolute; margin: 0; padding: 0; width: 14px; height: 14px; top: -5px; left: 108px; right: auto;}
+.conversation-right > ul li .invite-user-tabs:after{ background: url(../images/Polygon_icon.svg) no-repeat center center; content: ""; position: absolute; margin: 0; padding: 0; width: 14px; height: 14px; top: -5px; left: 150px; right: auto;}
 .conversation-right > ul li.active .invite-user-tabs{transform: translate(0); opacity: 1; visibility: visible; pointer-events: auto;}
 .conversation-right > ul li .invite-user-tabs .invite-user-tabs-header { width: 100%; margin: 0; padding: 0; float: left;}
 .invite-user-tabs .invite-user-tabs-header .nav-tabs { width: auto; justify-content: center; align-items: center; margin: 0 auto 20px; background: #69DAEE; border: 0; border-radius: 4px; padding: 4px; float: none; max-width: 216px;}
