@@ -3268,7 +3268,7 @@
                             newElement.innerHTML = html;
                             document.getElementById('contractListItemsDiv').insertAdjacentElement("beforeend", newElement);
                         }
-                        if (!flagRedirectFirst && sectionID) {
+                        if (!flagRedirectFirst && sectionID && sectionID != "0") {
                             setTimeout(function () {
                                 $('.contract-item[data-id="' + sectionID + '"]').click();
                                 if (chatWindows == 'SS') {
