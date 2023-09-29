@@ -2794,6 +2794,17 @@
                 }
             });
 
+            socket.on('forward_refresh_clause_list', async function (data) {
+                if (data) {
+                    console.log('forward_refresh_clause_list __data', data);
+                    window.Asc.plugin.executeMethod("GetAllContentControls");
+                    clauseNextPage = 1;
+                    clauseHasNextPage = true;
+                    clauseLists = [];
+                    await getContractSectionList();
+                }
+            });
+
             socket.on('forward_invite_clause', async function (data) {
                 if (data) {
                     clauseNextPage = 1;
@@ -3510,8 +3521,13 @@
                         };
                         tagLists.push(nContentControlProperties);
                         window.Asc.plugin.executeMethod("AddContentControl", [nContentControlType, nContentControlProperties]);
-                        var sDocumentEditingRestrictions = "readOnly";
-                        window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
+                        if (openContractUserDetails && openContractUserDetails.openContractDetails && openContractUserDetails.openContractDetails.userWhoHasEditAccess && openContractUserDetails.openContractDetails.userWhoHasEditAccess == openContractUserDetails.loggedInUserDetails._id && openContractUserDetails.contractCurrentState == 'Edit') {
+                            var sDocumentEditingRestrictions = "none";
+                            window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
+                        } else {
+                            var sDocumentEditingRestrictions = "readOnly";
+                            window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
+                        }
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
@@ -3574,6 +3590,15 @@
                             conversationType = 'OTCC';
                         } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString() && postData.with == "Our Team") {
                             conversationType = 'OTCP';
+                        }
+
+                        if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && selectedContractSectionDetails.contractSectionData.isVisibleToCounterparty == false) {
+                            getSelectedContractSectionDetails();
+                            var data = {
+                                chatRoomName: documentID,
+                                refreshClauseList: true
+                            };
+                            socket.emit('refresh_clause_list', data);
                         }
 
                         socket.emit('contract_section_message', postData);
