@@ -3592,6 +3592,12 @@
                             conversationType = 'OTCP';
                         }
 
+                        socket.emit('contract_section_message', postData);
+                        var generalChatData = postData;
+                        generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
+                        generalChatData.conversationType = conversationType;
+                        socket.emit('conversion_history_message', generalChatData);
+
                         if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && selectedContractSectionDetails.contractSectionData.isVisibleToCounterparty == false) {
                             getSelectedContractSectionDetails();
                             var data = {
@@ -3600,12 +3606,6 @@
                             };
                             socket.emit('refresh_clause_list', data);
                         }
-
-                        socket.emit('contract_section_message', postData);
-                        var generalChatData = postData;
-                        generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
-                        generalChatData.conversationType = conversationType;
-                        socket.emit('conversion_history_message', generalChatData);
 
                         if (postData.with == "Counterparty") {
                             var myTextarea = document.getElementById("messageInputCP");
@@ -4915,6 +4915,15 @@
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
+
+                        if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && selectedContractSectionDetails.contractSectionData.isVisibleToCounterparty == false) {
+                            getSelectedContractSectionDetails();
+                            var data = {
+                                chatRoomName: documentID,
+                                refreshClauseList: true
+                            };
+                            socket.emit('refresh_clause_list', data);
+                        }
 
                         var html = '';
                         if (postData.messageType == 'Position Confirmation') {
