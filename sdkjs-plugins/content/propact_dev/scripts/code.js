@@ -473,7 +473,11 @@
                         document.getElementById('scrollDownBtn').classList.add(displayNoneClass);
                     }
                 } else {
-                    document.getElementById('scrollDownBtn').classList.remove(displayNoneClass);
+                    if (document.getElementById('contractListItemsDiv').scrollHeight >= document.getElementById('contractListItemsDiv').scrollTop + document.getElementById('contractListItemsDiv').offsetHeight && clauseLists && clauseLists.length > 2) {
+                        document.getElementById('scrollDownBtn').classList.remove(displayNoneClass);
+                    } else {
+                        document.getElementById('scrollDownBtn').classList.add(displayNoneClass);
+                    }
                 }
             };
 
@@ -3281,6 +3285,11 @@
                                 '\t\t\t</a>\n' +
                                 '</div>';
                         });
+                        if (clauseLists && clauseLists.length > 2) {
+                            document.getElementById('scrollDownBtn').classList.remove(displayNoneClass);
+                        } else {
+                            document.getElementById('scrollDownBtn').classList.add(displayNoneClass);
+                        }
                         if (clauseNextPage == 1) {
                             document.getElementById('contractListItemsDiv').innerHTML += html;
                         } else {
@@ -3320,6 +3329,7 @@
                     } else {
                         var norecordhtml = '<p class="nodata-info">No clauses available</p>';
                         document.getElementById('contractListItemsDiv').innerHTML = norecordhtml;
+                        document.getElementById('scrollDownBtn').classList.add(displayNoneClass);
                     }
                 }
             })
