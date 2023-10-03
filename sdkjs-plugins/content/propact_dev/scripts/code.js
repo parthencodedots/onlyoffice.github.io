@@ -469,7 +469,11 @@
                 if (document.getElementById('contractListItemsDiv').scrollTop + document.getElementById('contractListItemsDiv').offsetHeight >= (document.getElementById('contractListItemsDiv').scrollHeight - 1)) {
                     if (clauseHasNextPage) {
                         await getContractSectionList();
+                    } else {
+                        document.getElementById('scrollDownBtn').classList.add(displayNoneClass);
                     }
+                } else {
+                    document.getElementById('scrollDownBtn').classList.remove(displayNoneClass);
                 }
             };
 
@@ -546,6 +550,11 @@
                 } else {
                     document.getElementById('divDraftingBox').classList.add(displayNoneClass);
                 }
+            });
+
+            $('.scroll-down').click (function() {
+                $('#contractListItemsDiv').animate({scrollTop: document.getElementById('contractListItemsDiv').scrollHeight }, 'slow');
+                return false;
             });
 
             document.getElementById('assignDraftRequestInputB').addEventListener('click', function () {
@@ -2394,7 +2403,7 @@
                             htmlHistory += '<div class="message-wrapper light-gold-color">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2403,7 +2412,7 @@
                             htmlHistory += '<div class="message-wrapper light-gold-color">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2413,7 +2422,7 @@
                         htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
@@ -2426,7 +2435,7 @@
                             htmlHistory += '<div class="message-wrapper red-color">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2450,7 +2459,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2463,7 +2472,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2474,7 +2483,7 @@
                                 htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                                     '       <div class="profile-picture">\n' +
                                     '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                    '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                    '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '       </div>\n' +
                                     '       <div class="request-row dudhiya-color">\n' +
@@ -2493,7 +2502,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2506,7 +2515,7 @@
                             htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2518,7 +2527,7 @@
                         htmlHistory += '<div class="message-wrapper red-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2531,7 +2540,7 @@
                         htmlHistory += '<div class="message-wrapper dark-gold-color ">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2545,7 +2554,7 @@
                             htmlHistory += '<div class="message-wrapper grey-color light-gold-color">\n' +
                                 '       <div class="profile-picture">\n' +
                                 '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
@@ -2558,7 +2567,7 @@
                         htmlHistory += '<div class="message-wrapper grey-color light-gold-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2589,7 +2598,7 @@
                         htmlHistory += '<div class="message-wrapper dark-gold-color">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -2603,7 +2612,7 @@
                         htmlHistory += '<div class="message-wrapper light-gold-color">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '   </div>\n' +
                             '   <div class="message-content">\n' +
@@ -2617,7 +2626,7 @@
                             htmlHistory += '<div class="message-wrapper reverse">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2626,7 +2635,7 @@
                             htmlHistory += '<div class="message-wrapper reverse">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <strong>' + data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
@@ -2636,7 +2645,7 @@
                         htmlHistory += '<div class="message-wrapper reverse">\n' +
                             '<div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '   </div>\n' +
                             '<div class="request-row">\n' +
@@ -2651,7 +2660,7 @@
                             htmlHistory += '<div class="message-wrapper reverse red-color">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <div class="request-row">\n' +
@@ -2664,7 +2673,7 @@
                             htmlHistory += '<div class="message-wrapper reverse ">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <div class="request-row">\n' +
@@ -2675,7 +2684,7 @@
                             htmlHistory += '<div class="message-wrapper reverse ">\n' +
                                 '   <div class="profile-picture">\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                                '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                 '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '   </div>\n' +
                                 '   <div class="request-row">\n' +
@@ -2687,7 +2696,7 @@
                         htmlHistory += '<div class="message-wrapper reverse red-color">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '   </div>\n' +
                             '   <div class="request-row">\n' +
@@ -2700,7 +2709,7 @@
                         htmlHistory += '<div class="message-wrapper reverse ">\n' +
                             '   <div class="profile-picture">\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                            '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                            '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '   </div>\n' +
                             '   <div class="request-row">\n' +
@@ -2713,7 +2722,7 @@
                         htmlHistory += '<div class="message-wrapper reverse ">\n' +
                             '       <div class="profile-picture">\n' +
                             '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? data.actionperformedbyUserRole : '') + '</small>' + '</p>\n' +
+                            '           <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
@@ -3598,7 +3607,7 @@
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
 
-                        if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && selectedContractSectionDetails.contractSectionData.isVisibleToCounterparty == false) {
+                        if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && (selectedContractSectionDetails.contractSectionData.isVisibleToCounterparty == false || selectedContractSectionDetails.contractSectionData.isVisibleToContractCreator == false)) {
                             getSelectedContractSectionDetails();
                             var data = {
                                 chatRoomName: documentID,
@@ -4182,7 +4191,7 @@
                                         html += '<div class="message-wrapper light-gold-color">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="message-content">\n' +
@@ -4193,7 +4202,7 @@
                                         html += '<div class="message-wrapper ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4222,7 +4231,7 @@
                                             html += '<div class="message-wrapper ' + (chatMessage.chatWindow == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                                                 '       <div class="profile-picture">\n' +
                                                 '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                                '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                                '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                                 '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
                                                 '       </div>\n' +
                                                 '       <div class="request-row">\n' +
@@ -4236,7 +4245,7 @@
                                         html += '<div class="message-wrapper ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row ' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "") + '">\n' +
@@ -4253,7 +4262,7 @@
                                         html += '<div class="message-wrapper ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4267,7 +4276,7 @@
                                         html += '<div class="message-wrapper ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4297,7 +4306,7 @@
                                         html += '<div class="message-wrapper reverse ' + (chatMessage.chatWindow == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
                                             '       <div class="message-content">\n' +
@@ -4308,7 +4317,7 @@
                                         html += '<div class="message-wrapper reverse ' + (chatMessage.chatWindow == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4324,7 +4333,7 @@
                                         html += '<div class="message-wrapper reverse ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row ' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'dudhiya-color' : "") + '">\n' +
@@ -4341,7 +4350,7 @@
                                         html += '<div class="message-wrapper reverse ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4361,7 +4370,7 @@
                                         html += '<div class="message-wrapper reverse ' + (messageType == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4394,7 +4403,7 @@
                                         html += '<div class="message-wrapper reverse ' + (chatMessage.chatWindow == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4414,7 +4423,7 @@
                                         html += '<div class="message-wrapper reverse">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '           <p class="name">' + userName.trim() + '&nbsp;<small>(' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.role == 'Counterparty' ? 'Counterparty' : 'Same side') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + userName.trim() + '&nbsp;<small>(' + (chatMessage && chatMessage.companyId === loggedInUserDetails.company._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
