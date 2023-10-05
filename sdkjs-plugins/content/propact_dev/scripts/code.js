@@ -3962,31 +3962,31 @@
                                         html += '       </div>\n' +
                                             '</div>\n';
                                         // chatMessage.companyId != loggedInUserInfo.company._id
-                                    } else if (chatMessage.messageType == 'Draft Edit Request') {
-                                        var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
-                                        var receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
-                                        html += '<div class="message-wrapper ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
-                                            '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '</p>\n' +
-                                            '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
-                                            '       </div>\n' +
-                                            '       <div class="request-row ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dudhiya-color" : "") + '">\n' +
-                                            '           <div class="' + (chatMessage.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'Draft contract request' : (chatMessage.messageStatus == 'Approve' ? 'Draft contract request approved' : 'Draft contract request rejected')) + '</h4>\n' +
-                                            '               <div class="' + (chatMessage.with == "Counterparty" ? "message" : "content-message") + '">\n' +
-                                            '                   <p>Draft Request: ' + (chatMessage.message ? chatMessage.message.trim().replaceAll(/\n/g, '<br>') : '') + '</p>\n' +
-                                            '                   <p>Note: ' + userName.trim() + ' has requested to give contract draft edit request to ' + receiverName.trim() + '. Please take any action on it</p>\n' +
-                                            '               </div>\n' +
-                                            '           </div>\n';
-                                        if (loggedInUserDetails.role == "Contract Creator" && chatMessage.messageStatus == 'None' && openContractUserDetails.canConfirmPosition) {
-                                            html += '        <div class="request-btn">\n' +
-                                                '               <button class="btn btn-primary draft-request-approve" data-action="Approve" data-id="' + chatMessage._id + '" >Approve</button>\n' +
-                                                '               <button class="btn reject-btn  draft-request-reject " data-action="Reject"  data-id="' + chatMessage._id + '" >Reject</button>\n' +
-                                                '           </div>\n';
-                                        }
-                                        html += '       </div>\n' +
-                                            '</div>\n';
+                                    // } else if (chatMessage.messageType == 'Draft Edit Request') {
+                                    //     var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
+                                    //     var receiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
+                                    //     html += '<div class="message-wrapper ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
+                                    //         '       <div class="profile-picture">\n' +
+                                    //         '           <img src="' + (chatMessage && chatMessage.messageSenderUser && chatMessage.messageSenderUser.imageUrl ? chatMessage.messageSenderUser.imageUrl : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    //         '           <p class="name">' + chatMessage.messageSenderUser.firstName + ' ' + chatMessage.messageSenderUser.lastName + '</p>\n' +
+                                    //         '           <p class="last-seen">' + formatDate(chatMessage.createdAt) + '</p>\n' +
+                                    //         '       </div>\n' +
+                                    //         '       <div class="request-row ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dudhiya-color" : "") + '">\n' +
+                                    //         '           <div class="' + (chatMessage.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
+                                    //         '               <h4>' + (chatMessage.messageStatus == 'None' || chatMessage.messageStatus == 'Updated' ? 'Draft contract request' : (chatMessage.messageStatus == 'Approve' ? 'Draft contract request approved' : 'Draft contract request rejected')) + '</h4>\n' +
+                                    //         '               <div class="' + (chatMessage.with == "Counterparty" ? "message" : "content-message") + '">\n' +
+                                    //         '                   <p>Draft Request: ' + (chatMessage.message ? chatMessage.message.trim().replaceAll(/\n/g, '<br>') : '') + '</p>\n' +
+                                    //         '                   <p>Note: ' + userName.trim() + ' has requested to give contract draft edit request to ' + receiverName.trim() + '. Please take any action on it</p>\n' +
+                                    //         '               </div>\n' +
+                                    //         '           </div>\n';
+                                    //     if (loggedInUserDetails.role == "Contract Creator" && chatMessage.messageStatus == 'None' && openContractUserDetails.canConfirmPosition) {
+                                    //         html += '        <div class="request-btn">\n' +
+                                    //             '               <button class="btn btn-primary draft-request-approve" data-action="Approve" data-id="' + chatMessage._id + '" >Approve</button>\n' +
+                                    //             '               <button class="btn reject-btn  draft-request-reject " data-action="Reject"  data-id="' + chatMessage._id + '" >Reject</button>\n' +
+                                    //             '           </div>\n';
+                                    //     }
+                                    //     html += '       </div>\n' +
+                                    //         '</div>\n';
                                     } else if (chatMessage.messageType == 'Draft Confirmation') {
                                         html += '<div class="message-wrapper ' + (chatMessage.with == "Counterparty" && chatMessage.messageStatus != 'Reject' ? "dark-gold-color" : "") + ' ' + (chatMessage.messageStatus == 'Reject' ? "red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
