@@ -2906,8 +2906,8 @@
                     document.title = "ProPact | " + openContractUserDetails.loggedInUserDetails.firstName + " " + openContractUserDetails.loggedInUserDetails.lastName + " " + openContractUserDetails.loggedInUserDetails.role;
                     if (responseData.data.loggedInUserDetails) {
                         loggedInUserDetails = responseData.data.loggedInUserDetails;
-                        document.getElementById('userProfileImage').src = responseData.data.loggedInUserDetails.imageUrl ?? 'images/no-profile-image.jpg';
-                        document.getElementById('userProfileImageA').src = responseData.data.loggedInUserDetails.imageUrl ?? 'images/no-profile-image.jpg';
+                        document.getElementById('userProfileImage').src = responseData.data.loggedInUserDetails.imageUrl ? responseData.data.loggedInUserDetails.imageUrl : 'images/no-profile-image.jpg';
+                        document.getElementById('userProfileImageA').src = responseData.data.loggedInUserDetails.imageUrl ? responseData.data.loggedInUserDetails.imageUrl : 'images/no-profile-image.jpg';
                         document.getElementById('userProfileName').textContent = responseData.data.loggedInUserDetails.firstName + " " + responseData.data.loggedInUserDetails.lastName;
                         document.getElementById('userProfileNameA').textContent = responseData.data.loggedInUserDetails.firstName + " " + responseData.data.loggedInUserDetails.lastName;
                         document.getElementById('userProfilerole').textContent = responseData.data.loggedInUserDetails.role;
@@ -2955,9 +2955,8 @@
                             document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp-pending');
                             document.getElementById('contractListItemsDiv').classList.remove('displayed-invitecp');
                         }
-                        document.getElementById('oppsiteUserProfileImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
-                        document.getElementById('counterpartyImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
-                        document.getElementById('counterpartyImage').src = responseData.data.oppositeUser.imageUrl ?? 'images/no-profile-image.jpg';
+                        document.getElementById('oppsiteUserProfileImage').src = responseData.data.oppositeUser.imageUrl ? responseData.data.oppositeUser.imageUrl : 'images/no-profile-image.jpg';
+                        document.getElementById('counterpartyImage').src = responseData.data.oppositeUser.imageUrl ? responseData.data.oppositeUser.imageUrl : 'images/no-profile-image.jpg';
                         document.getElementById('oppsiteUserProfileName').textContent = responseData.data.oppositeUser.firstName + " " + responseData.data.oppositeUser.lastName;
                         document.getElementById('oppsiteUserProfilerole').textContent = responseData.data.oppositeUser.role;
                         document.getElementById('organizationName').textContent = responseData.data.oppositeUser.company.companyName;
@@ -5495,9 +5494,6 @@
                         document.getElementById('meetingAgenda').textContent = response.meetingAgenda;
                         document.getElementById('meetingScheduleTime').textContent = formatDateForMeeting(response.meetingDate);
                         document.getElementById('MeetingTimings').textContent = response.meetingStartTime + " - " + response.meetingEndTime;
-
-                        // document.getElementById('meetingOrganiserName').textContent = response.meetingOrganiser.firstName + " " + response.meetingOrganiser.lastName + "(Organiser)";
-                        // document.getElementById('meetingOrganiserImage').src = response.meetingOrganiser.imageUrl ?? 'images/no-profile-image.jpg';
                         document.getElementById('participantCounts').textContent = participantCount;
 
 
@@ -5505,7 +5501,7 @@
                         iHtml += '<li>\n' +
                             '\t\t\t\t<div class="meeting-user-item">\n' +
                             '\t\t\t\t\t\t\t\t<div class="left-item">\n' +
-                            '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (response.meetingOrganiser.imageUrl ?? 'images/no-profile-image.jpg') + '" alt="">\n' +
+                            '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (response.meetingOrganiser.imageUrl ? response.meetingOrganiser.imageUrl : 'images/no-profile-image.jpg') + '" alt="">\n' +
                             '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + response.meetingOrganiser.firstName + " " + response.meetingOrganiser.lastName + '(Organiser)</span>\n' +
                             '\t\t\t\t\t\t\t\t</div>\n' +
                             '\t\t\t\t</div>\n' +
@@ -5522,7 +5518,7 @@
                             iHtml += '<li>\n' +
                                 '\t\t\t\t<div class="meeting-user-item">\n' +
                                 '\t\t\t\t\t\t\t\t<div class="left-item">\n' +
-                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userInfo.imageUrl ?? 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userInfo.imageUrl ? ele.userInfo.imageUrl : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                 '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + ele.userInfo.firstName + " " + ele.userInfo.lastName + '</span>\n' +
                                 '\t\t\t\t\t\t\t\t</div>\n' +
                                 '\t\t\t\t\t\t\t\t<div class="meeting-status">\n' +
