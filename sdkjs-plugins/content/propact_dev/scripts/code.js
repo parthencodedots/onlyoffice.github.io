@@ -3465,6 +3465,11 @@
                         $('#inviteEmailAddress').parent().append('<label class="error api-error">' + responseData.message + '</label>');
                         document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }
+                    var data = {
+                        chatRoomName: loggedInUserDetails.userWebId + "_" + documentID,
+                        documentMode: documentMode
+                    }
+                    socket.emit('switch_document_mode', data);
                 })
                 .catch(error => {
                     // Handle any errors
@@ -4943,7 +4948,9 @@
                                 '</li>';
                         }
                         if (responseData.data.contractAssignedUsers && responseData.data.contractAssignedUsers.length > 0) {
-                            document.getElementById('toggleSendPositionConfirmation').closest("li").classList.remove(displayNoneClass);
+                            if (openContractUserDetails.canSendPositionConfirmation == true) {
+                                document.getElementById('toggleSendPositionConfirmation').closest("li").classList.remove(displayNoneClass);
+                            }
                             responseData.data.contractAssignedUsers.forEach((ele) => {
                                 iHtml += '<li>\n' +
                                     '\t\t\t\t<div class="invite-user-inner">\n' +
