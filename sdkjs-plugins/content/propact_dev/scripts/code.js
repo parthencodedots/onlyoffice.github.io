@@ -709,7 +709,7 @@
                         document.getElementById('btnGoToCounterpartyA').classList.add(displayNoneClass);
                         $('#chatFooterInner').addClass('justify-content-end');
                     }
-                    if (!(loggedInUserDetails.role == "Counterparty" || loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Position Confirmer")) {
+                    if (!(openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Position Confirmer")) {
                         document.getElementById('toggleWithdrawnClause').classList.add(displayNoneClass);
                     } else {
                         document.getElementById('toggleWithdrawnClause').classList.remove(displayNoneClass);
