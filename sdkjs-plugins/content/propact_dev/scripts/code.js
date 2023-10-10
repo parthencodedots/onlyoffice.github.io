@@ -2388,30 +2388,25 @@
                     actionCounterparty.forEach(function (element) {
                         element.classList.add(displayNoneClass);
                     });
-                    htmlA = '<div class="chat-typing-area" id="draftConfirmCP">\n' +
+                    let htmlA = '<div class="chat-typing-area" id="draftConfirmCP">\n' +
                         '   <div class="position-text">This contract section has been withdrawn by ' + data.actionperformedbyUser + '</div>\n' +
                         '</div>';
-                    var contentDiv = document.getElementById("chatContractCounterpartyFooter");
-                    var newElement = document.createElement("div");
-                    newElement.innerHTML = htmlA;
-                    contentDiv.appendChild(newElement);
-
-                    var contentDiv = document.getElementById("chatContractCounterpartyFooter");
-                    var newElement = document.createElement("div");
-                    newElement.innerHTML = html;
-                    contentDiv.appendChild(newElement);
+                    var contentDivA = document.getElementById("chatContractCounterpartyFooter");
+                    var newElementA = document.createElement("div");
+                    newElementA.innerHTML = htmlA;
+                    contentDivA.appendChild(newElementA);
                     // console.log('loggedinuser', loggedInUserDetails);
-                    htmlB = '';
+                    let htmlB = '';
                     htmlB += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                         '   <div class="position-text">This contract section has been withdrawn by ' + data.actionperformedbyUser + '</div>\n';
                     if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
                         htmlB += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                     }
                     htmlB += '</div>';
-                    var contentDiv = document.getElementById("chatContractSameSideFooter");
-                    var newElement = document.createElement("div");
-                    newElement.innerHTML = htmlB;
-                    contentDiv.appendChild(newElement);
+                    var contentDivB = document.getElementById("chatContractSameSideFooter");
+                    var newElementB = document.createElement("div");
+                    newElementB.innerHTML = htmlB;
+                    contentDivB.appendChild(newElementB);
                 } else if (data.messageType == "Meeting") {
                     html += '<div class="scheduled-meeting" data-id="' + data.meetingId + '">\n' +
                         '          <div class="scheduled-meeting-inner">\n' +
