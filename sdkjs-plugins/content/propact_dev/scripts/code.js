@@ -5641,60 +5641,31 @@
                             '      <strong>Contract section withdrawn by ' + postData.actionperformedbyUser + '</strong>\n' +
                             '   </div>\n' +
                             '</div>';
-                        if (postData.messageType == 'Notification') {
-                            if (postData.with !== "Counterparty") {
-                                var contentDiv = document.getElementById("chatArea");
-                                var newElement = document.createElement("div");
-                                newElement.innerHTML = html;
-                                contentDiv.appendChild(newElement);
+                        if (postData.with == "Counterparty") {
+                            var contentDiv = document.getElementById("chatArea");
+                            var newElement = document.createElement("div");
+                            newElement.innerHTML = html;
+                            contentDiv.appendChild(newElement);
 
-                                var myDiv = document.getElementById("chatBodyID");
-                                var scrollToOptions = {
-                                    top: myDiv.scrollHeight,
-                                    behavior: 'smooth'
-                                };
-                                myDiv.scrollTo(scrollToOptions);
-                            } else {
-                                var contentDiv = document.getElementById("chatCPArea");
-                                var newElement = document.createElement("div");
-                                newElement.innerHTML = html;
-                                contentDiv.appendChild(newElement);
-
-                                var myDiv = document.getElementById("chatCPBodyID");
-                                var scrollToOptions = {
-                                    top: myDiv.scrollHeight,
-                                    behavior: 'smooth'
-                                };
-                                myDiv.scrollTo(scrollToOptions);
-                            }
+                            var myDiv = document.getElementById("chatBodyID");
+                            var scrollToOptions = {
+                                top: myDiv.scrollHeight,
+                                behavior: 'smooth'
+                            };
+                            myDiv.scrollTo(scrollToOptions);
                         } else {
-                            if (postData.with == "Counterparty") {
-                                var contentDiv = document.getElementById("chatCPArea");
-                                var newElement = document.createElement("div");
-                                newElement.innerHTML = html;
-                                contentDiv.appendChild(newElement);
+                            var contentDiv = document.getElementById("chatCPArea");
+                            var newElement = document.createElement("div");
+                            newElement.innerHTML = html;
+                            contentDiv.appendChild(newElement);
 
-                                var myDiv = document.getElementById("chatCPBodyID");
-                                var scrollToOptions = {
-                                    top: myDiv.scrollHeight,
-                                    behavior: 'smooth'
-                                };
-                                myDiv.scrollTo(scrollToOptions);
-                            } else {
-                                var contentDiv = document.getElementById("chatArea");
-                                var newElement = document.createElement("div");
-                                newElement.innerHTML = html;
-                                contentDiv.appendChild(newElement);
-
-                                var myDiv = document.getElementById("chatBodyID");
-                                var scrollToOptions = {
-                                    top: myDiv.scrollHeight,
-                                    behavior: 'smooth'
-                                };
-                                myDiv.scrollTo(scrollToOptions);
-                            }
+                            var myDiv = document.getElementById("chatCPBodyID");
+                            var scrollToOptions = {
+                                top: myDiv.scrollHeight,
+                                behavior: 'smooth'
+                            };
+                            myDiv.scrollTo(scrollToOptions);
                         }
-
                         // Refresh the contract section lists
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
