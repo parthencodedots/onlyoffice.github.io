@@ -5,7 +5,7 @@ h1, h2, h3, h4, h5 {font-family: 'Poppins', sans-serif; line-height: 1.2;margin-
 p {margin: 0;font-size: 16px; color: #00223A; font-weight: 400; line-height: 25px; }
 a {color: #777;transition: .3s all ease;}
 a, a:focus, input:focus, button:focus {outline: none; box-shadow: inherit;}
-a, a:focus, a:hover {text-decoration: none; transition: all 0.4s ease-in-out;}
+a, a:focus, a:hover, a:visited {text-decoration: none; transition: all 0.4s ease-in-out;}
 ul {padding: 0; margin: 0;}
 li {list-style: none;}
 img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
@@ -67,6 +67,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .contract-item .contract-top .brown-color { color: #5D210C; border-color: #5D210C;}
 .contract-item .contract-top .fuchsia-color{ color: #950495; border-color: #950495;}
 .contract-item .contract-top .success-color{ color:#11AE0C; border-color: #11AE0C;}
+.contract-item .contract-top .withdrawn-color{ color:#CC0000; border-color: #CC0000;}
 .contract-foot { width: 100%; float: left; margin: 0; padding: 0;}
 .contract-foot .contract-foot-inner { display: flex; margin: 0 -15px; padding:8px 0 0 0;}
 .contract-foot-inner .contract-foot-item { width: 50%; padding: 0 15px; float: left; margin: 0; position: relative;}
@@ -301,7 +302,8 @@ a.clause-options { width: 16px; text-align: center; }
 .clause-options i { color: #282756; font-size: 21px; padding-top: 4px;}
 ul.more-option { min-width: 140px; }
 ul.more-option li { padding: 5px 5px; width: 100%; }
-ul.more-option li a { font-weight: 400; font-size: 12px; padding: 3px 6px; width: 100%;}
+ul.more-option li a { font-weight: 400; font-size: 12px; padding: 3px 6px; width: 100%; color: #282756 !important; }
+ul.more-option li a:visited { color: #282756 !important; }
 @keyframes bounce {
     0%,
     100%,
@@ -403,6 +405,6 @@ ul.more-option li a { font-weight: 400; font-size: 12px; padding: 3px 6px; width
     .clause-options i { font-size: 16px; padding-top: 6px;}
 }
 @media only screen and (max-width:388px){
-    .chat-footer-inner .btn {margin: 0 4px; padding: 10px 8px;}
+    .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;}
 }
 /* Custom CSS to decrease tooltip font size */

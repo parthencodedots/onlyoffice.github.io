@@ -3335,6 +3335,8 @@
                                 contractStatusColorCode = 'invited-color';
                             } else if (ele.contractStatus == 'Completed') {
                                 contractStatusColorCode = 'success-color';
+                            } else if (ele.contractStatus == 'Withdrawn') {
+                                contractStatusColorCode = 'withdrawn-color';
                             }
                             html += '\t\t\t\t\t\t\t\t\t<button class="btn ' + contractStatusColorCode + '">' + ele.contractStatus + '</button>\n';
 
@@ -4880,7 +4882,7 @@
                         document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
                         if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && selectedContractSectionDetails.contractSectionData.contractSection) {
                             // Get the element by its ID
-                            var myLink = document.getElementById('userProfileImageA');
+                            var myLink = document.getElementById('divUserProfileA');
 
                             // Create a new Bootstrap Tooltip instance
                             var tooltip = new bootstrap.Tooltip(myLink, {
@@ -4890,7 +4892,7 @@
 
 
                             // Get the element by its ID
-                            var myLinkA = document.getElementById('oppsiteUserProfileImage');
+                            var myLinkA = document.getElementById('divOppsiteUserProfile');
 
                             // Create a new Bootstrap Tooltip instance
                             var tooltipA = new bootstrap.Tooltip(myLinkA, {
