@@ -4880,28 +4880,6 @@
                         selectedContractSectionDetails = responseData.data;
                         document.getElementById('sameSideTypeBox').classList.remove(displayNoneClass);
                         document.getElementById('counterpartyTypeBox').classList.remove(displayNoneClass);
-                        if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && selectedContractSectionDetails.contractSectionData.contractSection) {
-                            // Get the element by its ID
-                            var myLink = document.getElementById('divUserProfileA');
-
-                            // Create a new Bootstrap Tooltip instance
-                            var tooltip = new bootstrap.Tooltip(myLink, {
-                                title: selectedContractSectionDetails.contractSectionData.contractSection,
-                                placement: 'bottom' // You can change the placement as needed (top, right, bottom, left)
-                            });
-
-
-                            // Get the element by its ID
-                            var myLinkA = document.getElementById('divOppsiteUserProfile');
-
-                            // Create a new Bootstrap Tooltip instance
-                            var tooltipA = new bootstrap.Tooltip(myLinkA, {
-                                title: selectedContractSectionDetails.contractSectionData.contractSection,
-                                placement: 'bottom' // You can change the placement as needed (top, right, bottom, left)
-                            });
-
-
-                        }
 
                         // var actionSameSide = document.querySelectorAll('.action-sameside');
                         // actionSameSide.forEach(function (element) {
@@ -4971,6 +4949,73 @@
                         }
                         iHtml += '</ul>';
                         document.getElementById('userTabContent').innerHTML = iHtml;
+                        if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && selectedContractSectionDetails.contractSectionData.contractSection) {
+
+                            // Get the tooltip button
+                            var tooltipButtonA = document.getElementById('divUserProfileA');
+
+                            // Set the dynamic HTML content for the tooltip
+                            var dynamicHTMLContentA = '<div class=" active" id="inviteUserTabs">\n' +
+                                '                                <div class="clause-heading">\n' +
+                                '                                    <h3>'+selectedContractSectionDetails.contractSectionData.contractSection+'</h3>\n' +
+                                '                                </div>\n' +
+                                '                                <div class="invite-user-tabs-body">\n' +
+                                '                                    <div class="invite-user-tabs">\n' +
+                                '                                        <div id="usersTabsA" class="tab-pane active" role="tabpanel">\n' +
+                                '                                            <div class="invite-user-list">\n' +
+                                '                                                <div id="userTabContent">'+iHtml+'</div>\n' +
+                                '                                            </div>\n' +
+                                '                                        </div>\n' +
+                                '                                    </div>\n' +
+                                '                                </div>\n' +
+                                '                            </div>';
+
+                            // Initialize the tooltip manually with a custom class
+                            var tooltipA = new bootstrap.Tooltip(tooltipButtonA, {
+                                title: dynamicHTMLContentA,
+                                html: true,
+                                placement: 'bottom',
+                                customClass: 'custom-tooltip-class' // Add your custom class here
+                            });
+
+                            // Show the tooltip on mouseover
+                            tooltipButtonA.addEventListener('mouseover', function () {
+                                tooltipA.show();
+                            });
+
+                            // Hide the tooltip on mouseleave
+                            tooltipButtonA.addEventListener('mouseleave', function () {
+                                tooltipA.hide();
+                            });
+
+                            // Get the tooltip button
+                            var tooltipButtonB = document.getElementById('divOppsiteUserProfile');
+
+                            // Set the dynamic HTML content for the tooltip
+                            var dynamicHTMLContentB = '<div id="inviteUserTabsA">\n' +
+                                '                                <div class="clause-heading">\n' +
+                                '                                    <h3>'+selectedContractSectionDetails.contractSectionData.contractSection+'</h3>\n' +
+                                '                                </div>\n' +
+                                '                      </div>';
+
+                            // Initialize the tooltip manually with a custom class
+                            var tooltipB = new bootstrap.Tooltip(tooltipButtonB, {
+                                title: dynamicHTMLContentB,
+                                html: true,
+                                placement: 'bottom',
+                                customClass: 'custom-tooltip-class counterparty-tooltip' // Add your custom class here
+                            });
+
+                            // Show the tooltip on mouseover
+                            tooltipButtonB.addEventListener('mouseover', function () {
+                                tooltipB.show();
+                            });
+
+                            // Hide the tooltip on mouseleave
+                            tooltipButtonB.addEventListener('mouseleave', function () {
+                                tooltipB.hide();
+                            });
+                        }
                         if (selectedContractSectionDetailsA && selectedContractSectionDetailsA.contractSectionData && (selectedContractSectionDetailsA.contractSectionData.contractStatus == "Completed" || selectedContractSectionDetailsA.contractSectionData.contractStatus == "Withdrawn")) {
                             document.getElementById('sameSideTypeBox').classList.add(displayNoneClass);
                             document.getElementById('counterpartyTypeBox').classList.add(displayNoneClass);
