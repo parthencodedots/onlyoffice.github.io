@@ -1,4 +1,4 @@
-    <!--
+<!--
  (c) Copyright Ascensio System SIA 2020
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
     <script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
@@ -233,7 +234,7 @@
             <div class="chat-create-footer">
                 <div class="chat-footer-inner">
                     <button class="btn" id="btnGoToCounterparty">Go to counterparty</button>
-                    <button class="btn" id="btnGoToSameSideChat">Go to same side</button>
+                    <button class="btn" id="btnGoToSameSideChat">Go to my side</button>
                 </div>
             </div>
         </div>
@@ -324,12 +325,15 @@
                             </a>
                         </li>
                         <li class="action-sameside dropdown">
-                            <a class="clause-options" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
+                            <a class="clause-options" href="#" role="button" id="dropdownMenuLink"
+                               data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-ellipsis-v"></i>
                             </a>
                             <ul class="dropdown-menu more-option" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" id="toggleScheduleMeeting" href="#">Schedule Meeting</a></li>
-                                <li><a class="dropdown-item" id="toggleWithdrawnClause" href="#">Withdrawn Clause</a></li>
+                                <li><a class="dropdown-item" id="toggleScheduleMeeting" href="#">Schedule Meeting</a>
+                                </li>
+                                <li><a class="dropdown-item" id="toggleWithdrawnClause" href="#">Withdraw Clause</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -389,7 +393,7 @@
                         </li>
                         <li class="action-counterparty">
                             <a href="#" id="toggleScheduleMeetingA" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Schedule Meeting" >
+                               title="Schedule Meeting">
                                 <img src="images/chat-header-icon4.svg" alt="">
                             </a>
                         </li>
@@ -412,7 +416,7 @@
                               class="form-control"></textarea>
                     </div>
                     <div class="chat-footer-inner" id="chatFooterInnerCP">
-                        <button class="btn" id="btnGoToSameSideA">Go to same side</button>
+                        <button class="btn" id="btnGoToSameSideA">Go to my side</button>
                         <div class="send-btn">
                             <button class="btn-primary" id="btnSendCP"><img src="images/send-icon.svg" alt="">Send
                             </button>
@@ -472,7 +476,8 @@
                             <label class="form-label">Description of Position to be Agreed</label>
                             <textarea class="form-control" name="contract-description"
                                       id="inputSendPositionConfirmation"
-                                      placeholder="Describe the changes to the clause under negotiation that have been agreed" required></textarea>
+                                      placeholder="Describe the changes to the clause under negotiation that have been agreed"
+                                      required></textarea>
                         </div>
                         <div class="submit-btn">
                             <button type="button" class="btn btn-secondary" id="goBackToScreenB">Back</button>
@@ -677,29 +682,31 @@
         </div>
         <div class="position-confirmation-popup d-none" id="meetingPopup">
             <div class="meeting-details">
-            <div class="meeting-details-inner invite-users-inner">
-                <img src="images/schedule_meeting-icon.svg" alt="Meeting">
-                <h3>Meeting Details</h3>
-                <div class="inner-title">
-                    <h4 id="meetingTitle">-</h4>
-                    <p id="meetingAgenda">-</p>
-                    <span id="meetingScheduleTime">-</span>
-                    <span id="MeetingTimings">-</span>
+                <div class="meeting-details-inner invite-users-inner">
+                    <img src="images/schedule_meeting-icon.svg" alt="Meeting">
+                    <h3>Meeting Details</h3>
+                    <div class="inner-title">
+                        <h4 id="meetingTitle">-</h4>
+                        <p id="meetingAgenda">-</p>
+                        <span id="meetingScheduleTime">-</span>
+                        <span id="MeetingTimings">-</span>
+                    </div>
                 </div>
-            </div>
-            <div class="meeting-user-list">
-                <div class="meeting-user-title">
-                    <h4>
-                        <span id="participantCounts">1</span> Participants
-                    </h4>
+                <div class="meeting-user-list">
+                    <div class="meeting-user-title">
+                        <h4>
+                            <span id="participantCounts">1</span> Participants
+                        </h4>
+                    </div>
+                    <div class="meeting-user-items" id="meetingParticipantList">
+                    </div>
+                    <div class="submit-btn">
+                        <button type="submit" class="btn btn-secondary btn-meeting-close">Close</button>
+                        <button type="submit" id="btnMeetingView"
+                                class="btn btn-primary line-class-tmp btn-meeting-view">Join Now
+                        </button>
+                    </div>
                 </div>
-                <div class="meeting-user-items" id="meetingParticipantList">
-                </div>
-                <div class="submit-btn">
-                    <button type="submit" class="btn btn-secondary btn-meeting-close">Close</button>
-                    <button type="submit" id="btnMeetingView" class="btn btn-primary line-class-tmp btn-meeting-view">Join Now</button>
-                </div>
-            </div>
             </div>
         </div>
     </div>

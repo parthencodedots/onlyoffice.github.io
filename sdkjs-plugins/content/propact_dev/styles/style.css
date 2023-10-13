@@ -203,7 +203,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 div.div-selected { background: #d5d5d5 !important; }
 .chat-body .chat-area .message-wrapper.reverse .message, .reverse .message, .reverse .content-message {direction: ltr;}
 .small, small { font-size: 0.75em; }
-.crop-text { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; width:103px; }
+.crop-text { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; width:125px; }
 p.nodata-info { text-align: center; font-size: 12px; color: #282756; }
 .btn.disabled, .btn:disabled, fieldset:disabled .btn { background-color: grey !important; color: white !important; border: none; }
 span#typingSpanCP, span#typingSpan { font-size: 10px; }
@@ -304,6 +304,17 @@ ul.more-option { min-width: 140px; }
 ul.more-option li { padding: 5px 5px; width: 100%; }
 ul.more-option li a { font-weight: 400; font-size: 12px; padding: 3px 6px; width: 100%; color: #282756 !important; }
 ul.more-option li a:visited { color: #282756 !important; }
+
+.tooltip.custom-tooltip-class .tooltip-inner { font-size: 12px; background: #fff; box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; }
+.tooltip.custom-tooltip-class .tooltip-inner .invite-user-tabs { padding: 0 10px 10px; }
+.tooltip.custom-tooltip-class .tooltip-inner .clause-heading h3 { font-size: 14px; padding: 15px 0 0; }
+.tooltip.custom-tooltip-class.counterparty-tooltip .tooltip-inner .clause-heading h3 { font-size: 14px; padding: 10px 0 0; }
+.tooltip.custom-tooltip-class .tooltip-inner .invite-user-tabs h3 { font-size: 14px; margin: 0 0 10px 0; font-weight: 600; }
+.tooltip.custom-tooltip-class .tooltip-inner .invite-user-tabs #userTabContent h3 { font-size: 12px; margin: 6px 0px 2px 0; font-weight: 500 !important; }
+.tooltip.custom-tooltip-class .tooltip-arrow::before { border-bottom-color:#fff; }
+.tooltip.custom-tooltip-class .invite-user-list ul li .invite-user-inner .invite-user-name { text-align: left; }
+.tooltip.custom-tooltip-class .invite-user-list ul li { padding: 3px 0; }
+img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px 0 0 0; }
 @keyframes bounce {
     0%,
     100%,
