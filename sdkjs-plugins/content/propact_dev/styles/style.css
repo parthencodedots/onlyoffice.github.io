@@ -314,6 +314,7 @@ ul.more-option li a:visited { color: #282756 !important; }
 .tooltip.custom-tooltip-class .tooltip-arrow::before { border-bottom-color:#fff; }
 .tooltip.custom-tooltip-class .invite-user-list ul li .invite-user-inner .invite-user-name { text-align: left; }
 .tooltip.custom-tooltip-class .invite-user-list ul li { padding: 3px 0; }
+.tooltip.custom-tooltip-class .invite-user-list ul li .invite-user-inner .invite-user-name span { opacity: 90%; }
 img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px 0 0 0; }
 @keyframes bounce {
     0%,
