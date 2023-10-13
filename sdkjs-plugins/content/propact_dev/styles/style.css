@@ -394,7 +394,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     .chat-body .chat-area .message-wrapper .message-content {padding: 6px;}
     .request-row .request-content {padding: 6px;}
     .conversation-left {flex-wrap: inherit;}
-    .conversation-left .user-inner .user-name {font-size: 11px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 80px;}
+    .conversation-left .user-inner .user-name {font-size: 11px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 105px;}
     .conversation-left .user-inner p {white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 90px; font-size: 10px;}
     .conversation-right > ul li a img {max-width: 20px; max-height: 20px; }
     .conversation-right > ul li {padding: 0 2px;}
