@@ -2355,7 +2355,7 @@
                     let htmlA = '';
                     htmlA += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
                         '   <div class="position-text">This contract section has been withdrawn by ' + data.actionperformedbyUser + '</div>\n';
-                    if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
+                    if (openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Position Confirmer") {
                         htmlA += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                     }
                     htmlA += '</div>';
@@ -2367,7 +2367,7 @@
                     let htmlB = '';
                     htmlB += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                         '   <div class="position-text">This contract section has been withdrawn by ' + data.actionperformedbyUser + '</div>\n';
-                    if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
+                    if (openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Position Confirmer") {
                         htmlB += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                     }
                     htmlB += '</div>';
@@ -5084,14 +5084,14 @@
                             if (selectedContractSectionDetailsA.contractSectionData.contractStatus == "Completed") {
                                 html += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
                                     '   <div class="position-text">' + selectedContractSectionDetailsA.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.lastName + '</div>\n';
-                                if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
+                                if (openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Position Confirmer") {
                                     html += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                                 }
                                 html += '</div>';
                             } else {
                                 html += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
                                     '   <div class="position-text">This contract section has been withdrawn by ' + selectedContractSectionDetailsA.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetailsA.contractSectionData.contractSectionWithdrawnBy.lastName + '</div>\n';
-                                if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
+                                if (openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Position Confirmer") {
                                     html += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                                 }
                                 html += '</div>';
@@ -5105,14 +5105,14 @@
                             if (selectedContractSectionDetailsA.contractSectionData.contractStatus == "Completed") {
                                 htmlA += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                                     '   <div class="position-text">' + selectedContractSectionDetailsA.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.lastName + '</div>\n';
-                                if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
+                                if (openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Position Confirmer") {
                                     htmlA += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                                 }
                                 htmlA += '</div>';
                             } else {
                                 htmlA += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                                     '   <div class="position-text">This contract section has been withdrawn by ' + selectedContractSectionDetailsA.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetailsA.contractSectionData.contractSectionWithdrawnBy.lastName + '</div>\n';
-                                if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
+                                if (openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Position Confirmer") {
                                     htmlA += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                                 }
                                 htmlA += '</div>';
@@ -5743,7 +5743,7 @@
                         htmlA = '';
                         htmlA += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                             '   <div class="position-text">This contract section has been withdrawn by ' + postData.actionperformedbyUser + '</div>\n';
-                        if (loggedInUserDetails.role == "Contract Creator" || loggedInUserDetails.role == "Counterparty") {
+                        if (openContractUserDetails.userRole == "Contract Creator" || openContractUserDetails.userRole == "Counterparty" || openContractUserDetails.userRole == "Position Confirmer") {
                             htmlA += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                         }
                         htmlA += '</div>';
