@@ -5711,10 +5711,10 @@
                         var generalChatData = postData;
                         var conversationType = 'OTM';
                         /*if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString()) {
-                    conversationType = 'OTCC';
-                } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString()) {
-                    conversationType = 'OTCP';
-                }*/
+                conversationType = 'OTCC';
+            } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString()) {
+                conversationType = 'OTCP';
+            }*/
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
@@ -5900,6 +5900,9 @@
                         document.getElementById('meetingPopup').classList.remove(displayNoneClass);
 
                         document.getElementById('meetingTitle').textContent = response.meetingTitle;
+                        if (response.meetingLocation != null && response.meetingLocation != undefined) {
+                            document.getElementById('meetingLocation').textContent = 'in ' + response.meetingLocation;
+                        }
                         document.getElementById('meetingAgenda').textContent = response.meetingAgenda;
                         document.getElementById('meetingScheduleTime').textContent = formatDateForMeeting(response.meetingDate);
                         document.getElementById('MeetingTimings').textContent = response.meetingStartTime + " - " + response.meetingEndTime;
@@ -5939,6 +5942,11 @@
                         iHtml += '</ul>';
                         document.getElementById('meetingParticipantList').innerHTML = iHtml;
                         document.getElementById('mainLoader').classList.add(displayNoneClass);
+                        if (response.meetingLink != null && response.meetingLink != undefined) {
+                            document.getElementById('btnMeetingView').classList.remove(displayNoneClass);
+                        } else {
+                            document.getElementById('btnMeetingView').classList.add(displayNoneClass);
+                        }
                     } else {
                         document.getElementById('mainLoader').classList.add(displayNoneClass);
                     }

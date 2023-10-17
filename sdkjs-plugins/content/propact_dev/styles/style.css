@@ -279,7 +279,7 @@ a.disabled { pointer-events: none; cursor: not-allowed; opacity: .5; }
 .meeting-details .meeting-details-inner .inner-title { width: 100%; float: left; margin: 0; padding: 0; }
 .meeting-details .meeting-details-inner .inner-title h4 { font-size: 16px; color: #282756; font-weight: 500; margin: 0 0 12px 0; padding: 0; float: left; width: 100%; line-height: 20px; }
 .meeting-details .meeting-details-inner .inner-title p { font-size: 14px; font-weight: 400; margin: 0 0 12px 0; padding: 0; line-height: 20px; color: #282756; width: 100%; float: left; }
-.meeting-details .meeting-details-inner .inner-title span { display: inline-block; font-size: 14px; font-weight: 400; margin: 0 10px 0 0; padding: 0; line-height: 20px; color: #282756; opacity: 70%; }
+.meeting-details .meeting-details-inner .inner-title span { display: inline-block; font-size: 14px; font-weight: 400; margin: 0 2px 0 0; padding: 0; line-height: 20px; color: #282756; opacity: 70%; }
 .meeting-details .meeting-user-list { width: 100%; float: left; margin: 0; padding: 0; }
 .meeting-user-list .meeting-user-title { width: 100%; float: left; margin: 0 0 20px 0; padding: 0; }
 .meeting-details .meeting-user-list .meeting-user-title h4 { margin: 0; padding: 0; display: block; width: 100%; font-size: 14px; color: #282756; font-weight: 500; line-height: 20px; }
