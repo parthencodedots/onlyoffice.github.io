@@ -401,7 +401,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     .conversation-right > ul li {padding: 0 2px;}
     .chat-create-footer {padding: 10px 10px 10px;}
     .conversion-history .chat-body {height: calc(100vh - 217px); }
-    .conversion-history .chat-footer-inner .send-btn .btn-primary {height: 32px; line-height: 30px;}
+    .conversion-history .chat-footer-inner .send-btn .btn-primary {height: 32px; line-height: 30px; padding: 0 5px; font-size: 10px;}
     .conversion-history .chat-footer-inner .btn {margin: 0; height: 32px;}
     .chat-footer-inner { flex-wrap: inherit;}
     .chat-footer-inner .btn {margin: 0 2px; padding: 6px 10px;}
@@ -410,7 +410,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     .invite-users-inner img {width: 40px; margin: 0 auto 10px;}
     div#inviteTeamPopup .invite-users-inner img, div#inviteUserPopup .invite-users-inner img {max-width: 25px; width: auto}
     .invite-users-inner h3 {font-size: 14px;}
-    .conversion-history .chat-footer-inner .send-btn .btn-primary img {margin: 0 6px 0 0; max-width: 16px;}
+    .conversion-history .chat-footer-inner .send-btn .btn-primary img {margin: 0 2px 0 0; max-width: 14px;}
     .request-row .request-btn {padding: 0 0 0  0;}
     .request-row .request-btn .btn {margin: 0 4px; min-width: 90px;}
     a.clause-options { width: 12px !important; }
