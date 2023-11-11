@@ -2245,17 +2245,31 @@
                             '           </div>\n' +
                             '       </div>\n' +
                             '</div>';
-                        html += '<div class="message-wrapper dark-gold-color">\n' +
-                            '       <div class="profile-picture">\n' +
-                            '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                            '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
-                            '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                            '       </div>\n' +
-                            '       <div class="request-row">\n' +
-                            '           <strong>' + data.actionperformedbyUser + ' has assigned '+(loggedInUserDetails.company._id !== data.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+' to draft this contract section</strong>\n' +
-                            '       </div>\n' +
-                            '</div>';
+                        if (data.flagDraftAssigned && data.assignedUserDetails) {
+                            html += '<div class="message-wrapper dark-gold-color">\n' +
+                                '       <div class="profile-picture">\n' +
+                                '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                                '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
+                                '       </div>\n' +
+                                '       <div class="request-row">\n' +
+                                '           <strong>' + data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft this contract section</strong>\n' +
+                                '       </div>\n' +
+                                '</div>';
+                        } else {
+                            html += '<div class="message-wrapper dark-gold-color">\n' +
+                                '       <div class="profile-picture">\n' +
+                                '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
+                                '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
+                                '       </div>\n' +
+                                '       <div class="request-row">\n' +
+                                '           <strong>' + data.actionperformedbyUser + ' has assigned ' + (loggedInUserDetails.company._id == data.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName) + ' to draft this contract section</strong>\n' +
+                                '       </div>\n' +
+                                '</div>';
+                        }
                     }
+                    getOpenContractUserDetails(socket, redirection = false);
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.messageType == "Notification" && data.confirmationType == "draft_approval") {
                     if (data.status == "approved") {
@@ -3925,7 +3939,7 @@
                                         var notificationMessage;
                                         var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id == chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
+                                            notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
                                                 var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
@@ -4093,7 +4107,7 @@
                                         var notificationMessage = '';
                                         var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id == chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
+                                            notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
                                                 var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
@@ -4315,7 +4329,7 @@
                                             var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                             if (chatMessage.message == 'request_draft_counter') {
                                                 // console.log(loggedInUserDetails.company._id == chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName);
-                                                notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id == chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
                                             } else if (chatMessage.message == 'request_draft') {
                                                 if (chatMessage && chatMessage.messageReceiverUser) {
                                                     var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
@@ -5349,7 +5363,19 @@
 
                     var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
-                        socket.emit('contract_section_message', postData);
+                        if (postData.messageType == 'Notification' && postData.confirmationType == 'request_draft') {
+                            if (postData.sendTo) {
+                                socket.emit('contract_section_message', postData);
+                            } else {
+                                if (responseData.data && responseData.data.flagDraftAssigned && responseData.data.assignedUserDetails) {
+
+                                } else {
+                                    socket.emit('contract_section_message', postData);
+                                }
+                            }
+                        } else {
+                            socket.emit('contract_section_message', postData);
+                        }
                         var generalChatData = postData;
                         var conversationType = 'OTM';
                         if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString() && postData.with == "Our Team") {
@@ -5444,16 +5470,32 @@
                                     '      </div>\n' +
                                     '   </div>\n' +
                                     '</div>';
-                                html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
-                                    '   <div class="profile-picture">\n' +
-                                    '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
-                                    '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
-                                    '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                    '   </div>\n' +
-                                    '   <div class="request-row">\n' +
-                                    '      <strong>' + postData.actionperformedbyUser + ' has assigned '+(loggedInUserDetails.company._id == postData.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+' to draft this contract section</strong>\n' +
-                                    '   </div>\n' +
-                                    '</div>';
+                                if (responseData.data && responseData.data.flagDraftAssigned && responseData.data.assignedUserDetails) {
+                                    postData.flagDraftAssigned = responseData.data.flagDraftAssigned;
+                                    postData.assignedUserDetails = responseData.data.assignedUserDetails;
+                                    socket.emit('contract_section_message', postData);
+                                    html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
+                                        '   <div class="profile-picture">\n' +
+                                        '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
+                                        '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
+                                        '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                        '   </div>\n' +
+                                        '   <div class="request-row">\n' +
+                                        '      <strong>' + postData.actionperformedbyUser + ' has assigned '+(responseData.data.assignedUserDetails ? responseData.data.assignedUserDetails.firstName + ' ' + responseData.data.assignedUserDetails.lastName : "")+' to draft this contract section</strong>\n' +
+                                        '   </div>\n' +
+                                        '</div>';
+                                } else {
+                                    html += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
+                                        '   <div class="profile-picture">\n' +
+                                        '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
+                                        '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
+                                        '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                        '   </div>\n' +
+                                        '   <div class="request-row">\n' +
+                                        '      <strong>' + postData.actionperformedbyUser + ' has assigned '+(loggedInUserDetails.company._id !== postData.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+' to draft this contract section</strong>\n' +
+                                        '   </div>\n' +
+                                        '</div>';
+                                }
                             }
                         } else if (postData.messageType == 'Notification' && postData.confirmationType == 'draft_approval') {
                             if (postData.status == 'approved') {
@@ -5716,10 +5758,10 @@
                         var generalChatData = postData;
                         var conversationType = 'OTM';
                         /*if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.companyId.toString()) {
-        conversationType = 'OTCC';
-    } else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString()) {
-        conversationType = 'OTCP';
-    }*/
+    conversationType = 'OTCC';
+} else if (loggedInUserDetails.company._id.toString() == openContractUserDetails.openContractDetails.counterPartyCompanyId.toString()) {
+    conversationType = 'OTCP';
+}*/
                         generalChatData.chatRoomName = 'conversion_history_' + selectedCommentThereadID;
                         generalChatData.conversationType = conversationType;
                         socket.emit('conversion_history_message', generalChatData);
@@ -6221,7 +6263,6 @@
             console.error('Error fetching data:', error);
         }
     }
-
     /**================================ API Function End ==================================*/
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
