@@ -424,6 +424,9 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     bottom: 0;
     background: #fff;
 }
+body onlyoffice > iframe {
+    height: calc(100vh - 81px)!important;
+}
 /* .contract-list-items {
     height: calc(100vh - 354px)!important;
 }  */
