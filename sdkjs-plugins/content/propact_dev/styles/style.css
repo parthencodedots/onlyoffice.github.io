@@ -419,4 +419,9 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
 @media only screen and (max-width:388px){
     .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;}
 }
+.chat-create-footer {
+    position: absolute;
+    bottom: 0;
+    background: #fff;
+}
 /* Custom CSS to decrease tooltip font size */
