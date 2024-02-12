@@ -56,7 +56,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .contract-list .contract-search .form-group { width: 100%; margin: 0; padding: 0; float: left; position: relative;}
 .contract-list .contract-search .form-group .form-control { width: 100%; margin: 0; padding: 0 42px 0 12px; border: 1px solid #DADDE0; border-radius: 5px; height: 50px; font-size: 12px; color: #485666; font-weight: 400; font-family: 'Poppins', sans-serif;}
 .contract-list .contract-search .form-group .btn { position: absolute; right: 0; top: 0; width: auto; min-width: auto; padding: 14px 12px; background: transparent;}
-.contract-list-items {width: 100%; float: left; margin: 0;  padding: 2px 0 12px; height: calc(100vh - 354px); overflow-y: auto; overflow-x: hidden;}
+.contract-list-items {width: 100%; float: left; margin: 0;  padding: 2px 0 12px; height: calc(100% - 60px); overflow-y: auto; overflow-x: hidden;}
 .contract-list-items .contract-item { width: 99.75%; margin: 0 0 10px 0; padding: 12px 12px 7px 12px; float: left; background: #F7F7F7; border-radius: 6px;}
 .contract-list-items .contract-item a { width: 100%; margin: 0; padding: 0; float: left; position: relative}
 .contract-list-items .contract-item span.notification-no { width: 10px; height: 10px; background: #FF0000; border-radius: 50%; display: inline-block; position: absolute; right: -2px; top: -4px; }
@@ -424,7 +424,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     bottom: 0;
     background: #fff;
 }
-.contract-list-items {
+/* .contract-list-items {
     height: calc(100vh - 354px)!important;
-} 
+}  */
 /* Custom CSS to decrease tooltip font size */
