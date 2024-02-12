@@ -419,24 +419,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
 @media only screen and (max-width:388px){
     .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;}
 }
-.chat-create-footer {
-    position: absolute;
-    bottom: 0;
-    background: #fff;
-}
-/* ::ng-deep onlyoffice iframe {
-    height: calc(100vh - 81px)!important;
-}
-::ng-deep onlyoffice iframe iframe {
-    height: auto !important;
-} */
-/* body #current-plugin-frame iframe {
-    height: calc(100vh - 171px) !important;
-} */
 html {
         zoom: 1 !important;
 }
-/* .contract-list-items {
-    height: calc(100vh - 354px)!important;
-}  */
 /* Custom CSS to decrease tooltip font size */
