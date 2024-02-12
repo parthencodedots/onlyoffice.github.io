@@ -421,7 +421,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;}
 }
 @media only screen and (max-width:450px){
-    .btn {font-size: 11px;}
+    .btn {font-size: 11px;padding: 7px 8px !important;min-width: auto !important;}
     .conversion-history .chat-footer-inner .send-btn .btn-primary {height: 32px;line-height: 30px;padding: 0 5px;font-size: 10px;}
 }
 /* Custom CSS to decrease tooltip font size */
