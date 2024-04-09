@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 * {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+html {zoom: 1 !important;}
 body {font-size:14px;font-weight: 400;color: #00223A;font-family: 'Poppins', sans-serif; margin: 0; padding: 0; line-height: 21px; background-color: #EEEEEE;}
 h1, h2, h3, h4, h5 {font-family: 'Poppins', sans-serif; line-height: 1.2;margin-top: 0;color: #000;}
 p {margin: 0;font-size: 16px; color: #00223A; font-weight: 400; line-height: 25px; }
@@ -418,5 +419,9 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
 }
 @media only screen and (max-width:388px){
     .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;}
+}
+@media only screen and (max-width:450px){
+    .btn {font-size: 11px;padding: 7px 8px !important;min-width: auto !important;}
+    .conversion-history .chat-footer-inner .send-btn .btn-primary {height: 32px;line-height: 30px;padding: 0 5px;font-size: 10px;}
 }
 /* Custom CSS to decrease tooltip font size */
