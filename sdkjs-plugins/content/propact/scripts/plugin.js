@@ -30,7 +30,7 @@
      * @constant
      * @description Define the Path
      */
-    var baseUrl = 'http://localhost:3003';
+    var baseUrl = 'https://apipropactv2.digitaldilemma.com.au:5004';
     var apiBaseUrl = baseUrl + '/api/v1/app';
     var IMAGE_USER_PATH_LINK = 'https://propact.s3.amazonaws.com/';
 
