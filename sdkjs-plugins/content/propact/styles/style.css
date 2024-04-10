@@ -93,7 +93,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .create-contract-inner .submit-btn .btn {margin: 0 0 0 14px;}
 .create-contract-inner .submit-btn .btn:first-child{margin: 0;}
 .meeting-screen{ width: 100%; margin: 0; padding: 0; float: left; height: 100%;}
-.meeting-screen .chat-create-header { background: #79D7FA; width: 100%; margin: 0; padding: 17px 20px; display: flex; align-items: center; justify-content: space-between;}
+.meeting-screen .chat-create-header { background: #79D7FA; width: 100%; margin: 0; padding: 15px; display: flex; align-items: center; justify-content: space-between;}
 .meeting-screen .chat-create-header.counterparty { background: #FFBC81 !important; }
 .chat-create-header h3 { font-size: 14px; color: #282756; font-weight: 600; margin: 0; padding: 0; line-height: 22px;}
 .chat-body { overflow: auto; width: 100%; float: left; margin: 0; padding: 12px 20px 20px; height:calc(100vh - 137px); overflow-y: auto; overflow-x: hidden;}
@@ -349,10 +349,10 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     .chat-footer-inner .btn { margin: 0 4px;  padding: 10px 12px; min-width: auto;}
     .btn {font-size: 11px;}
     .request-row .request-content,.chat-body .chat-area .message-wrapper .message-content {min-width: auto;}
-    .conversation-right > ul li {padding: 0 4px;}
+    .conversation-right > ul li {min-width: 32px;}
     .conversation-right > ul li a img { max-width: 24px; max-height: 24px;}
     .conversation-left .user-icon { width: 35px; height: 35px; margin: 0 6px 0 0;}
-    .conversation-left .user-inner .user-name {font-size: 12px;}
+    .conversation-left .user-inner .user-name {font-size: 12px; width: 105px;}
     .conversion-history .chat-footer-inner .send-btn .btn-primary { margin: 0 0 0 2px; padding: 0 10px;}
     .meeting-screen .chat-create-header .conversation-right .close-btn img { max-width: 24px;}
     .chat-body .chat-area .message-wrapper .message-content .delete-icon {right: -20px;}
@@ -381,6 +381,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     .filter-box .accordion-item .accordion-body .user-name{width: auto;}
     .invite-user-tabs-body .tab-content .invite-user-list ul p { font-size: 12px; line-height: 18px;}
     .filter-box .accordion-item .accordion-button::after {background-size: 18px auto; background-position: 100%;}
+    .crop-text { width: 115px; }
 }
 @media only screen and (max-width:350px){
     .meeting-screen .chat-create-header {padding: 10px 10px;}
@@ -404,6 +405,7 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
     .conversation-left {flex-wrap: inherit;}
     .conversation-left .user-inner .user-name {font-size: 11px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 105px;}
     .conversation-left .user-inner p {white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 90px; font-size: 10px;}
+    .chat-create-header .conversation-left .user-inner p { line-height: 10px }
     .conversation-right > ul li a img {max-width: 20px; max-height: 20px; }
     .conversation-right > ul li {padding: 0 2px;}
     .chat-create-footer {padding: 10px 10px 10px;}
@@ -425,5 +427,18 @@ img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px
 }
 @media only screen and (max-width:388px){
     .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;}
+}
+@media only screen and (max-width:310px){
+    .chat-create-header .conversation-left .user-icon { display: none; }
+    .conversation-right > ul li .invite-user-tabs { min-width: 190px; }
+    .invite-user-tabs .invite-user-tabs-header .nav-tabs { max-width: 190px; }
+    .invite-user-tabs-header .nav-tabs .nav-item .nav-link { min-width: 80px; }
+    .invite-user-list ul li .invite-user-inner .invite-user-name h3 { font-size: 11px; }
+    #btnInviteUsers img { width: 20px; }
+    .invite-user-list .invite-btn .btn-primary {padding: 4px 10px; min-width: 80px; }
+    .conversation-right > ul li .invite-user-tabs:after { left: 95px; }
+}
+@media only screen and (max-width:295px){
+    .chat-create-header .conversation-right > ul li { min-width: 26px; }
 }
 /* Custom CSS to decrease tooltip font size */
