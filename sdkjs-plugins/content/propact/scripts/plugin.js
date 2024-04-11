@@ -1112,6 +1112,15 @@
         $(target).collapse('toggle');
         document.getElementById('assignDraftRequestBox').classList.add(displayNoneClass);
     });
+    
+    setInterval(function() {
+        var hasDNoneClass = $('#assignDraftingRequestBox').hasClass('d-none');
+        if (!hasDNoneClass) {
+            $('#assignDraftingRequestInput-error').addClass('d-none');
+        } else {
+            $('#assignDraftingRequestInput-error').removeClass('d-none');
+        }
+    }, 250);
 
     $("#formAssignDraftRequest").validate({
         submitHandler: function (form) {
@@ -1486,6 +1495,16 @@
     });
 
     $("#formReconfirmPosition").validate({
+        rules: {
+            inputPositionReason: {
+                required: true
+            },
+            assignDraftingRequestInput: {
+                required: function(element) {
+                    return elements.sendToTeamForDraft.checked
+                }
+            }
+        },
         submitHandler: function (form) {
             var approveConfirmation = {
                 "contractId": contractID,
@@ -2102,6 +2121,7 @@
                     requestRowMessage = (data.status == "approved" ? 'Position approved by ' : 'Position rejected by ') + data.actionperformedbyUser
                 } else if (data.confirmationType == 'request_draft' && data.sendTo) {
                     requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft this contract section';
+                    $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
                         getContractSectionDetails();
@@ -2194,6 +2214,7 @@
                         '       </div>\n' +
                         '</div>';
                 } else if (data.confirmationType == 'request_draft' && !data.sendTo) {
+                    $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                     getContractDetails(socket, false);
                     if (chatWindow == 'SS') {
                         renderHTML += '<div class="message-wrapper reverse">\n' +
@@ -2616,7 +2637,7 @@
                         if (redirection) {
                             switchClass(elements.btnMarkupMode, displayNoneClass, true);
                             switchClass(elements.btnMarkupMode.parentElement, 'justify-content-end', true);
-                            // document.getElementById('divContractLists').classList.remove(displayNoneClass);
+                            switchClass(elements.sectionContractLists, displayNoneClass, false);
                             if (contractInformation.counterPartyInviteStatus !== 'Accepted') {
                                 clauseNextPage = 1;
                                 clauseHasNextPage = true;
@@ -2666,7 +2687,7 @@
                             /*if (redirection) {
                                 switchClass(elements.btnMarkupMode, displayNoneClass, true);
                                 switchClass(elements.btnMarkupMode.parentElement, 'justify-content-end', true);
-                                // document.getElementById('divContractLists').classList.remove(displayNoneClass);
+                                /!*switchClass(elements.sectionContractLists, displayNoneClass, false);
                                 // if (documentMode != 'markup') {
                                 //     getContractTeamAndUserList();
                                 // }
@@ -2695,7 +2716,7 @@
                             if (redirection) {
                                 switchClass(elements.btnMarkupMode, displayNoneClass, true);
                                 switchClass(elements.btnMarkupMode.parentElement, 'justify-content-end', true);
-                                /!*document.getElementById('divContractLists').classList.remove(displayNoneClass);
+                                /!*switchClass(elements.sectionContractLists, displayNoneClass, false);
                                 if (documentMode != 'markup') {
                                     getContractTeamAndUserList();
                                 }
@@ -3247,7 +3268,7 @@
                                 setTimeout(function () {
                                     flagRedirectClauseCreate = true;
                                     $('.contract-item[data-id="' + sectionID + '"]').click();
-                                    document.getElementById('divContractLists').classList.add(displayNoneClass);
+                                    switchClass(elements.sectionContractLists, displayNoneClass, true);
                                     if (chatWindows == 'SS') {
                                         $('#btnGoToSameSideChat').click();
                                     } else if (chatWindows == 'CP') {
