@@ -291,7 +291,11 @@
             switchClass(elements.btnCreateClause, displayNoneClass, true);
             elements.btnMarkupMode.innerHTML = 'Back to Contract';
         } else {
-            switchClass(elements.btnCreateClause, displayNoneClass, false);
+            if (contractInformation) {
+                switchClass(elements.btnCreateClause, displayNoneClass, (contractInformation.contractCurrentStatus != "Under Negotiation"));
+            } else {
+                switchClass(elements.btnCreateClause, displayNoneClass, false);
+            }
             switchClass(elements.btnCreateClause, disabledClass, true);
             elements.btnMarkupMode.innerHTML = 'Select Markup Mode';
             // $('#clauseText').val(text);
