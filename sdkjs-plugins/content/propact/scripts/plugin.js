@@ -2137,6 +2137,7 @@
                     $('.draft-reject[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "assign_draft") {
                     getContractSectionDetails();
+                    getContractDetails(socket, false);
                     requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this contract section';
                 } else if (data.confirmationType == "withdrawn") {
                     renderHTML += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
@@ -2422,6 +2423,7 @@
                         requestRowMessage = 'Draft confirmation request rejected by ' + data.actionperformedbyUser;
                     }
                 } else if (data.confirmationType == "assign_draft") {
+                    getContractDetails(socket, false);
                     requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this contract section';
                 } else if (data.confirmationType == "withdrawn") {
                     requestRowMessage = 'Contract section withdrawn by ' + data.actionperformedbyUser;
