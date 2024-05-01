@@ -439,12 +439,14 @@
         cancelInvitation();
     };
 
-    elements.btnMeetingViewOutcomes.onclick = function () {
+    elements.btnMeetingViewOutcomes.onclick = function (event) {
         switchClass(elements.divMeetingViewOutcomes, displayNoneClass, !$('#divMeetingViewOutcomes').hasClass(displayNoneClass));
+        event.stopPropagation();
     }
 
-    elements.btnMeetingEnterOutcomes.onclick = function () {
+    elements.btnMeetingEnterOutcomes.onclick = function (event) {
         switchClass(elements.divMeetingEnterOutcomes, displayNoneClass, !$('#divMeetingEnterOutcomes').hasClass(displayNoneClass));
+        event.stopPropagation();
     }
 
     elements.inputSearchbox.onkeyup = function (event) {
