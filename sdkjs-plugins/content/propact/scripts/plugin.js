@@ -135,6 +135,8 @@
         btnInviteTeams: document.getElementById("btnInviteTeams"),
         btnScheduleMeetingCounterparty: document.getElementById("btnScheduleMeetingCounterparty"),
         btnMeetingView: document.getElementById("btnMeetingView"),
+        btnMeetingEnterOutcomes: document.getElementById("btnMeetingEnterOutcomes"),
+        btnMeetingViewOutcomes: document.getElementById("btnMeetingViewOutcomes"),
 
         paragraphInvitationActions: document.getElementById("paragraphInvitationActions"),
         paragraphTeamsNotFoundMessage: document.getElementById("paragraphTeamsNotFoundMessage"),
@@ -149,6 +151,7 @@
         formSendDraftConfirmation: document.getElementById("formSendDraftConfirmation"),
         formRejectDraftRequest: document.getElementById("formRejectDraftRequest"),
         formRejectDraft: document.getElementById("formRejectDraft"),
+        formMeetingOutcomes: document.getElementById("formMeetingOutcomes"),
 
         sectionContractLists: document.getElementById("sectionContractLists"),
         sectionInviteCounterparty: document.getElementById("sectionInviteCounterparty"),
@@ -173,6 +176,8 @@
         divChatContractCounterpartyFooter: document.getElementById("divChatContractCounterpartyFooter"),
         divContractCounterpartySection: document.getElementById("divContractCounterpartySection"),
         divDraftingBox: document.getElementById("divDraftingBox"),
+        divMeetingViewOutcomes: document.getElementById("divMeetingViewOutcomes"),
+        divMeetingEnterOutcomes: document.getElementById("divMeetingEnterOutcomes"),
 
         approvePositionMessageId: document.getElementById("approvePositionMessageId"),
         assignDraftingRequestUserId: document.getElementById("assignDraftingRequestUserId"),
@@ -190,6 +195,7 @@
         txtOrganizationName: document.getElementById("txtOrganizationName"),
         txtCounterpartyName: document.getElementById("txtCounterpartyName"),
         txtCounterpartyEmail: document.getElementById("txtCounterpartyEmail"),
+        txtMeetingViewOutcomes: document.getElementById("txtMeetingViewOutcomes"),
 
         inputInviteUsersTeams: document.getElementById("inputInviteUsersTeams"),
         chkboxInviteAllTeams: document.getElementById("chkboxInviteAllTeams"),
@@ -432,6 +438,14 @@
         switchClass(elements.loader, displayNoneClass, false);
         cancelInvitation();
     };
+
+    elements.btnMeetingViewOutcomes.onclick = function () {
+        switchClass(elements.divMeetingViewOutcomes, displayNoneClass, !$('#divMeetingViewOutcomes').hasClass(displayNoneClass));
+    }
+
+    elements.btnMeetingEnterOutcomes.onclick = function () {
+        switchClass(elements.divMeetingEnterOutcomes, displayNoneClass, !$('#divMeetingEnterOutcomes').hasClass(displayNoneClass));
+    }
 
     elements.inputSearchbox.onkeyup = function (event) {
         clearTimeout(searchTimeout); // Clear any existing timeout
@@ -742,6 +756,7 @@
     $(document).on('click', '.scheduled-meeting', function () {
         getContractMeetingDetails($(this).data('id'));
         elements.btnMeetingView.setAttribute('data-id', $(this).data('id'));
+        elements.btnMeetingEnterOutcomes.setAttribute('data-id', $(this).data('id'));
     });
 
     $(document).on('click', '.btn-meeting-view', function () {
@@ -1657,6 +1672,12 @@
         }
     });
 
+    $("#formMeetingOutcomes").validate({
+        submitHandler: function (form) {
+            submitMeetingOutcomes();
+        }
+    });
+
     /**
      * @description
      */
@@ -1822,6 +1843,7 @@
         elements.formSendDraftConfirmation.reset();
         elements.formRejectDraftRequest.reset();
         elements.formRejectDraft.reset();
+        elements.formMeetingOutcomes.reset();
         switchClass(elements.inviteUserPopup, displayNoneClass, true);
         switchClass(elements.inviteTeamPopup, displayNoneClass, true);
         switchClass(elements.sendPositionConfirmationPopup, displayNoneClass, true);
@@ -1832,6 +1854,8 @@
         switchClass(elements.rejectDarftRequestPopup, displayNoneClass, true);
         switchClass(elements.rejectDarftPopup, displayNoneClass, true);
         switchClass(elements.meetingPopup, displayNoneClass, true);
+        switchClass(elements.divMeetingViewOutcomes, displayNoneClass, true);
+        switchClass(elements.divMeetingEnterOutcomes, displayNoneClass, true);
     }
 
     /**
@@ -2804,7 +2828,7 @@
     }
 
     /**
-     * @description This function will used for resend the invitation to join this contract as counterparty
+     * @description This function will be used for resend the invitation to join this contract as counterparty
      */
     async function resendInvitation() {
         try {
@@ -5311,6 +5335,14 @@
                         });
                         iHtml += '</ul>';
                         elements.meetingParticipantList.innerHTML = iHtml;
+                        if (responseData.meetingOutcomes != null && responseData.meetingOutcomes != undefined && responseData.meetingOutcomes != "") {
+                            switchClass(elements.btnMeetingEnterOutcomes, displayNoneClass, true);
+                            switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, false);
+                            elements.txtMeetingViewOutcomes.innerText = responseData.meetingOutcomes;
+                        } else {
+                            switchClass(elements.btnMeetingEnterOutcomes, displayNoneClass, false);
+                            switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, true);
+                        }
                         if (responseData.meetingLink != null && responseData.meetingLink != undefined && responseData.meetingLink != "") {
                             switchClass(elements.btnMeetingView, displayNoneClass, false);
                         } else {
@@ -5331,6 +5363,44 @@
             console.log('Error #08040804:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
+    }
+
+    async function submitMeetingOutcomes() {
+        switchClass(elements.loader, displayNoneClass, false);
+        var form = elements.formMeetingOutcomes;
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("meetingId", elements.btnMeetingEnterOutcomes.getAttribute('data-id'));
+        urlencoded.append("meetingOutcome", form.elements['meetingOutcomes'].value);
+
+        let requestURL = apiBaseUrl + '/meeting/update-meeting-outcome';
+        var headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        };
+        var requestOptions = {
+            method: 'POST',
+            headers: headers,
+            body: urlencoded
+        };
+        if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
+        fetch(requestURL, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                // Handle the response data
+                var responseData = response;
+                console.log('responseData', responseData);
+                elements.txtMeetingViewOutcomes.innerText = form.elements['meetingOutcomes'].value;
+                switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, false);
+                switchClass(elements.divMeetingViewOutcomes, displayNoneClass, false);
+                switchClass(elements.btnMeetingEnterOutcomes, displayNoneClass, true);
+                switchClass(elements.divMeetingEnterOutcomes, displayNoneClass, true);
+                switchClass(elements.loader, displayNoneClass, true);
+                elements.formMeetingOutcomes.reset();
+            })
+            .catch(error => {
+                // Handle any errors
+                console.log('Error #14031455:', error);
+                switchClass(elements.loader, displayNoneClass, true);
+            });
     }
     /**================== API End  =========================*/
 

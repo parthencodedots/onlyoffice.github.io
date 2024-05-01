@@ -325,6 +325,10 @@ ul.more-option li a:visited { color: #282756 !important; }
 #atwho-ground-messageInputCounterParty .atwho-view .cur { background: #FFBC81 !important; }
 img.img-info { width: 16px; padding-left: 3px;display: inline-block;margin: -2px 0 0 0; }
 .chkbox-label { padding-top: 9px !important; cursor: pointer }
+.meeting-outcomes, .meeting-outcomes-form { padding: 20px 0; }
+.meeting-outcomes h5, .meeting-outcomes-form h5 { font-size: 16px; color: #282756; font-weight: 500; }
+.meeting-outcomes-form .form-group { margin: 0 0 5px 0; }
+p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
 @keyframes bounce {
     0%,
     100%,

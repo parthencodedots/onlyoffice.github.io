@@ -415,7 +415,8 @@
                             </a>
                         </li>
                         <li class="action-counterparty">
-                            <a href="#" id="btnScheduleMeetingCounterparty" data-bs-toggle="tooltip" data-bs-placement="top"
+                            <a href="#" id="btnScheduleMeetingCounterparty" data-bs-toggle="tooltip"
+                               data-bs-placement="top"
                                title="Schedule Meeting">
                                 <img src="images/chat-header-icon4.svg" alt="">
                             </a>
@@ -554,7 +555,8 @@
                         <div id="divDraftingBox" class="d-none">
                             <input type="hidden" id="assignDraftingRequestUserId" value=""/>
                             <div class="form-group">
-                                <input type="text" class="form-control invite-users-input" id="assignDraftingRequestInput"
+                                <input type="text" class="form-control invite-users-input"
+                                       id="assignDraftingRequestInput"
                                        placeholder="Select user" name="assignDraftingRequestInput" readonly>
                                 <div class="filter-box invite-users-box d-none" id="assignDraftingRequestBox">
                                     <div class="accordion" id="accordionExampleB">
@@ -774,11 +776,38 @@
                     <div class="meeting-user-items" id="meetingParticipantList">
                     </div>
                     <div class="submit-btn">
-                        <button type="submit" class="btn btn-secondary btn-meeting-close btn-close-bottom-popup">Close
+                        <button type="button" class="btn btn-secondary btn-meeting-close btn-close-bottom-popup">Close
                         </button>
-                        <button type="submit" id="btnMeetingView"
+                        <button type="button" id="btnMeetingView"
                                 class="btn btn-primary line-class-tmp btn-meeting-view">Join Now
                         </button>
+                        <button type="button" id="btnMeetingEnterOutcomes"
+                                class="btn btn-primary line-class-tmp btn-meeting-view d-none">Enter Outcome(s)
+                        </button>
+                        <button type="button" id="btnMeetingViewOutcomes"
+                                class="btn btn-primary line-class-tmp btn-meeting-view d-none">Outcome(s)
+                        </button>
+                    </div>
+                    <div class="meeting-outcomes d-none" id="divMeetingViewOutcomes">
+                        <h5>Outcome(s):</h5>
+                        <p id="txtMeetingViewOutcomes">
+                        </p>
+                    </div>
+                    <div class="meeting-outcomes-form d-none" id="divMeetingEnterOutcomes">
+                        <form id="formMeetingOutcomes" method="get" action>
+                            <input type="hidden" id="enterOutcomesMeetingId" value=""/>
+                            <div class="form-group">
+                                <h5 class="form-label">Meeting Outcome(s)</h5>
+                                <textarea class="form-control" name="meetingOutcomes"
+                                          id="inputMeetingOutcomes"
+                                          placeholder="Enter Outcome(s)" required></textarea>
+                            </div>
+                            <div class="submit-btn justify-content-end">
+                                <button type="submit" class="btn btn-primary pull-right">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
