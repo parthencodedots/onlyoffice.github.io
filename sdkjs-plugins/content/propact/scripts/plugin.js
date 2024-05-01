@@ -5335,18 +5335,29 @@
                         });
                         iHtml += '</ul>';
                         elements.meetingParticipantList.innerHTML = iHtml;
-                        if (responseData.meetingOutcomes != null && responseData.meetingOutcomes != undefined && responseData.meetingOutcomes != "") {
-                            switchClass(elements.btnMeetingEnterOutcomes, displayNoneClass, true);
-                            switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, false);
-                            elements.txtMeetingViewOutcomes.innerText = responseData.meetingOutcomes;
-                        } else {
-                            switchClass(elements.btnMeetingEnterOutcomes, displayNoneClass, false);
-                            switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, true);
-                        }
-                        if (responseData.meetingLink != null && responseData.meetingLink != undefined && responseData.meetingLink != "") {
-                            switchClass(elements.btnMeetingView, displayNoneClass, false);
+                        // Get the current time
+                        var currentTime = new Date();
+
+                        // Specify the meeting end time
+                        var meetingEndTiming = new Date(responseData.meetingEndTiming);
+
+                        // Check if the current time is less than the meeting end time
+                        if (currentTime < meetingEndTiming) {
+                            if (responseData.meetingLink != null && responseData.meetingLink != undefined && responseData.meetingLink != "") {
+                                switchClass(elements.btnMeetingView, displayNoneClass, false);
+                            } else {
+                                switchClass(elements.btnMeetingView, displayNoneClass, true);
+                            }
                         } else {
                             switchClass(elements.btnMeetingView, displayNoneClass, true);
+                            if (responseData.meetingOutcomes != null && responseData.meetingOutcomes != undefined && responseData.meetingOutcomes != "") {
+                                switchClass(elements.btnMeetingEnterOutcomes, displayNoneClass, true);
+                                switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, false);
+                                elements.txtMeetingViewOutcomes.innerText = responseData.meetingOutcomes;
+                            } else {
+                                switchClass(elements.btnMeetingEnterOutcomes, displayNoneClass, false);
+                                switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, true);
+                            }
                         }
                         return true;
                     } else {
@@ -5365,6 +5376,10 @@
         }
     }
 
+    /**
+     * @description This method is used for add meeting outcomes
+     * @returns {Promise<void>}
+     */
     async function submitMeetingOutcomes() {
         switchClass(elements.loader, displayNoneClass, false);
         var form = elements.formMeetingOutcomes;
