@@ -1180,7 +1180,7 @@
             at: "@",
             data: sameSideUserList,
             displayTpl: "<li class='sameside-list'>${name}</li>",
-            insertTpl: '<a href="#" data-type="mentionable" data-id="${id}" data-companyid="${companyId}" data-name="${name}">@${name}</a>',
+            insertTpl: '<a href="javascript:void(0)" data-type="mentionable" data-id="${id}" data-companyid="${companyId}" data-name="${name}">@${name}</a>',
             callbacks: {
                 beforeInsert: function (value, $li) {
                     var match = value.match(/data-id="([0-9a-f]+)"/);
@@ -1688,7 +1688,7 @@
             at: "@",
             data: counterpartyUserList,
             displayTpl: "<li class='sameside-list'>${name}</li>",
-            insertTpl: '<a href="#" data-type="mentionable" data-id="${id}" data-companyid="${companyId}" data-name="${name}">@${name}</a>',
+            insertTpl: '<a href="javascript:void(0)" data-type="mentionable" data-id="${id}" data-companyid="${companyId}" data-name="${name}">@${name}</a>',
             callbacks: {
                 beforeInsert: function (value, $li) {
                     var match = value.match(/data-id="([0-9a-f]+)"/);
@@ -3232,7 +3232,7 @@
                                 var commentID = ele.commentId;
                                 // TODO: API Logic Pending for "unreadMessageSide"
                                 html += '<div class="contract-item" data-id="' + ele._id + '" data-commentid="' + commentID + '" data-chatwindow="' + (ele.unreadMessageSide ? ele.unreadMessageSide : '-') + '" id="' + commentID.split('-').pop() + '">\n' +
-                                    '\t\t\t<a href="#">\n';
+                                    '\t\t\t<a href="javascript:void(0)">\n';
                                 html += '\t\t\t\t\t\t<span class="notification-no ' + (ele.hasUnreadMessage ? '' : displayNoneClass) + '"></span>';
                                 html += '\t\t\t\t\t\t<div class="contract-top">\n' +
                                     '\t\t\t\t\t\t\t\t\t<h3>' + ele.contractSection + '</h3>\n' +
