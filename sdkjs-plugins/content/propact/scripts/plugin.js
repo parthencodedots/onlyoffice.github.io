@@ -89,6 +89,7 @@
     var counterpartyUserList = [];
     var tyingUserSSArray = [];
     var tyingUserCPArray = [];
+    var organisationListInterval;
     var typingTimeout;
 
     /**
@@ -256,7 +257,7 @@
         MeetingTimings: document.getElementById("MeetingTimings"),
         participantCounts: document.getElementById("participantCounts"),
         meetingParticipantList: document.getElementById("meetingParticipantList"),
-
+        inputOrganisationName: document.getElementById("inputOrganisationName")
     }
 
     /**================================== Plugin Init Start ===============================*/
@@ -1134,7 +1135,7 @@
         document.getElementById('assignDraftRequestBox').classList.add(displayNoneClass);
     });
 
-    setInterval(function() {
+    setInterval(function () {
         var hasDNoneClass = $('#assignDraftingRequestBox').hasClass('d-none');
         if (!hasDNoneClass) {
             $('#assignDraftingRequestInput-error').addClass('d-none');
@@ -1265,6 +1266,7 @@
         elements.inputAssignDraftRequest.value = userName;
         elements.inputAssignDraftRequest.placeholder = userName;
     }
+
     /**====================== Section: Sameside chat ======================*/
 
 
@@ -1521,7 +1523,7 @@
                 required: true
             },
             assignDraftingRequestInput: {
-                required: function(element) {
+                required: function (element) {
                     return elements.sendToTeamForDraft.checked
                 }
             }
@@ -1714,6 +1716,7 @@
         elements.assignDraftingRequestInput.value = userName;
         elements.assignDraftingRequestInput.placeholder = userName;
     }
+
     /**====================== Section: Counterparty chat ======================*/
 
 
@@ -2413,7 +2416,7 @@
                     '       </div>\n' +
                     '       <div class="request-row">\n' +
                     '           <div class="' + (data.chatWindow !== 'Counterparty' ? "request-content" : "message-content") + '">\n' +
-                    '               <h4>' + (data.messageStatus == 'None' || data.messageStatus == 'Updated' ? 'Sent a position confirmation <br/> request' : (data.messageStatus == 'Approve' ? 'Position confirmation approved' : 'Position confirmation rejected')) + '</h4>\n' +
+                    '               <h4>' + (data.messageStatus == 'None' || data.messageStatus == 'Updated' ? 'Sent a position confirmation <br/> request' : (data.messageStatus == 'Approve' ? 'Position confirmation approved' : 'Position confirmation rejected')) + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                     '               <div class="' + (data.chatWindow !== 'Counterparty' ? "content-message" : "message") + '">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                     '           </div>\n';
                 renderHTML += '    </div>\n' +
@@ -2428,7 +2431,7 @@
                     '   </div>\n' +
                     '   <div class="request-row">\n' +
                     '      <div class="' + (data.chatWindow !== 'Counterparty' ? "request-content" : "message-content") + '">\n' +
-                    '         <h4>Draft confirmation request</h4>\n' +
+                    '         <h4>Draft confirmation request ' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                     '         <div class="' + (data.chatWindow !== 'Counterparty' ? "content-message" : "message") + '">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                     '      </div>\n' +
                     '   </div>\n' +
@@ -2486,7 +2489,7 @@
                         '       </div>\n' +
                         '       <div class="request-row">\n' +
                         '           <div class="request-content">\n' +
-                        '               <h4>' + (data.confirmationType == 'position' ? 'Position confirmation rejected' : 'Draft confirmation rejected') + '</h4>\n' +
+                        '               <h4>' + (data.confirmationType == 'position' ? 'Position confirmation rejected' : 'Draft confirmation rejected') + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                         '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                         '           </div>\n' +
                         '       </div>\n' +
@@ -2501,7 +2504,7 @@
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
                             '           <div class="request-content">\n' +
-                            '               <h4>Draft Request</h4>\n' +
+                            '               <h4>Draft Request' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                             '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                             '           </div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator") {
@@ -2520,7 +2523,7 @@
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
                             '           <div class="message-content">\n' +
-                            '               <h4>Draft Request</h4>\n' +
+                            '               <h4>Draft Request' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                             '               <div class="message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                             '           </div>\n';
                         renderHTML += '</div>\n' +
@@ -2590,6 +2593,7 @@
             elements.divChatHistoryBody.scrollTo(scrollToOptions);
         }
     }
+
     /**==================  Socket Function End  =========================*/
 
     /**================== API Start  =========================*/
@@ -2616,9 +2620,20 @@
                         contractInformation = responseData.openContractDetails;
                         loggedInUserDetails = responseData.loggedInUserDetails;
                         loggedInCompanyDetails = responseData.loggedInCompanyDetails;
-                        switchClass(elements.btnCreateClause, displayNoneClass, (contractInformation && contractInformation.contractCurrentStatus != "Under Negotiation"));
+                        console.log('contractInformation', contractInformation.isContractArchived == true);
+                        if (contractInformation.isContractArchived == true) {
+                            switchClass(elements.btnCreateClause, disabledClass, true);
+                        } else {
+                            switchClass(elements.btnCreateClause, displayNoneClass, (contractInformation && contractInformation.contractCurrentStatus != "Under Negotiation"));
+                        }
                         if (contractInformation.counterPartyInviteStatus !== 'Pending') {
                             counterPartyDetail = responseData.oppositeUser;
+                        } else {
+                            clearInterval(organisationListInterval);
+                            getOrganisationLists();
+                            organisationListInterval = setInterval(function () {
+                                getOrganisationLists();
+                            }, 5000)
                         }
                         if (contractInformation.counterPartyInviteStatus == 'Accepted') {
                             counterPartyCompanyDetail = responseData.oppositeCompanyDetails;
@@ -2763,6 +2778,25 @@
                                 getClauses();*!/
                             }*/
                         }
+                        if (contractInformation.isContractArchived == true) {
+                            switchClass(elements.btnMarkupMode, displayNoneClass, true);
+                            switchClass(elements.btnMarkupMode.parentElement, 'justify-content-end', true);
+
+                            var actionCounterparty = document.querySelectorAll('.action-counterparty');
+                            actionCounterparty.forEach(function (element) {
+                                element.classList.add(displayNoneClass);
+                            });
+
+                            var actionCounterparty = document.querySelectorAll('.action-sameside');
+                            actionCounterparty.forEach(function (element) {
+                                element.classList.add(displayNoneClass);
+                            });
+
+                            if (typeof window.Asc.plugin.executeMethod === 'function') {
+                                var sDocumentEditingRestrictions = "readOnly";
+                                window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
+                            }
+                        }
                     } else {
                         console.log('Error: 14031200', 'Contract details not found');
                     }
@@ -2787,6 +2821,9 @@
         urlencoded.append("lastName", form.elements['lastName'].value);
         urlencoded.append("email", form.elements['email'].value);
         urlencoded.append("organisationName", form.elements['organisationName'].value);
+        if (form.elements['organisationName'].getAttribute('data-id')) {
+            urlencoded.append("organisation_id", form.elements['organisationName'].getAttribute('data-id'));
+        }
 
         let requestURL = apiBaseUrl + '/contract/invite-contract-counterparty';
         var headers = {
@@ -2883,7 +2920,12 @@
                         elements.snackbar.className = "show";
                         setTimeout(function () {
                             elements.snackbar.classList.remove('show');
-                        }, 3000)
+                        }, 3000);
+                        clearInterval(organisationListInterval);
+                        getOrganisationLists();
+                        organisationListInterval = setInterval(function () {
+                            getOrganisationLists();
+                        }, 5000)
                         switchClass(elements.divInviteCounterpartyInvited, displayNoneClass, true)
                         switchClass(elements.divInviteCounterparty, displayNoneClass, false)
                         switchClass(elements.divContractListItems, displayedInvitecpPending, false)
@@ -3233,7 +3275,8 @@
                                 // TODO: API Logic Pending for "unreadMessageSide"
                                 html += '<div class="contract-item" data-id="' + ele._id + '" data-commentid="' + commentID + '" data-chatwindow="' + (ele.unreadMessageSide ? ele.unreadMessageSide : '-') + '" id="' + commentID.split('-').pop() + '">\n' +
                                     '\t\t\t<a href="javascript:void(0)">\n';
-                                html += '\t\t\t\t\t\t<span class="notification-no ' + (ele.hasUnreadMessage ? '' : displayNoneClass) + '"></span>';
+                                // html += '\t\t\t\t\t\t<div class="ringring"></div><div class="notification-no' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"></div>';
+                                html += '\t\t\t\t\t\t<div class="new-msg-container' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"><div class="ringring"></div><div class="notification-no"></div></div>'
                                 html += '\t\t\t\t\t\t<div class="contract-top">\n' +
                                     '\t\t\t\t\t\t\t\t\t<h3>' + ele.contractSection + '</h3>\n' +
                                     '\t\t\t\t\t\t\t\t\t<p>' + ele.contractSectionDescription + '</p>\n';
@@ -3260,7 +3303,7 @@
                                     '\t\t\t\t\t\t\t\t\t<div class="contract-foot-inner">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<div class="contract-foot-item">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>Created by</h3>\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="contract-user" data-bs-toggle="tooltip" data-bs-placement="top" title="'+(ele && ele.createdByUserDetails ? ele.createdByUserDetails.firstName + ' ' + ele.createdByUserDetails.lastName : '')+'">\n';
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="contract-user" data-bs-toggle="tooltip" data-bs-placement="top" title="' + (ele && ele.createdByUserDetails ? ele.createdByUserDetails.firstName + ' ' + ele.createdByUserDetails.lastName : '') + '">\n';
 
                                 html += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (ele && ele.createdByUserDetails && ele.createdByUserDetails.imageKey ? IMAGE_USER_PATH_LINK + ele.createdByUserDetails.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span>' + (ele && ele.createdByUserDetails ? ele.createdByUserDetails.firstName + ' ' + ele.createdByUserDetails.lastName : '') + '</span></div>\n';
@@ -3903,7 +3946,7 @@
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="message-content">\n' +
@@ -3924,7 +3967,7 @@
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + userName.trim() + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + userName.trim() + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -3936,12 +3979,12 @@
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + (element.chatWindow == "Counterparty" && element.messageStatus != 'Reject' ? " dark-gold-color" : "") + ' ' + (element.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
                                             '           <div class="' + (element.chatWindow == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Sent a position confirmation <br/> request' : (element.messageStatus == 'Approve' ? 'Position confirmation approved' : 'Position confirmation rejected')) + '</h4>\n' +
+                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Sent a position confirmation <br/> request' : (element.messageStatus == 'Approve' ? 'Position confirmation approved' : 'Position confirmation rejected')) + (element.conversationType == 'OTM' ? ' - Counterparty' : ' - Sameside') + '</h4>\n' +
                                             '               <div class="' + (element.chatWindow == "Counterparty" ? "message" : "content-message") + '">' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '           </div>\n' +
                                             '    </div>\n' +
@@ -3951,12 +3994,12 @@
                                         renderHTML += '<div class="message-wrapper ' + (element.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
                                             '           <div class="' + (element.chatWindow == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>Draft Request</h4>\n' +
+                                            '               <h4>Draft Request ' + (element.conversationType == 'OTM' ? ' - Counterparty' : ' - Sameside') + '</h4>\n' +
                                             '               <div class="' + (element.chatWindow == "Counterparty" ? "message" : "content-message") + '">' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '           </div>\n' +
                                             '    </div>\n' +
@@ -3966,12 +4009,12 @@
                                         renderHTML += '<div class="message-wrapper ' + (element.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
                                             '           <div class="' + (element.chatWindow == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Draft confirmation request' : (element.messageStatus == 'Approve' ? 'Draft confirmation approved' : 'Draft confirmation rejected')) + '</h4>\n' +
+                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Draft confirmation request' : (element.messageStatus == 'Approve' ? 'Draft confirmation approved' : 'Draft confirmation rejected')) + (element.conversationType == 'OTM' ? ' - Counterparty' : ' - Sameside') + '</h4>\n' +
                                             '               <div class="' + (element.chatWindow == "Counterparty" ? "message" : "content-message") + '">' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '           </div>\n' +
                                             '    </div>\n' +
@@ -4005,7 +4048,7 @@
                                         renderHTML += '<div class="message-wrapper ' + (element.conversationType == 'OTM' ? " light-gold-color" : " reverse") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
@@ -4032,7 +4075,7 @@
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
-                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Same side' : 'Counterparty') + ')</small>' + '</p>\n' +
+                                            '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="message-content">\n' +
@@ -5408,7 +5451,6 @@
             .then(response => {
                 // Handle the response data
                 var responseData = response;
-                console.log('responseData', responseData);
                 elements.txtMeetingViewOutcomes.innerText = form.elements['meetingOutcomes'].value;
                 switchClass(elements.btnMeetingViewOutcomes, displayNoneClass, false);
                 switchClass(elements.divMeetingViewOutcomes, displayNoneClass, false);
@@ -5423,6 +5465,153 @@
                 switchClass(elements.loader, displayNoneClass, true);
             });
     }
+
+    async function getOrganisationLists() {
+        try {
+            var requestURL = apiBaseUrl + '/contract/search-organisation';
+            var headers = {
+                "Content-Type": "application/json"
+            };
+            if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
+            var requestOptions = {
+                method: 'GET',
+                headers: headers,
+            };
+            fetch(requestURL, requestOptions)
+                .then(response => response.json())
+                .then(response => {
+                    // Handle the response data
+                    if (response && response.status == true && response.code == 200) {
+                        var responseData = response.data;
+                        let organisationList = [];
+                        responseData.forEach((ele) => {
+                            organisationList.push({'id': ele._id, 'name': ele.companyName});
+                            // organisationList.push(ele.companyName);
+                        })
+                        console.log('organisationList', organisationList);
+                        autocomplete(elements.inputOrganisationName, organisationList);
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error('Error #21050542:', error);
+                    switchClass(elements.loader, displayNoneClass, true);
+                });
+        } catch (error) {
+            console.log('Error #22051042:', error);
+            switchClass(elements.loader, displayNoneClass, true);
+        }
+    }
+
     /**================== API End  =========================*/
+
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) {
+                return false;
+            }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i] && arr[i].name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    console.log('arr[i]', arr[i].name);
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    b.className = 'dropdown-option';
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].name.substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].name.substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' data-id='" + arr[i].id + "' value='" + arr[i].name + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function (e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        inp.setAttribute('data-id', this.getElementsByTagName("input")[0].getAttribute('data-id'));
+                        // inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                } else {
+                    inp.setAttribute('data-id', '');
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
 
 })(window, undefined);
