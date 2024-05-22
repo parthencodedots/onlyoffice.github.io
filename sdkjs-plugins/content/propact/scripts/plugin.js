@@ -2755,7 +2755,7 @@
                             switchClass(elements.divInviteCounterparty, displayNoneClass, false);
                             switchClass(elements.divContractListItems, displayedInviteCP, true);
                             switchClass(elements.divContractListItems, displayedInvitecpPending, false);
-                            if (!(responseData.userRole == 'Admin' || responseData.userRole == 'Contract Creator')) {
+                            if (!(responseData.userRole == 'Admin' || responseData.userRole == 'Contract Creator' || responseData.userRole == 'Counterparty')) {
                                 switchClass(elements.btnInviteCounterparty, disabledClass, true);
                             }
                             // TODO: Counterparty button show/hide and other logic's needed here - Remove later
