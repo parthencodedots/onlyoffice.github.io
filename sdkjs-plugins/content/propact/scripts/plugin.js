@@ -2677,7 +2677,7 @@
                             // set logged-in user name
                             $('.loggedin-user-name').text(loggedInUserDetails.firstName + " " + loggedInUserDetails.lastName);
                             // set logged-in user role
-                            $('.loggedin-user-role').text(responseData.userRole);
+                            $('.loggedin-user-role').text(responseData.userRole == 'Counterparty' ? '-' : responseData.userRole);
                             elements.userProfileName.innerHTML += '<img src="images/icon-info.png" class="img-info">';
                             // document.getElementById('userProfileNameA').innerHTML = loggedInUserDetails.firstName + " " + loggedInUserDetails.lastName + '<img src="images/icon-info.png" class="img-info">';
                         }
@@ -4674,6 +4674,7 @@
                                             '</div>';
                                     }
                                     switchClass(elements.btnWithdrawnClauseSameSide, displayNoneClass, true);
+                                    getContractSectionDetails();
                                     getContractDetails(socket, false);
                                 } else {
                                     renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
