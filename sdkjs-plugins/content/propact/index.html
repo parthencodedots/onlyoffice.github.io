@@ -97,7 +97,19 @@
                         <button class="btn"><img src="images/icon-search.svg" alt="Icon Search"></button>
                     </div>
                 </div>
-                <div class="contract-list-items" id="divContractListItems">
+                <div class="clause-group-head d-none" id="divClauseGroupHead">
+                    <a href="#" id="btnAddClauseToGroup" class="btn btn-markup d-none">
+                        Add Clause to Group
+                    </a>
+                    <a href="#" id="btnRemoveFromGroup" class="btn btn-markup d-none">
+                        Remove From Group
+                    </a>
+                </div>
+                <div class="contract-clause-sections" id="divContractClauseSections">
+                    <div class="contract-list-items" id="divGroupClauseListItems">
+                    </div>
+                    <div class="contract-list-items" id="divContractListItems">
+                    </div>
                 </div>
             </div>
         </div>
@@ -133,7 +145,8 @@
                     </div>-->
                     <div class="form-group autocomplete">
                         <label class="">Organisation name</label>
-                        <input id="inputOrganisationName" class="form-control" type="text" name="organisationName" placeholder="Organisation name" required>
+                        <input id="inputOrganisationName" class="form-control" type="text" name="organisationName"
+                               placeholder="Organisation name" required>
                     </div>
                     <div class="submit-btn">
                         <a class="btn btn-secondary" href="#" id="btnInviteCounterpartyCancel">Cancel</a>
@@ -226,6 +239,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group" id="divClauseGroup">
+                        <label class="">Clause Group</label>
+                        <select class="form-control" name="clauseGroup" id="inputClauseGroup">
+                            <option value="">Select Group</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label class=""></label>
                         <input type="hidden" class="form-control " name="clauseText" id="clauseText" value="1" required>
@@ -245,7 +264,15 @@
     <div class="contract-chat-history d-none" id="sectionConversionHistory">
         <div class="meeting-screen">
             <div class="chat-create-header">
-                <h3>Conversation History</h3>
+                <!--                <h3>Conversation History</h3>-->
+                <div class="chat-top-new-part">
+                    <div class="line">Conversation History</div>
+                    <div class="line" id="clauseSectionTitleCHistory"></div>
+                    <!--                    <div class="line line3">-->
+                    <!--                        <div>My Team: </div>-->
+                    <!--                        <div class="text"> Andreq, Temogen, Adam, Tax Team, Sue, Ritvik</div>-->
+                    <!--                    </div>-->
+                </div>
                 <a href="#" class="close-btn" id="btnCloseConversionHistory" data-bs-toggle="tooltip"
                    data-bs-placement="top" title="Close">
                     <img src="images/close.svg" alt="Close Icon">
@@ -270,24 +297,30 @@
     <div class="contract-sameside-chat d-none" id="sectionSameSideChat">
         <div class="meeting-screen conversion-history">
             <div class="chat-create-header" id="chatHeader">
-                <div class="conversation-left" id="divUserProfileA">
-                    <span class="user-icon">
-                        <img id="userProfileImage" class="loggedin-user-profile" src="images/profile-image.png"
-                             alt="profile-picture">
-                    </span>
-                    <div class="user-inner">
-                        <span class="user-name crop-text loggedin-user-name" id="userProfileName">-</span>
-                        <p class="crop-text loggedin-user-role" id="userProfilerole">-</p>
+                <div class="conversation-left">
+                    <!--                    <span class="user-icon">-->
+                    <!--                        <img id="userProfileImage" class="loggedin-user-profile" src="images/profile-image.png"-->
+                    <!--                             alt="profile-picture">-->
+                    <!--                    </span>-->
+                    <!--                    <div class="user-inner">-->
+                    <!--                        <span class="user-name crop-text loggedin-user-name" id="userProfileName">-</span>-->
+                    <!--                        <p class="crop-text loggedin-user-role" id="userProfilerole">-</p>-->
+                    <!--                    </div>-->
+                    <div class="chat-top-new-part">
+                        <div class="line">&check; Messaging Your Party</div>
+                        <div class="line" id="clauseSectionTitleSameSide"></div>
+                        <div class="line line3">
+                            <div>My Team: </div>
+                            <div class="text" id="sameSideTeamList"></div>
+                        </div>
+                        <div class="line line3" id="divUserProfileA">
+                            <div>My Users: </div>
+                            <div class="text" id="sameSideUserList"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="conversation-right">
                     <ul>
-                        <li>
-                            <a href="#" id="btnGoToConversionHistory" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="View the Conversation History">
-                                <img src="images/chat-header-icon1.svg" alt="conversation-icon">
-                            </a>
-                        </li>
                         <li class="action-sameside">
                             <a href="#" id="btnOpenInviteUserTeam" data-bs-toggle="tooltip" data-bs-placement="top"
                                title="Invite User & Team">
@@ -334,10 +367,10 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="action-sameside">
-                            <a href="#" id="btnSendPositionConfirmationSameSide" data-bs-toggle="tooltip"
-                               data-bs-placement="top" title="Send Confirmation">
-                                <img src="images/chat-header-icon3.svg" alt="send-icon">
+                        <li>
+                            <a href="#" id="btnGoToConversionHistory" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="View the Conversation History">
+                                <img src="images/chat-header-icon1.svg" alt="conversation-icon">
                             </a>
                         </li>
                         <li class="action-sameside dropdown">
@@ -347,12 +380,19 @@
                             </a>
                             <ul class="dropdown-menu more-option" aria-labelledby="dropdownMenuLink">
                                 <li>
-                                    <a class="dropdown-item" id="btnScheduleMeetingSameSide" href="#">Schedule
-                                        Meeting</a>
+                                    <a class="dropdown-item" id="btnWithdrawnClauseSameSide" href="#">
+                                        Withdraw clause
+                                    </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" id="btnWithdrawnClauseSameSide" href="#">Withdraw
-                                        Clause</a>
+                                    <a class="dropdown-item" id="btnSendPositionConfirmationSameSide" href="#">
+                                        Position/drafting confirmation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" id="btnScheduleMeetingSameSide" href="#">
+                                        Schedule meeting
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -370,9 +410,32 @@
             <div class="chat-create-footer" id="divChatContractSameSideFooter">
                 <div id="divSameSideTextbox">
                     <span id="typingSpan"></span>
-                    <div class="form-group">
+                    <div class="form-group position-relative">
                         <div contenteditable="true" id="messageInputSameSide" placeholder="Type message here"
                              class="form-control editable-div">
+                        </div>
+                        <div id="errorFileUploadSameSide"></div>
+                        <div id="attchedFilenameSameSide"></div>
+                        <input type="file" class="d-none" id="attachFileSameSide" multiple>
+                        <div class="type-sms-btn-part">
+                            <button type="submit" class="btn btn-secondary" id="btnAttachFileSameSide"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Attach File">
+                                <img src="images/attach-icon.svg" alt="Attach File">
+                            </button>
+                            <button type="submit" class="btn btn-secondary" id="btnSendPositionConfirmationSameSideB"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Position/drafting confirmation">
+                                <img src="images/file-right.svg" alt="Position/drafting confirmation"/>
+                            </button>
+                            <button type="submit" class="btn btn-secondary" id="btnScheduleMeetingSameSideB"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Schedule meeting">
+                                <img src="images/calender-add.svg" alt="Schedule meeting">
+                            </button>
                         </div>
                     </div>
                     <div class="chat-footer-inner" id="chatFooterInnerSameSide">
@@ -393,14 +456,26 @@
         <div class="meeting-screen conversion-history">
             <div class="chat-create-header counterparty" id="chatCounterpartyHeader">
                 <div class="conversation-left" id="divOppsiteUserProfile">
-                    <span class="user-icon">
-                        <img id="imgCounterpartyUserProfile" class="counterparty-user-profile"
-                             src="images/profile-image.png" alt="">
-                    </span>
-                    <div class="user-inner">
-                        <span class="user-name crop-text counterparty-user-profile-name"
-                              id="counterpartyUserProfileName">-</span>
-                        <p class="crop-text counterparty-user-profile-role" id="oppsiteUserProfilerole">-</p>
+                    <!--                    <span class="user-icon">-->
+                    <!--                        <img id="imgCounterpartyUserProfile" class="counterparty-user-profile"-->
+                    <!--                             src="images/profile-image.png" alt="">-->
+                    <!--                    </span>-->
+                    <!--                    <div class="user-inner">-->
+                    <!--                        <span class="user-name crop-text counterparty-user-profile-name"-->
+                    <!--                              id="counterpartyUserProfileName">-</span>-->
+                    <!--                        <p class="crop-text counterparty-user-profile-role" id="oppsiteUserProfilerole">-</p>-->
+                    <!--                    </div>-->
+                    <div class="chat-top-new-part">
+                        <div class="line">&check; Messaging CounterParty</div>
+                        <div class="line" id="clauseSectionTitleCounterParty"></div>
+                        <!--                        <div class="line line3">-->
+                        <!--                            <div>My Team: </div>-->
+                        <!--                            <div class="text" id="counterPartyTeamList"></div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="line line3">-->
+                        <!--                            <div>My Users: </div>-->
+                        <!--                            <div class="text" id="counterPartyUserList"></div>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
                 <div class="conversation-right">
@@ -412,18 +487,23 @@
                                 <img src="images/chat-header-icon1.svg" alt="conversation-icon">
                             </a>
                         </li>
-                        <li class="action-counterparty">
-                            <a href="#" id="btnSendPositionConfirmationCounterparty" data-bs-toggle="tooltip"
-                               data-bs-placement="top" title="Send Confirmation">
-                                <img src="images/chat-header-icon3.svg" alt="">
+                        <li class="action-counterparty dropdown">
+                            <a class="clause-options" href="#" role="button" id="dropdownMenuLinkCP"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v"></i>
                             </a>
-                        </li>
-                        <li class="action-counterparty">
-                            <a href="#" id="btnScheduleMeetingCounterparty" data-bs-toggle="tooltip"
-                               data-bs-placement="top"
-                               title="Schedule Meeting">
-                                <img src="images/chat-header-icon4.svg" alt="">
-                            </a>
+                            <ul class="dropdown-menu more-option" aria-labelledby="dropdownMenuLinkCP">
+                                <li>
+                                    <a class="dropdown-item" id="btnSendPositionConfirmationCounterparty" href="#">
+                                        Position/drafting confirmation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" id="btnScheduleMeetingCounterparty" href="#">
+                                        Schedule meeting
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                     <a href="#" class="close-btn" id="btnCloseCounterpartyChat" data-bs-toggle="tooltip"
@@ -439,9 +519,32 @@
             <div class="chat-create-footer" id="divChatContractCounterpartyFooter">
                 <div id="divCounterpartyTextbox">
                     <span id="typingSpanCP"></span>
-                    <div class="form-group">
+                    <div class="form-group position-relative">
                         <div contenteditable="true" id="messageInputCounterParty" placeholder="Type message here"
                              class="form-control editable-div">
+                        </div>
+                        <div id="errorFileUploadCounterparty"></div>
+                        <div id="attchedFilenameCounterparty"></div>
+                        <input type="file" class="d-none" id="attachFileCounterparty" multiple>
+                        <div class="type-sms-btn-part">
+                            <button type="submit" class="btn btn-secondary" id="btnAttachFileCounterparty"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Attach File">
+                                <img src="images/attach-icon.svg" alt="Attach File">
+                            </button>
+                            <button type="submit" class="btn btn-secondary"
+                                    id="btnSendPositionConfirmationCounterpartyB" data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Position/drafting confirmation">
+                                <img src="images/file-right.svg" alt="Position/drafting confirmation"/>
+                            </button>
+                            <button type="submit" class="btn btn-secondary" id="btnScheduleMeetingCounterpartyB"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Schedule meeting">
+                                <img src="images/calender-add.svg" alt="Schedule meeting">
+                            </button>
                         </div>
                     </div>
                     <div class="chat-footer-inner" id="chatFooterInnerCP">
@@ -550,15 +653,32 @@
                         </div>
                         <div class="accordion-header">
                             <div class="accordion-head">
-                                <label>
-                                    <input type="checkbox" name="myCheckbox" id="sendToTeamForDraft">
-                                    Send to a team member for drafting?
-                                </label>
+                                <div class="form-check form-check-inline">
+                                    <div class="radio-custom">
+                                        <input class="form-check-input" type="radio" name="myRadioButton"
+                                               id="sendToCounterpartyForDraft" value="counterparty">
+                                        <span></span>
+                                    </div>
+                                    <label class="form-check-label" for="sendToCounterpartyForDraft">
+                                        Send to a counterparty for drafting?
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <div class="radio-custom">
+                                        <input class="form-check-input" type="radio" name="myRadioButton"
+                                               id="sendToTeamForDraft" value="sameside">
+                                        <span></span>
+                                    </div>
+                                    <label class="form-check-label" for="sendToTeamForDraft">
+                                        Send to a team member for drafting?
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div id="divDraftingBox" class="d-none">
                             <input type="hidden" id="assignDraftingRequestUserId" value=""/>
                             <div class="form-group">
+                                <label>User</label>
                                 <input type="text" class="form-control invite-users-input"
                                        id="assignDraftingRequestInput"
                                        placeholder="Select user" name="assignDraftingRequestInput" readonly>
@@ -822,6 +942,136 @@
             </div>
         </div>
         <!--  Section: Meeting Details popup  -->
+
+        <!--  Section: Add clause to Group popup  -->
+        <div class="position-confirmation-popup d-none" id="addClauseToGroupPopup">
+            <div class="invite-users-inner">
+                <!-- <img src="images/position_confirmation.svg" alt="Send Position Confirmation">
+                <h3>Send Position Confirmation</h3> -->
+                <form id="formClauseToGroup" method="get" action>
+                    <div class="radio-group-top space-beetween">
+                        <div class="form-check form-check-inline">
+                            <div class="radio-custom">
+                                <input class="form-check-input" type="radio" name="isNewGroup" id="radioCreateGroup"
+                                       value="Yes">
+                                <span></span>
+                            </div>
+                            <label class="form-check-label" for="radioCreateGroup">Create Group</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <div class="radio-custom">
+                                <input class="form-check-input" type="radio" name="isNewGroup" id="radioExistingGroup"
+                                       value="No">
+                                <span></span>
+                            </div>
+                            <label class="form-check-label" for="radioExistingGroup">Existing Group</label>
+                        </div>
+                    </div>
+                    <div class="confirmation-form">
+                        <div class="form-group d-none" id="divGroupName">
+                            <label class="form-label">Group Name</label>
+                            <input type="text" class="form-control" name="groupname" placeholder="Enter group name">
+                        </div>
+                        <div class="form-group d-none" id="divExistingGroup">
+                            <label class="form-label">Group</label>
+                            <select class="form-control" name="groupid" id="selectExistingClauseGroup">
+                                <option value="">Select Group</option>
+                            </select>
+                        </div>
+                        <div class="submit-btn">
+                            <button type="button" class="btn btn-secondary btn-close-bottom-popup" id="goBackToScreenC">
+                                Back
+                            </button>
+                            <button type="submit" class="btn btn-primary pull-right" id="submitClauseGroup">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--  Section: Add clause to Group popup  -->
+
+        <!--  Section: Reassign Draft Request popup  -->
+        <div class="position-confirmation-popup d-none" id="reassignDraftRequestPopup">
+            <div class="invite-users-inner">
+                <img src="images/position_confirmation.svg" alt="Assign Draft Request">
+                <h3>Reassign Drafting</h3>
+                <div class="confirmation-form">
+                    <form id="formReassignDraftRequest" method="get" action>
+                        <input type="hidden" id="reassignDraftRequestMessageId" value=""/>
+                        <input type="hidden" id="reassignDraftRequestUserId" value=""/>
+                        <div class="accordion-header">
+                            <label>Reassign User</label>
+                            <div class="accordion-head">
+                                <div class="form-check form-check-inline">
+                                    <div class="radio-custom">
+                                        <input class="form-check-input" type="radio" name="reassignRadioButton"
+                                               id="sendToCounterpartyForDraftA" value="counterparty">
+                                        <span></span>
+                                    </div>
+                                    <label class="form-check-label" for="sendToCounterpartyForDraftA">
+                                        Send to a counterparty for drafting?
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <div class="radio-custom">
+                                        <input class="form-check-input" type="radio" name="reassignRadioButton"
+                                               id="sendToTeamForDraftA" value="sameside">
+                                        <span></span>
+                                    </div>
+                                    <label class="form-check-label" for="sendToTeamForDraftA">
+                                        Send to a team member for drafting?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divReassignDraftingBox" class="d-none">
+                            <div class="form-group">
+                                <label>User</label>
+                                <input type="text" class="form-control invite-users-input"
+                                       id="inputReassignDraftRequest"
+                                       placeholder="Select user" readonly>
+                                <div class="filter-box invite-users-box d-none" id="reassignDraftRequestBox">
+                                    <div class="accordion" id="accordionExampleC">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" id="btncollapseUsersC"
+                                                        type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseUsersC"
+                                                        aria-expanded="false" aria-controls="collapseUsersC">
+                                                    Users
+                                                </button>
+                                            </h2>
+                                            <div id="collapseUsersC" class="accordion-collapse collapse"
+                                                 data-bs-parent="#accordionExampleC">
+                                                <div class="accordion-body" id="accordionReassignDraftRequest">
+                                                    <p class="text-left" id="usersNoteFoundMessageC">
+                                                        There are no users to select. You need to add them from the
+                                                        contract
+                                                        dashboard first.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit-btn">
+                            <button type="button" class="btn btn-secondary btn-close-bottom-popup" id="goBackToScreenJ">
+                                Back
+                            </button>
+                            <button type="submit" class="btn btn-primary pull-right" id="sendReassignDraftRequest"
+                                    disabled>
+                                Send
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--  Section: Reassign Draft Request popup  -->
     </div>
     <!--  Section: Bottom slider popup  -->
 
