@@ -309,14 +309,14 @@
                     <div class="chat-top-new-part">
                         <div class="line">&check; Messaging Your Party</div>
                         <div class="line" id="clauseSectionTitleSameSide"></div>
-                        <div class="line line3">
-                            <div>My Team: </div>
-                            <div class="text" id="sameSideTeamList"></div>
-                        </div>
                         <div class="line line3" id="divUserProfileA">
-                            <div>My Users: </div>
+                            <div>My Team: </div>
                             <div class="text" id="sameSideUserList"></div>
                         </div>
+                        <!--                        <div class="line line3" id="divUserProfileA">-->
+                        <!--                            <div>My Users: </div>-->
+                        <!--                            <div class="text" id="sameSideUserList"></div>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
                 <div class="conversation-right">
@@ -408,6 +408,9 @@
                 </div>
             </div>
             <div class="chat-create-footer" id="divChatContractSameSideFooter">
+                <div class="go-btn2">
+                    <button class="btn" id="btnGoToCounterparty">Go to counterparty</button>
+                </div>
                 <div id="divSameSideTextbox">
                     <span id="typingSpan"></span>
                     <div class="form-group position-relative">
@@ -417,6 +420,9 @@
                         <div id="errorFileUploadSameSide"></div>
                         <div id="attchedFilenameSameSide"></div>
                         <input type="file" class="d-none" id="attachFileSameSide" multiple>
+
+                    </div>
+                    <div class="chat-footer-inner chat-footer-inner-2" id="chatFooterInnerSameSide">
                         <div class="type-sms-btn-part">
                             <button type="submit" class="btn btn-secondary" id="btnAttachFileSameSide"
                                     data-bs-toggle="tooltip"
@@ -437,9 +443,6 @@
                                 <img src="images/calender-add.svg" alt="Schedule meeting">
                             </button>
                         </div>
-                    </div>
-                    <div class="chat-footer-inner" id="chatFooterInnerSameSide">
-                        <button class="btn" id="btnGoToCounterparty">Go to counterparty</button>
                         <div class="send-btn">
                             <button class="btn-primary" id="btnSendSameSide"><img src="images/send-icon.svg" alt="">Send
                             </button>
@@ -517,6 +520,10 @@
                 </div>
             </div>
             <div class="chat-create-footer" id="divChatContractCounterpartyFooter">
+                <div class="go-btn2">
+                    <button class="btn" id="btnGoToSameSide">Go to my side</button>
+                </div>
+
                 <div id="divCounterpartyTextbox">
                     <span id="typingSpanCP"></span>
                     <div class="form-group position-relative">
@@ -526,6 +533,9 @@
                         <div id="errorFileUploadCounterparty"></div>
                         <div id="attchedFilenameCounterparty"></div>
                         <input type="file" class="d-none" id="attachFileCounterparty" multiple>
+                    </div>
+                    <div class="chat-footer-inner" id="chatFooterInnerCP">
+                        <!--                        <button class="btn" id="btnGoToSameSide">Go to my side</button>-->
                         <div class="type-sms-btn-part">
                             <button type="submit" class="btn btn-secondary" id="btnAttachFileCounterparty"
                                     data-bs-toggle="tooltip"
@@ -546,9 +556,6 @@
                                 <img src="images/calender-add.svg" alt="Schedule meeting">
                             </button>
                         </div>
-                    </div>
-                    <div class="chat-footer-inner" id="chatFooterInnerCP">
-                        <button class="btn" id="btnGoToSameSide">Go to my side</button>
                         <div class="send-btn">
                             <button class="btn-primary" id="btnSendCounterParty"><img src="images/send-icon.svg" alt="">
                                 Send to Counterparty

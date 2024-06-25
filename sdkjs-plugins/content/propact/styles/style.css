@@ -13,7 +13,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .btn {width: auto; display: inline-block; margin: 0;  padding: 10px 18px; border: 0; font-size: 14px; color: #282756;  font-weight: 400; font-family: 'Poppins', sans-serif;  border-radius: 4px; min-width: 86px; text-align: center; box-shadow: none !important; outline: none !important; }
 .btn-secondary {background: #E5E5E5;}
 .btn-secondary:hover { background-color: #69DAEE; }
-#divCounterpartyTextbox .btn-secondary:hover { background-color: #FFBC81 !important; }
+/*#divCounterpartyTextbox .btn-secondary:hover { background-color: #FFBC81 !important; }*/
 .btn-primary { color: #ffffff !important; border: 1px solid !important; background: #282756 !important; }
 .btn-primary:hover { background-color: transparent !important; border-color: #282756 !important; color: #282756 !important; }
 .form-group {width: 100%; margin: 0 0 20px 0; padding: 0; float: left;}
@@ -116,7 +116,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .chat-body .chat-area .dark-gold-color .message-content {background: #FFBC81;}
 .chat-body .chat-area .dark-gold-color .message-content h4 { font-size: 12px; font-weight: 600; margin:0 0 12px 0 ; padding: 0; line-height: 16px;}
 .chat-body .chat-area .dark-gold-color .message-content .message { background: #fff; border-radius: 5px; padding: 6px;}
-.chat-body .chat-area .message-wrapper.reverse strong {width: 100%; float: left; margin: 0; padding: 8px 0 0 0; font-size: 14px; font-weight: 400; color: #282756; line-height: normal;}
+.chat-body .chat-area .message-wrapper.reverse strong {width: 100%; float: none; margin: 0; padding: 8px 0 0 0; font-size: 14px; font-weight: 400; color: #282756; line-height: normal;}
 .chat-body .chat-area .message-wrapper strong { width: 100%; float: left; margin: 0; padding: 8px 0 0 0; font-size: 14px; font-weight: 400; color: #282756; line-height: normal;}
 .light-gold-color .profile-picture img { border-color: #FFBC81;}
 .chat-body .chat-area .light-gold-color .message-content {background: #FFF6ED;}
@@ -143,7 +143,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .conversation-right > ul li { margin: 0; padding: 0 6px; width: auto; float: left; min-width: 42px; text-align: center}
 .conversation-right > ul li a { display: inline-block; margin: 0;  padding: 0; width: auto; text-align: left;}
 .conversation-right > ul li a img {width: auto; max-width: 30px; max-height: 30px; margin: 0;}
-.conversion-history .chat-body { height: calc(100vh - 254px);}
+.conversion-history .chat-body { height: calc(100vh - 295px);}
 .chat-create-footer .form-group { margin: 0 0 16px 0;}
 .chat-create-footer .form-group textarea.form-control { min-height: 80px;}
 .conversion-history .chat-footer-inner {justify-content: space-between;}
@@ -159,7 +159,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .request-row .request-content { width: auto; display: inline-block; text-align: left; max-width: 308px; background: #79D7FA; padding: 12px; border-radius: 5px 0px 5px 5px; margin: 0 0 0 0; min-width: 246px; position: relative;}
 .request-row .request-content h4 { margin: 0 0 12px 0; padding: 0; font-size: 12px; font-weight: 600; color: #282756; line-height: normal;}
 .request-row .request-content .content-message {background: #fff; border-radius: 5px; padding: 6px; font-size: 12px; font-weight: 400; line-height: 17px; color: #282756;}
-.request-row .request-btn { display: flex; align-items: center; margin: 20px 0 0; padding: 0 0 0  0;}
+.request-row .request-btn { display: block; align-items: center; margin: 20px 0 0; padding: 0 0 0  0;}
 .request-row .request-btn .btn { margin: 0 6px 0 0; min-width: 100px;}
 .request-row .request-btn .reject-btn { background: #FF0000; color: #fff;}
 
@@ -250,8 +250,9 @@ div#divDraftingBox div#assignDraftingRequestBox div#accordionExampleB .accordion
 #formAssignDraftRequest div#assignDraftRequestBox div#accordionExampleA, #formReassignDraftRequest div#reassignDraftRequestBox div#accordionExampleC { margin: -4px 0 0 0;}
 #formAssignDraftRequest div#assignDraftRequestBox div#accordionExampleA .accordion-item, #formReassignDraftRequest div#reassignDraftRequestBox div#accordionExampleC .accordion-item { border-top: 0; border-radius: 0px 0px 6px 6px;}
 
-
-
+.go-btn2{padding-bottom: 10px; }
+.go-btn2 .btn{border: 1px solid #282756;}
+/*.chat-footer-inner-2{justify-content: flex-end;}*/
 
 .filter-box .accordion-header { margin: 0;}
 .filter-box .filter-inner {width: 100%; margin: 0; padding: 0; display: block;}
@@ -381,12 +382,13 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
     display: flex; justify-content: space-between;
 }
 
-.type-sms-btn-part{position: absolute; right: 8px; bottom: 8px; }
-.type-sms-btn-part .btn{min-width: inherit; padding: 8px 7px; width: 38px;}
+.type-sms-btn-part{position: static; right: 8px; bottom: 8px; }
+.type-sms-btn-part .btn{min-width: 40px; padding: 8px 7px; width: 40px; height: 40px}
 .conversation-right > ul li .invite-user-tabs.first-icon{right: 43px;}
 
 .chat-top-new-part .line{font-size: 14px; color: #282756; font-weight: 600;}
 .chat-top-new-part .line3{display: flex;}
+.chat-top-new-part .line3 div:first-child{flex: none;}
 .chat-top-new-part .line3 .text{font-size: 12px; font-weight: normal; flex-wrap: wrap;  padding-left: 5px;}
 /*.chat-pdf-box{background-color: rgba(121, 215, 250, 0.12); padding: 10px; width: 242px; margin-left: auto; border-radius: 5px;}
 .chat-pdf-box .icon{background-color: #ffffff; text-align: center; width: 222px; height: 110px; display: flex; justify-content: center; align-items: center;
