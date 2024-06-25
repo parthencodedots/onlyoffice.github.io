@@ -143,7 +143,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .conversation-right > ul li { margin: 0; padding: 0 6px; width: auto; float: left; min-width: 42px; text-align: center}
 .conversation-right > ul li a { display: inline-block; margin: 0;  padding: 0; width: auto; text-align: left;}
 .conversation-right > ul li a img {width: auto; max-width: 30px; max-height: 30px; margin: 0;}
-.conversion-history .chat-body { height: calc(100vh - 295px);}
+.conversion-history .chat-body { height: calc(100vh - 325px);}
 .chat-create-footer .form-group { margin: 0 0 16px 0;}
 .chat-create-footer .form-group textarea.form-control { min-height: 80px;}
 .conversion-history .chat-footer-inner {justify-content: space-between;}
@@ -387,8 +387,8 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
 .conversation-right > ul li .invite-user-tabs.first-icon{right: 43px;}
 
 .chat-top-new-part .line{font-size: 14px; color: #282756; font-weight: 600;}
-.chat-top-new-part .line3{display: flex;}
-.chat-top-new-part .line3 div:first-child{flex: none;}
+.chat-top-new-part .line3{display: block;}
+.chat-top-new-part .line3 div:first-child{flex: none; display: inline-block;}
 .chat-top-new-part .line3 .text{font-size: 12px; font-weight: normal; flex-wrap: wrap;  padding-left: 5px;}
 /*.chat-pdf-box{background-color: rgba(121, 215, 250, 0.12); padding: 10px; width: 242px; margin-left: auto; border-radius: 5px;}
 .chat-pdf-box .icon{background-color: #ffffff; text-align: center; width: 222px; height: 110px; display: flex; justify-content: center; align-items: center;
