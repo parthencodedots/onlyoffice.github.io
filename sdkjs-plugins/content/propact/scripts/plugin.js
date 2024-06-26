@@ -94,7 +94,7 @@
     var attachFileSameSide = [];
     var attachFileCounterparty = [];
     var contractClauseGroups = [];
-
+    let contractArchieveStatus = false
     /**
      * @constant
      * @description Define the variables for socket functionality
@@ -2681,9 +2681,9 @@
             case "Invite":
                 var message = "";
                 if (data.invitedUserName) {
-                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section";
+                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
                 } else {
-                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section";
+                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
                 }
                 renderHTML += '<strong class="message-wrapper grey-color">\n' +
                     '   <div class="profile-picture">\n' +
@@ -2751,10 +2751,10 @@
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                     requestRowMessage = (data.status == "approved" ? 'Position approved by ' : 'Position rejected by ') + data.actionperformedbyUser
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag != 'reassign') {
-                    requestRowMessage = data.actionperformedbyUser + ' has been assigned a team member to draft this contract section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft this clause';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag == 'reassign') {
-                    requestRowMessage = data.actionperformedbyUser + ' has been assigned '+data.sendToName+' to draft this contract section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this clause';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
@@ -2768,7 +2768,7 @@
                 } else if (data.confirmationType == "assign_draft") {
                     getContractSectionDetails();
                     getContractDetails(socket, false);
-                    requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + data.sendToName + ' to draft this contract section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this clause';
                 } else if (data.confirmationType == "withdrawn") {
                     renderHTML += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                         '   <div class="profile-picture">\n' +
@@ -2793,9 +2793,11 @@
                     if (chatWindow !== 'SS') {
                         let htmlA = '';
                         htmlA += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
-                            '   <div class="position-text">This contract section has been withdrawn by ' + data.actionperformedbyUser + '</div>\n';
+                            '   <div class="position-text">This clause has withdrawn by ' + data.actionperformedbyUser + '</div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                            htmlA += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                            if(contractArchieveStatus != true) {
+                                htmlA += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                            }
                         }
                         htmlA += '</div>';
                         var newElementA = document.createElement("div");
@@ -2804,9 +2806,11 @@
                     } else {
                         let htmlB = '';
                         htmlB += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
-                            '   <div class="position-text">This contract section has been withdrawn by ' + data.actionperformedbyUser + '</div>\n';
+                            '   <div class="position-text">This clause has withdrawn by ' + data.actionperformedbyUser + '</div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                            htmlB += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                            if(contractArchieveStatus != true) {
+                                htmlB += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                            }
                         }
                         htmlB += '</div>';
                         var newElementB = document.createElement("div");
@@ -2864,7 +2868,7 @@
                             '               <h4>Draft Request</h4>\n' +
                             '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                             '           </div>\n';
-                        if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator"  || openContractResponseData.userRole == "Counterparty") {
+                        if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty") {
                             renderHTML += '        <div class="request-btn">\n' +
                                 '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + data.messageId + '">Assign for Drafting</button>\n' +
                                 '           </div>\n';
@@ -2909,12 +2913,12 @@
                             renderHTML += '</div>\n' +
                                 '</div>';
                             if (data.flagDraftAssigned) {
-                                requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft this contract section';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft this clause';
                             } else {
                                 if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                    requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this contract section';
+                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this clause';
                                 } else {
-                                    requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this contract section';
+                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this clause';
                                 }
                             }
                         }
@@ -3034,9 +3038,9 @@
             case "Invite":
                 var message = "";
                 if (data.invitedUserName) {
-                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section";
+                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
                 } else {
-                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this contract section";
+                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
                 }
                 renderHTML += '<strong class="message-wrapper reverse">\n' +
                     '   <div class="profile-picture">\n' +
@@ -3082,7 +3086,7 @@
                 if (data.confirmationType == 'position') {
                     requestRowMessage = (data.status == "approved" ? 'Position approved by ' : 'Position rejected by ') + data.actionperformedbyUser
                 } else if (data.confirmationType == 'request_draft' && data.sendTo) {
-                    requestRowMessage = data.actionperformedbyUser + ' has been assigned a team member to draft this contract section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft this clause';
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
                         getContractSectionDetails();
@@ -3093,7 +3097,7 @@
                     }
                 } else if (data.confirmationType == "assign_draft") {
                     getContractDetails(socket, false);
-                    requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + data.sendToName + ' to draft this contract section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this clause';
                 } else if (data.confirmationType == "withdrawn") {
                     requestRowMessage = 'Contract section withdrawn by ' + data.actionperformedbyUser;
                 } else if (data.confirmationType == "Reopen") {
@@ -3169,12 +3173,12 @@
                         renderHTML += '</div>\n' +
                             '</div>';
                         if (data.flagDraftAssigned) {
-                            requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft this contract section';
+                            requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft this clause';
                         } else {
                             if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft this contract section';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft this clause';
                             } else {
-                                requestRowMessage = data.actionperformedbyUser + ' has been assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft this contract section';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft this clause';
                             }
                         }
                     }
@@ -3278,8 +3282,10 @@
                         contractInformation = responseData.openContractDetails;
                         loggedInUserDetails = responseData.loggedInUserDetails;
                         loggedInCompanyDetails = responseData.loggedInCompanyDetails;
+                        contractArchieveStatus = contractInformation.isContractArchived;
                         if (contractInformation.isContractArchived == true) {
                             switchClass(elements.btnCreateClause, disabledClass, true);
+                            switchClass(elements.btnAddClauseToGroup, disabledClass, true);
                         } else {
                             switchClass(elements.btnCreateClause, displayNoneClass, (contractInformation && contractInformation.contractCurrentStatus != "Under Negotiation"));
                         }
@@ -3423,6 +3429,7 @@
                         }
                         if (contractInformation.isContractArchived == true) {
                             switchClass(elements.btnMarkupMode, displayNoneClass, true);
+                            switchClass(elements.btnAddClauseToGroup, displayNoneClass, true);
                             switchClass(elements.btnMarkupMode.parentElement, 'justify-content-end', true);
 
                             var actionCounterparty = document.querySelectorAll('.action-counterparty');
@@ -3929,7 +3936,7 @@
                                 // html += '\t\t\t\t\t\t<div class="ringring"></div><div class="notification-no' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"></div>';
                                 html += '\t\t\t\t\t\t<div class="new-msg-container' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"><div class="ringring"></div><div class="notification-no"></div></div>'
                                 html += '\t\t\t\t\t\t<div class="contract-top">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t<div class="contract-checkbox">\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t<div class="contract-checkbox' + (contractArchieveStatus == false ? '' : ' ' + displayNoneClass) + '">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<input type="checkbox" class="chkbox-clause">   \n' +
                                     '\t\t\t\t\t\t\t\t\t\t</div>' +
                                     '\t\t\t\t\t\t\t\t\t<h3>' + ele.contractSection + '</h3>\n' +
@@ -4110,7 +4117,7 @@
                                         // html += '\t\t\t\t\t\t<div class="ringring"></div><div class="notification-no' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"></div>';
                                         iHTML += '\t\t\t\t\t\t<div class="new-msg-container' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"><div class="ringring"></div><div class="notification-no"></div></div>'
                                         iHTML += '\t\t\t\t\t\t<div class="contract-top">\n' +
-                                            '\t\t\t\t\t\t\t\t\t\t<div class="contract-checkbox">\n' +
+                                            '\t\t\t\t\t\t\t\t\t\t<div class="contract-checkbox' + (contractArchieveStatus == false ? '' : ' ' + displayNoneClass) + '">\n' +
                                             '\t\t\t\t\t\t\t\t\t\t\t\t<img src="images/close.svg" class="remove-from-group" alt="Delete" title="Remove From Group">\n' +
                                             '\t\t\t\t\t\t\t\t\t\t</div>' +
                                             '\t\t\t\t\t\t\t\t\t<h3>' + ele.contractSection + '</h3>\n' +
@@ -4266,7 +4273,7 @@
                                 '\t\t\t\t</div>\n' +
                                 '</li>';
                             contractUsers += contractCreatorDetails.itemName
-                            if(selectedContractSectionDetails.contractAssignedUsers.length > 0){
+                            if (selectedContractSectionDetails.contractAssignedUsers.length > 0) {
                                 contractUsers += ', ';
                             }
                         }
@@ -4283,7 +4290,7 @@
                                 '\t\t\t\t</div>\n' +
                                 '</li>';
                             contractUsers += contractCounterPartyDetails.itemName
-                            if(selectedContractSectionDetails.contractAssignedUsers.length > 0){
+                            if (selectedContractSectionDetails.contractAssignedUsers.length > 0) {
                                 contractUsers += ', ';
                             }
                         }
@@ -4318,6 +4325,7 @@
                         iHtml += '</ul>';
                         elements.divInvitedUsers.innerHTML = iHtml;
                         elements.sameSideUserList.innerHTML = contractUsers;
+                        let teamListingHtml = '';
 
                         if (selectedContractSectionDetails.contractAssignedTeams && selectedContractSectionDetails.contractAssignedTeams.length > 0) {
                             var iHtml = '<ul>';
@@ -4331,6 +4339,13 @@
                                     '\t\t\t\t</div>\n' +
                                     '</li>';
                                 teamListHeader += ele.teamName
+                                teamListingHtml += '<li>\n' +
+                                    '\t\t\t\t<div class="invite-user-inner">\n' +
+                                    '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + ele.teamName + '</h3>\n' +
+                                    '\t\t\t\t\t\t\t\t</div>\n' +
+                                    '\t\t\t\t</div>\n' +
+                                    '</li>';
                             });
                             iHtml += '</ul>';
                             elements.divInvitedTeams.innerHTML = iHtml;
@@ -4355,6 +4370,9 @@
                                 });
                             }
                             let contractCreatorUsersHtml = '<ul>';
+                            if (teamListingHtml != '') {
+                                contractCreatorUsersHtml += teamListingHtml;
+                            }
                             if (selectedContractSectionDetails.contractCreatorDetail) {
                                 contractCreatorUsersHtml += '<li>\n' +
                                     '\t\t\t\t<div class="invite-user-inner">\n' +
@@ -4509,12 +4527,14 @@
                             if (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed") {
                                 message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName;
                             } else {
-                                message = 'This contract section has been withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
+                                message = 'This clause has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
                             }
                             renderHTML += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
                                 '   <div class="position-text">' + message + '</div>\n';
                             if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                                renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                                if(contractArchieveStatus != true) {
+                                    renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                                }
                             }
                             renderHTML += '</div>';
 
@@ -4527,12 +4547,14 @@
                             if (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed") {
                                 message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName;
                             } else {
-                                message = 'This contract section has been withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
+                                message = 'This clause has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
                             }
                             renderHTML += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                                 '   <div class="position-text">' + message + '</div>\n';
                             if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                                renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                                if(contractArchieveStatus != true) {
+                                    renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                                }
                             }
                             renderHTML += '</div>';
 
@@ -4559,6 +4581,10 @@
                         elements.divInvitedTeams.innerHTML = noTeamAssigned;
                     }
                     switchClass(elements.loader, displayNoneClass, true);
+                    if (contractArchieveStatus == true) {
+                        switchClass(elements.divSameSideTextbox, displayNoneClass, true);
+                        switchClass(elements.divCounterpartyTextbox, displayNoneClass, true);
+                    }
                 })
                 .catch(error => {
                     // Handle any errors
@@ -4794,7 +4820,7 @@
                                             var invitedUser = element.invitedUserDetails.firstName + " " + element.invitedUserDetails.lastName;
                                             inviteMessage += invitedUser.trim();
                                         }
-                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this contract section';
+                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this clause';
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
@@ -4860,16 +4886,16 @@
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
                                             if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                                notificationMessage = userName.trim() + " has been assigned " + (contractInformation.companyId == element.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + " to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + " to draft this clause";
                                             } else {
-                                                notificationMessage = userName.trim() + " has been assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft this clause";
                                             }
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
-                                                notificationMessage = userName.trim() + " has been assigned " + userReceiverName.trim() + " to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this clause";
                                             } else {
-                                                notificationMessage = userName.trim() + " has been assigned a team member to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned a team member to draft this clause";
                                             }
                                         } else if (element.message == 'withdrawn') {
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
@@ -5031,7 +5057,7 @@
                                             var invitedUser = element.invitedUserDetails.firstName + " " + element.invitedUserDetails.lastName;
                                             inviteMessage += invitedUser.trim();
                                         }
-                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this contract section';
+                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this clause';
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
                                             '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
@@ -5118,13 +5144,13 @@
                                         var notificationMessage;
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has been assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft this contract section";
+                                            notificationMessage = userName.trim() + " has assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft this clause";
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
-                                                notificationMessage = userName.trim() + " has been assigned " + userReceiverName.trim() + " to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this clause";
                                             } else {
-                                                notificationMessage = userName.trim() + " has been assigned a team member to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned a team member to draft this clause";
                                             }
                                         } else if (element.message == 'withdrawn') {
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
@@ -5528,7 +5554,7 @@
     }
 
     /**
-     * @description This method is used for update the contract section confirmation request status Approve/Reject
+     * @description This method is used for update the clause confirmation request status Approve/Reject
      * @param postData
      * @param socket
      * @returns {Promise<void>}
@@ -5641,7 +5667,7 @@
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '       <div class="request-row">\n' +
-                                            '      <strong>' + postData.actionperformedbyUser + ' has been assigned a team member to draft this contract section</strong>\n';
+                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned a team member to draft this clause</strong>\n';
                                         renderHTML += '       </div>\n' +
                                             '</div>\n';
                                         if (postData.messageConfirmationFor != "Same Side") {
@@ -5684,9 +5710,9 @@
                                             postData.flagDraftAssigned = response.data.flagDraftAssigned;
                                             postData.assignedUserDetails = postData.sendToName;
                                             socket.emit('contractSectionMessage', postData);
-                                            message = postData.actionperformedbyUser + ' has been assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft this contract section';
+                                            message = postData.actionperformedbyUser + ' has assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft this clause';
                                         } else {
-                                            message = postData.actionperformedbyUser + ' has been assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this contract section';
+                                            message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this clause';
                                         }
                                         renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                             '   <div class="profile-picture">\n' +
@@ -5708,7 +5734,7 @@
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '       <div class="request-row">\n' +
-                                            '      <strong>' + postData.actionperformedbyUser + ' has been assigned ' + postData.sendToName + ' to draft this contract section</strong>\n';
+                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft this clause</strong>\n';
                                         if (postData.with == 'Our Team' && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty') && postData && postData.flag == 'reassign') {
                                             renderHTML += '<br/>' +
                                                 '<div class="request-btn">\n' +
@@ -5729,7 +5755,7 @@
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '   </div>\n' +
                                     '       <div class="request-row">\n' +
-                                    '      <strong>' + postData.actionperformedbyUser + ' has been assigned ' + postData.sendToName + ' to draft this contract section</strong>\n';
+                                    '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft this clause</strong>\n';
                                 if (postData.with == 'Our Team' && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty')) {
                                     renderHTML += '<br/>' +
                                         '<div class="request-btn">\n' +
@@ -5854,7 +5880,7 @@
                         }
                         closeBottomPopup();
 
-                        // Refresh the contract section lists
+                        // Refresh the clause lists
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
@@ -5875,7 +5901,7 @@
     }
 
     /**
-     * @description This method is used for withdrawn contract section
+     * @description This method is used for withdrawn clause
      * @param postData
      * @param socket
      * @returns {Promise<void>}
@@ -5932,9 +5958,11 @@
 
                         var renderHTML = '';
                         renderHTML += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
-                            '   <div class="position-text">This contract section has been withdrawn by ' + postData.actionperformedbyUser + '</div>\n';
+                            '   <div class="position-text">This clause has withdrawn by ' + postData.actionperformedbyUser + '</div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                            renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                            if(contractArchieveStatus != true) {
+                                renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
+                            }
                         }
                         renderHTML += '</div>';
                         var newElement = document.createElement("div");
@@ -5973,7 +6001,7 @@
                             };
                             elements.divChatCounterPartyBody.scrollTo(scrollToOptions);
                         }
-                        // Refresh the contract section lists
+                        // Refresh the clause lists
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
@@ -5993,7 +6021,7 @@
     }
 
     /**
-     * @description This method is used for the reopen the contract section
+     * @description This method is used for the reopen the clause
      * @param reopenDetail
      * @param socket
      * @returns {Promise<void>}
@@ -6016,7 +6044,7 @@
                     // Handle the response data
                     var responseData = response;
 
-                    // Send the message to contract section same side
+                    // Send the message to clause same side
                     socket.emit('contractSectionMessage', reopenDetail);
 
                     // Send the message to contract history section
@@ -6086,7 +6114,7 @@
     }
 
     /**
-     * @description This method is used for the invite user or team in contract section from Sameside window
+     * @description This method is used for the invite user or team in clause from Sameside window
      * @param socket
      * @param invitationType
      * @returns {Promise<void>}
@@ -6171,7 +6199,7 @@
                                 '      <p class="name">' + inviteMessage.actionperformedbyUser + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
-                                '   <strong>\n' + inviteMessage.invitedUserName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
+                                '   <strong>\n' + inviteMessage.invitedUserName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this clause" + '</strong>\n' +
                                 '</div>\n';
 
                             if (inviteMessage.with == "Counterparty") {
@@ -6240,7 +6268,7 @@
                                 '      <p class="name">' + inviteMessage.actionperformedbyUser + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
-                                '   <strong>\n' + inviteMessage.invitedTeamName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this contract section" + '</strong>\n' +
+                                '   <strong>\n' + inviteMessage.invitedTeamName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this clause" + '</strong>\n' +
                                 '</div>\n';
 
                             if (inviteMessage.with == "Counterparty") {

@@ -140,9 +140,11 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .chat-body .chat-area .grey-color .message-content {background:#F3F3F3;}
 .meeting-screen .chat-create-header .conversation-right { display: flex; align-items: center; margin: 0; padding: 0; position: relative;}
 .conversation-right > ul { display: flex; align-items: center; margin: 0; padding: 0; width: auto;}
-.conversation-right > ul li { margin: 0; padding: 0 6px; width: auto; float: left; min-width: 42px; text-align: center}
+.conversation-right > ul li { margin: 0; padding: 0 3px; width: auto; float: left; min-width: 38px; text-align: center}
 .conversation-right > ul li a { display: inline-block; margin: 0;  padding: 0; width: auto; text-align: left;}
 .conversation-right > ul li a img {width: auto; max-width: 30px; max-height: 30px; margin: 0;}
+.conversation-right > ul li:first-child a{width: 34px}
+.conversation-right > ul li:first-child a img{max-height: 33px; max-width: 33px; width: 100%; }
 .conversion-history .chat-body { height: calc(100vh - 325px);}
 .chat-create-footer .form-group { margin: 0 0 16px 0;}
 .chat-create-footer .form-group textarea.form-control { min-height: 80px;}
@@ -253,6 +255,7 @@ div#divDraftingBox div#assignDraftingRequestBox div#accordionExampleB .accordion
 .go-btn2{padding-bottom: 10px; }
 .go-btn2 .btn{border: 1px solid #282756;}
 /*.chat-footer-inner-2{justify-content: flex-end;}*/
+.close-btn{width: 30px;}
 
 .filter-box .accordion-header { margin: 0;}
 .filter-box .filter-inner {width: 100%; margin: 0; padding: 0; display: block;}
@@ -408,12 +411,15 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
     .chat-footer-inner .btn { margin: 0 4px;  padding: 10px 12px; min-width: auto;}
     .btn {font-size: 11px;}
     .request-row .request-content,.chat-body .chat-area .message-wrapper .message-content {min-width: auto;}
-    .conversation-right > ul li {min-width: 32px;}
+    .conversation-right > ul li {min-width: 30px;}
     .conversation-right > ul li a img { max-width: 24px; max-height: 24px;}
+    .conversation-right > ul li:first-child a{width: 27px}
+    .conversation-right > ul li:first-child a img{max-height: 27px; max-width: 27px; width: 100%; }
+    .clause-options i{font-size: 19px;}
     .conversation-left .user-icon { width: 35px; height: 35px; margin: 0 6px 0 0;}
     .conversation-left .user-inner .user-name {font-size: 12px; width: 105px;}
     .conversion-history .chat-footer-inner .send-btn .btn-primary { margin: 0 0 0 2px; padding: 0 10px;}
-    .meeting-screen .chat-create-header .conversation-right .close-btn img { max-width: 24px;}
+    .meeting-screen .chat-create-header .conversation-right .close-btn img { max-width: 26px;}
     .chat-body .chat-area .message-wrapper .message-content .delete-icon {right: -20px;}
     .contract-list .contract-search .form-group .form-control {height: 40px; }
     .contract-list .contract-search .form-group .btn {padding: 10px 12px; height: 40px}
@@ -466,6 +472,8 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
     .conversation-left .user-inner p {white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 90px; font-size: 10px;}
     .chat-create-header .conversation-left .user-inner p { line-height: 10px }
     .conversation-right > ul li a img {max-width: 20px; max-height: 20px; }
+    .conversation-right > ul li:first-child a{width: 23px}
+    .conversation-right > ul li:first-child a img{max-height: 23px; max-width: 23px; width: 100%; }
     .conversation-right > ul li {padding: 0 2px;}
     .chat-create-footer {padding: 10px 10px 10px;}
     .conversion-history .chat-body {height: calc(100vh - 217px); }
@@ -483,6 +491,8 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
     .request-row .request-btn .btn {margin: 0 4px; min-width: 90px;}
     a.clause-options { width: 12px !important; }
     .clause-options i { font-size: 16px; padding-top: 6px;}
+    .close-btn{width: 24px;}
+    .conversation-right > ul li a{text-align: center;}
 }
 @media only screen and (max-width:422px){
     .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;min-width: auto;font-size: 12px}
