@@ -370,6 +370,10 @@
                 }
                 flagDisableWhenPluginLoading = true;
             }
+
+            if(contractArchieveStatus == true){
+                switchClass(elements.btnCreateClause, displayNoneClass, true);
+            }
         }
 
         /**
