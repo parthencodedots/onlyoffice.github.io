@@ -3938,7 +3938,7 @@
                                 html += '<div class="contract-item" data-id="' + ele._id + '" data-commentid="' + commentID + '" data-chatwindow="' + (ele.unreadMessageSide ? ele.unreadMessageSide : '-') + '" id="' + commentID.split('-').pop() + '">\n' +
                                     '\t\t\t<a href="javascript:void(0)">\n';
                                 // html += '\t\t\t\t\t\t<div class="ringring"></div><div class="notification-no' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"></div>';
-                                html += '\t\t\t\t\t\t<div class="new-msg-container' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"><div class="ringring"></div><div class="notification-no"></div></div>'
+                                html += '\t\t\t\t\t\t<div class="new-msg-container' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"><div class="ringring' + (contractArchieveStatus == false ? '' : ' ' + displayNoneClass) + '"></div><div class="notification-no"></div></div>'
                                 html += '\t\t\t\t\t\t<div class="contract-top">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t<div class="contract-checkbox' + (contractArchieveStatus == false ? '' : ' ' + displayNoneClass) + '">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<input type="checkbox" class="chkbox-clause">   \n' +
@@ -4119,7 +4119,7 @@
                                         iHTML += '<div class="contract-item" data-id="' + ele._id + '" data-groupid="' + element._id + '" data-commentid="' + commentID + '" data-chatwindow="' + (ele.unreadMessageSide ? ele.unreadMessageSide : '-') + '" id="' + commentID.split('-').pop() + '">\n' +
                                             '\t\t\t<a href="javascript:void(0)">\n';
                                         // html += '\t\t\t\t\t\t<div class="ringring"></div><div class="notification-no' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"></div>';
-                                        iHTML += '\t\t\t\t\t\t<div class="new-msg-container' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"><div class="ringring"></div><div class="notification-no"></div></div>'
+                                        iHTML += '\t\t\t\t\t\t<div class="new-msg-container' + (ele.hasUnreadMessage ? '' : ' ' + displayNoneClass) + '"><div class="ringring' + (contractArchieveStatus == false ? '' : ' ' + displayNoneClass) + '"></div><div class="notification-no"></div></div>'
                                         iHTML += '\t\t\t\t\t\t<div class="contract-top">\n' +
                                             '\t\t\t\t\t\t\t\t\t\t<div class="contract-checkbox' + (contractArchieveStatus == false ? '' : ' ' + displayNoneClass) + '">\n' +
                                             '\t\t\t\t\t\t\t\t\t\t\t\t<img src="images/close.svg" class="remove-from-group" alt="Delete" title="Remove From Group">\n' +

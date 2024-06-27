@@ -94,7 +94,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .create-contract-inner .submit-btn .btn {margin: 0 0 0 14px;}
 .create-contract-inner .submit-btn .btn:first-child{margin: 0;}
 .meeting-screen{ width: 100%; margin: 0; padding: 0; float: left; height: 100%;}
-.meeting-screen .chat-create-header { background: #79D7FA; width: 100%; margin: 0; padding: 15px; display: flex; align-items: center; justify-content: space-between;}
+.meeting-screen .chat-create-header { background: #79D7FA; width: 100%; margin: 0; padding: 10px 5px; display: flex; align-items: center; justify-content: space-between;}
 .meeting-screen .chat-create-header.counterparty { background: #FFBC81 !important; }
 .chat-create-header h3 { font-size: 14px; color: #282756; font-weight: 600; margin: 0; padding: 0; line-height: 22px;}
 .chat-body { overflow: auto; width: 100%; float: left; margin: 0; padding: 12px 20px 20px; height:calc(100vh - 137px); overflow-y: auto; overflow-x: hidden;}
