@@ -151,7 +151,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .conversion-history .chat-footer-inner {justify-content: space-between;}
 .conversion-history .chat-footer-inner .btn { margin: 0;}
 .conversion-history .chat-footer-inner .send-btn { width: auto; display: inline-block; margin: 0; padding: 0;}
-.conversion-history .chat-footer-inner .send-btn .btn-primary {height: 43px; line-height: 43px; font-size: 14px; font-weight: 400; margin: 0 0 0 20px; background-color: #282756 !important; color: #fff !important; border: 1px solid #282756 !important; padding: 0 12px; border-radius: 5px;}
+.conversion-history .chat-footer-inner .send-btn .btn-primary {height: 40px; line-height: 40px; font-size: 14px; font-weight: 400; margin: 0 0 0 20px; background-color: #282756 !important; color: #fff !important; border: 1px solid #282756 !important; padding: 0 12px; border-radius: 5px;}
 .conversion-history .chat-footer-inner .send-btn .btn-primary img { margin: 0 6px 0 0;}
 .conversion-history .chat-footer-inner .send-btn .btn-primary.attach { width: 44px; height: 44px; padding: 0; line-height: normal;}
 .conversion-history .chat-footer-inner .send-btn .btn-primary.attach img { margin: auto;}
