@@ -61,7 +61,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .contract-list-items {width: 100%; float: left; margin: 0;  padding: 2px 0 12px; height: calc(100% - 60px); overflow-y: auto; overflow-x: hidden;}
 .contract-list-items .contract-item { width: 99.75%; margin: 0 0 10px 0; padding: 12px 12px 7px 12px; float: left; background: #F7F7F7; border-radius: 6px;}
 .contract-list-items .contract-item a { width: 100%; margin: 0; padding: 0; float: left; position: relative}
-.contract-list-items .contract-item div.notification-no { width: 10px; height: 10px; background: #FF0000; border-radius: 50%; display: inline-block; position: absolute; right: -8px; top: -8px; }
+.contract-list-items .contract-item div.notification-no { width: 10px; height: 10px; background: #FF0000; border-radius: 50%; display: inline-block; position: absolute; right: 11px; top: 29px; }
 .contract-item .contract-top { width: 100%; margin: 0; padding: 0 0 10px 0; border-bottom: 1px solid #E4E4E4; float: left;}
 .contract-item .contract-top h3 { font-size: 14px; font-weight: 600; color: #282756; margin: 0 0 8px 0; padding: 0; width: 100%; display: block;}
 .contract-item .contract-top p {font-size: 12px; font-weight: 400; margin: 0; padding: 0; color: #282756;  line-height: 18px; display: block; display: -webkit-box; max-width: 100%; height: 36px; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
@@ -140,11 +140,11 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .chat-body .chat-area .grey-color .message-content {background:#F3F3F3;}
 .meeting-screen .chat-create-header .conversation-right { display: flex; align-items: center; margin: 0; padding: 0; position: relative;}
 .conversation-right > ul { display: flex; align-items: center; margin: 0; padding: 0; width: auto;}
-.conversation-right > ul li { margin: 0; padding: 0 3px; width: auto; float: left; min-width: 38px; text-align: center}
+.conversation-right > ul li { margin: 0; padding: 0 3px; width: auto; float: left; min-width: 30px; text-align: center}
 .conversation-right > ul li a { display: inline-block; margin: 0;  padding: 0; width: auto; text-align: left;}
 .conversation-right > ul li a img {width: auto; max-width: 30px; max-height: 30px; margin: 0;}
 .conversation-right > ul li:first-child a{width: 34px}
-.conversation-right > ul li:first-child a img{max-height: 33px; max-width: 33px; width: 100%; }
+.conversation-right > ul li:first-child a img{max-height: 30px; max-width: 30px; width: 100%; }
 .conversion-history .chat-body { height: calc(100vh - 325px);}
 .chat-create-footer .form-group { margin: 0 0 16px 0;}
 .chat-create-footer .form-group textarea.form-control { min-height: 80px;}
@@ -355,7 +355,7 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
         transform: translateY(-5px);
     }
 }
-.contract-list-items .contract-item div.ringring { border: 3px solid #FF0000; -webkit-border-radius: 30px; height: 20px; width: 20px; position: absolute; right: -13px; top: -13px; -webkit-animation: pulsate 1s ease-out; -webkit-animation-iteration-count: infinite; opacity: 0.0}
+.contract-list-items .contract-item div.ringring { border: 3px solid #FF0000; -webkit-border-radius: 30px; height: 20px; width: 20px; position: absolute; right: 6px; top: 24px; -webkit-animation: pulsate 1s ease-out; -webkit-animation-iteration-count: infinite; opacity: 0.0}
 @-webkit-keyframes pulsate {
     0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
     50% {opacity: 1.0;}
@@ -492,7 +492,7 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
     a.clause-options { width: 12px !important; }
     .clause-options i { font-size: 16px; padding-top: 6px;}
     .close-btn{width: 24px;}
-    .conversation-right > ul li a{text-align: center;}
+    /*.conversation-right > ul li a{text-align: center;}*/
 }
 @media only screen and (max-width:422px){
     .chat-footer-inner .btn {margin: 0 4px; padding: 7px 8px;min-width: auto;font-size: 12px}
