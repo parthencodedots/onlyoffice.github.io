@@ -143,7 +143,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .conversation-right > ul li { margin: 0; padding: 0 3px; width: auto; float: left; min-width: 30px; text-align: center}
 .conversation-right > ul li a { display: inline-block; margin: 0;  padding: 0; width: auto; text-align: left;}
 .conversation-right > ul li a img {width: auto; max-width: 30px; max-height: 30px; margin: 0;}
-.conversation-right > ul li:first-child a{width: 34px}
+.conversation-right > ul li:first-child a{width: 30px}
 .conversation-right > ul li:first-child a img{max-height: 30px; max-width: 30px; width: 100%; }
 .conversion-history .chat-body { height: calc(100vh - 325px);}
 .chat-create-footer .form-group { margin: 0 0 16px 0;}
