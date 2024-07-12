@@ -4276,10 +4276,10 @@
                                 '\t\t\t\t\t\t\t\t</div>\n' +
                                 '\t\t\t\t</div>\n' +
                                 '</li>';
-                            contractUsers += contractCreatorDetails.itemName
-                            if (selectedContractSectionDetails.contractAssignedUsers.length > 0) {
-                                contractUsers += ', ';
-                            }
+                            // contractUsers += contractCreatorDetails.itemName
+                            // if (selectedContractSectionDetails.contractAssignedUsers.length > 0) {
+                            //     contractUsers += ', ';
+                            // }
                         }
                         if (contractCounterPartyDetails) {
                             iHtml += '<li>\n' +
@@ -4293,10 +4293,10 @@
                                 '\t\t\t\t\t\t\t\t</div>\n' +
                                 '\t\t\t\t</div>\n' +
                                 '</li>';
-                            contractUsers += contractCounterPartyDetails.itemName
-                            if (selectedContractSectionDetails.contractAssignedUsers.length > 0) {
-                                contractUsers += ', ';
-                            }
+                            // contractUsers += contractCounterPartyDetails.itemName
+                            // if (selectedContractSectionDetails.contractAssignedUsers.length > 0) {
+                            //     contractUsers += ', ';
+                            // }
                         }
                         if (selectedContractSectionDetails.contractAssignedUsers && selectedContractSectionDetails.contractAssignedUsers.length > 0) {
                             if (openContractResponseData.canSendPositionConfirmation == true) {
@@ -4377,21 +4377,21 @@
                             if (teamListingHtml != '') {
                                 contractCreatorUsersHtml += teamListingHtml;
                             }
-                            if (selectedContractSectionDetails.contractCreatorDetail) {
-                                contractCreatorUsersHtml += '<li>\n' +
-                                    '\t\t\t\t<div class="invite-user-inner">\n' +
-                                    '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (selectedContractSectionDetails.contractCreatorDetail.imageKey ? IMAGE_USER_PATH_LINK + selectedContractSectionDetails.contractCreatorDetail.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
-                                    '\t\t\t\t\t\t\t\t</div>\n' +
-                                    '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + selectedContractSectionDetails.contractCreatorDetail.firstName + ' ' + selectedContractSectionDetails.contractCreatorDetail.lastName + '</h3>\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<span>Contract Creator</span>\n' +
-                                    '\t\t\t\t\t\t\t\t</div>\n' +
-                                    '\t\t\t\t</div>\n' +
-                                    '</li>';
-                            }
-                            if (contractCreatorUsers && contractCreatorUsers.length > 0) {
-                                contractCreatorUsers.forEach((el) => {
+                            // if (selectedContractSectionDetails.contractCreatorDetail) {
+                            //     contractCreatorUsersHtml += '<li>\n' +
+                            //         '\t\t\t\t<div class="invite-user-inner">\n' +
+                            //         '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
+                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (selectedContractSectionDetails.contractCreatorDetail.imageKey ? IMAGE_USER_PATH_LINK + selectedContractSectionDetails.contractCreatorDetail.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                            //         '\t\t\t\t\t\t\t\t</div>\n' +
+                            //         '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
+                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + selectedContractSectionDetails.contractCreatorDetail.firstName + ' ' + selectedContractSectionDetails.contractCreatorDetail.lastName + '</h3>\n' +
+                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<span>Contract Creator</span>\n' +
+                            //         '\t\t\t\t\t\t\t\t</div>\n' +
+                            //         '\t\t\t\t</div>\n' +
+                            //         '</li>';
+                            // }
+                            if (selectedContractSectionDetails.contractAssignedUsers && selectedContractSectionDetails.contractAssignedUsers.length > 0) {
+                                selectedContractSectionDetails.contractAssignedUsers.forEach((el) => {
                                     contractCreatorUsersHtml += '<li>\n' +
                                         '\t\t\t\t<div class="invite-user-inner">\n' +
                                         '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
@@ -4408,21 +4408,21 @@
                             contractCreatorUsersHtml += '</ul>';
 
                             let opositesideUserHtml = '<ul>';
-                            if (selectedContractSectionDetails.contractCounterPartyDetail) {
-                                opositesideUserHtml += '<li>\n' +
-                                    '\t\t\t\t<div class="invite-user-inner">\n' +
-                                    '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (selectedContractSectionDetails.contractCounterPartyDetail.imageUrl ? selectedContractSectionDetails.contractCounterPartyDetail.imageUrl : 'images/no-profile-image.jpg') + '" alt="">\n' +
-                                    '\t\t\t\t\t\t\t\t</div>\n' +
-                                    '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + selectedContractSectionDetails.contractCounterPartyDetail.firstName + ' ' + selectedContractSectionDetails.contractCounterPartyDetail.lastName + '</h3>\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<span>Counterparty</span>\n' +
-                                    '\t\t\t\t\t\t\t\t</div>\n' +
-                                    '\t\t\t\t</div>\n' +
-                                    '</li>';
-                            }
-                            if (opositesideUsers && opositesideUsers.length > 0) {
-                                opositesideUsers.forEach((el) => {
+                            // if (selectedContractSectionDetails.contractCounterPartyDetail) {
+                            //     opositesideUserHtml += '<li>\n' +
+                            //         '\t\t\t\t<div class="invite-user-inner">\n' +
+                            //         '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
+                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (selectedContractSectionDetails.contractCounterPartyDetail.imageUrl ? selectedContractSectionDetails.contractCounterPartyDetail.imageUrl : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                            //         '\t\t\t\t\t\t\t\t</div>\n' +
+                            //         '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
+                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + selectedContractSectionDetails.contractCounterPartyDetail.firstName + ' ' + selectedContractSectionDetails.contractCounterPartyDetail.lastName + '</h3>\n' +
+                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<span>Counterparty</span>\n' +
+                            //         '\t\t\t\t\t\t\t\t</div>\n' +
+                            //         '\t\t\t\t</div>\n' +
+                            //         '</li>';
+                            // }
+                            if (selectedContractSectionDetails.contractAssignedUsers && selectedContractSectionDetails.contractAssignedUsers.length > 0) {
+                                selectedContractSectionDetails.contractAssignedUsers.forEach((el) => {
                                     opositesideUserHtml += '<li>\n' +
                                         '\t\t\t\t<div class="invite-user-inner">\n' +
                                         '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
