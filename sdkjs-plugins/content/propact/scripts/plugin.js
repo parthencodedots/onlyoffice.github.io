@@ -3378,7 +3378,7 @@
                                 getClauses();
                             }
                         } else if (contractInformation.counterPartyInviteStatus == 'Invited') {
-                            if (!(responseData.userRole == 'Admin' || responseData.userRole == 'Contract Creator')) {
+                            if (!(responseData.userRole == 'Admin' || responseData.userRole == 'Contract Creator' || responseData.userRole == 'Counterparty')) {
                                 switchClass(elements.paragraphInvitationActions, displayNoneClass, true);
                             }
                             switchClass(elements.divInviteCounterparty, displayNoneClass, true);
