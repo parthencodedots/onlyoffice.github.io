@@ -336,7 +336,7 @@
 
         if (!flagSocketInit) {
             socket = io.connect(baseUrl,
-                {auth: {authToken}}
+                { auth: { authToken } }
             );
             flagSocketInit = true;
         }
@@ -346,7 +346,7 @@
          */
         if (contractMode == 'markup') {
             switchClass(elements.btnCreateClause, displayNoneClass, true);
-            elements.btnMarkupMode.innerHTML = 'Back to Contract';
+            elements.btnMarkupMode.innerHTML = 'Master Document';
         } else {
             if (contractInformation) {
                 switchClass(elements.btnCreateClause, displayNoneClass, (contractInformation && contractInformation.contractCurrentStatus != "Under Negotiation"));
@@ -354,7 +354,7 @@
                 switchClass(elements.btnCreateClause, displayNoneClass, false);
             }
             switchClass(elements.btnCreateClause, disabledClass, true);
-            elements.btnMarkupMode.innerHTML = 'Select Markup Mode';
+            elements.btnMarkupMode.innerHTML = 'Our Working Draft';
             // $('#clauseText').val(text);
             if (text) {
                 switchClass(elements.btnCreateClause, disabledClass, false);
@@ -371,7 +371,7 @@
                 flagDisableWhenPluginLoading = true;
             }
 
-            if(contractArchieveStatus == true){
+            if (contractArchieveStatus == true) {
                 switchClass(elements.btnCreateClause, displayNoneClass, true);
             }
         }
@@ -432,7 +432,7 @@
 
     if (!flagSocketInit) {
         socket = io.connect(baseUrl,
-            {auth: {authToken}}
+            { auth: { authToken } }
         );
         flagSocketInit = true;
     }
@@ -480,7 +480,6 @@
                 newOption.value = contractClauseGroups[i]._id;
                 newOption.textContent = contractClauseGroups[i].groupName;
                 elements.inputClauseGroup.appendChild(newOption);
-                console.log(`Added: ${contractClauseGroups[i]._id} - ${contractClauseGroups[i].groupName}`);
             }
         } else {
             switchClass(elements.divClauseGroup, displayNoneClass, true);
@@ -561,7 +560,7 @@
     };
 
     elements.btnScrollDown.onclick = function () {
-        $('#divContractClauseSections').animate({scrollTop: elements.divContractClauseSections.scrollHeight}, 'slow');
+        $('#divContractClauseSections').animate({ scrollTop: elements.divContractClauseSections.scrollHeight }, 'slow');
         return false;
     };
 
@@ -671,7 +670,7 @@
                                 iHtml += '<li>\n' +
                                     '\t\t\t\t<div class="invite-user-inner">\n' +
                                     '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (userDetails.userImage ? IMAGE_USER_PATH_LINK + userDetails.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (userDetails.userImage ? userDetails.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                     '\t\t\t\t\t\t\t\t</div>\n' +
                                     '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + userDetails.itemName + '</h3>\n' +
@@ -1394,7 +1393,6 @@
         let actionType = $(this).data('action');
         if (actionType == "reassign-user") {
             let messageID = $(this).data('id');
-            console.log('messageID', messageID);
             elements.formReassignDraftRequest.reset();
             switchClass(elements.divReassignDraftingBox, displayNoneClass, true);
             elements.reassignDraftRequestUserId.value = "";
@@ -1459,8 +1457,6 @@
                 "sendToName": elements.inputAssignDraftRequest.placeholder,
                 "chatWindow": withType
             };
-            /*console.log('assignDraftRequest', assignDraftRequest);
-            return false;*/
             updateContractSectionConfirmationStatus(assignDraftRequest, socket);
             $('.assign-user[data-id="' + assignDraftRequest.messageId + '"]').parent().addClass(displayNoneClass);
             elements.inputAssignDraftRequest.placeholder = "Select user";
@@ -1483,7 +1479,7 @@
                     if (match && match2) {
                         var dataIdValue = match[1];
                         var dataCompanyIdValue = match2[1];
-                        tagUserInMessage.push({"userId": dataIdValue, "companyId": dataCompanyIdValue});
+                        tagUserInMessage.push({ "userId": dataIdValue, "companyId": dataCompanyIdValue });
                     }
                     return value;
                 }
@@ -1830,7 +1826,6 @@
 
     function compareValues(selectedValue) {
         let message = '';
-        console.log('selectedValue', selectedValue);
         switch (selectedValue) {
             case 'sameside':
                 switchClass(elements.divDraftingBox, displayNoneClass, false);
@@ -1867,7 +1862,6 @@
                 } else {
                     switchClass(elements.divReassignDraftingBox, displayNoneClass, true);
                     let messageID = $('#reassignDraftRequestMessageId').val();
-                    console.log('messageID', messageID);
                     elements.formReassignDraftRequest.reset();
                     elements.reassignDraftRequestUserId.value = "";
                     elements.inputReassignDraftRequest.placeholder = "Select user";
@@ -2285,7 +2279,7 @@
                     if (match && match2) {
                         var dataIdValue = match[1];
                         var dataCompanyIdValue = match2[1];
-                        tagUserInMessage.push({"userId": dataIdValue, "companyId": dataCompanyIdValue});
+                        tagUserInMessage.push({ "userId": dataIdValue, "companyId": dataCompanyIdValue });
                     }
                     return value;
                 }
@@ -2307,7 +2301,8 @@
     $(document).on('click', '.attachment', async function () {
         var data = {
             chatRoomName: loggedInUserDetails._id + "_" + contractID,
-            documentURL: $(this).data('link')
+            documentURL: $(this).data('link'),
+            documentFileName: $(this).data('filename')
         };
         socket.emit('downloadDocument', data);
     });
@@ -2685,13 +2680,13 @@
             case "Invite":
                 var message = "";
                 if (data.invitedUserName) {
-                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
+                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this section";
                 } else {
-                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
+                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this section";
                 }
                 renderHTML += '<strong class="message-wrapper grey-color">\n' +
                     '   <div class="profile-picture">\n' +
-                    '      <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
@@ -2701,7 +2696,7 @@
             case "Position Confirmation":
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'SS' ? " grey-color" : " dark-gold-color") + (data && data.messageStatus && data.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                     '       <div class="profile-picture">\n' +
-                    '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '       </div>\n' +
@@ -2731,13 +2726,13 @@
             case "Draft Confirmation":
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'SS' ? " grey-color" : " dark-gold-color") + '">\n' +
                     '   <div class="profile-picture">\n' +
-                    '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
                     '   <div class="request-row">\n' +
                     '      <div class="' + (chatWindow == 'SS' ? "request-content" : "message-content") + '">\n' +
-                    '         <h4>Draft confirmation request</h4>\n' +
+                    '         <h4>Sent drafting for approval</h4>\n' +
                     '         <div class="' + (chatWindow == 'SS' ? "content-message" : "message") + '">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                     '      </div>';
                 if (data.companyId != loggedInCompanyDetails._id && openContractResponseData.canConfirmPosition) {
@@ -2755,28 +2750,28 @@
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                     requestRowMessage = (data.status == "approved" ? 'Position approved by ' : 'Position rejected by ') + data.actionperformedbyUser
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag != 'reassign') {
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft this clause';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft the changes to this section';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag == 'reassign') {
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this clause';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Draft confirmation request approved by ' + data.actionperformedbyUser;
+                        requestRowMessage = 'Drafting approved by ' + data.actionperformedbyUser;
                     } else {
-                        requestRowMessage = 'Draft confirmation request rejected by ' + data.actionperformedbyUser;
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser;
                     }
                     $('.draft-reject[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "assign_draft") {
                     getContractSectionDetails();
                     getContractDetails(socket, false);
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this clause';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section';
                 } else if (data.confirmationType == "withdrawn") {
                     renderHTML += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                         '   <div class="profile-picture">\n' +
-                        '      <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                        '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                         '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                         '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '   </div>\n' +
@@ -2797,9 +2792,9 @@
                     if (chatWindow !== 'SS') {
                         let htmlA = '';
                         htmlA += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
-                            '   <div class="position-text">This clause has withdrawn by ' + data.actionperformedbyUser + '</div>\n';
+                            '   <div class="position-text">This section has withdrawn by ' + data.actionperformedbyUser + '</div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                            if(contractArchieveStatus != true) {
+                            if (contractArchieveStatus != true) {
                                 htmlA += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                             }
                         }
@@ -2810,9 +2805,9 @@
                     } else {
                         let htmlB = '';
                         htmlB += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
-                            '   <div class="position-text">This clause has withdrawn by ' + data.actionperformedbyUser + '</div>\n';
+                            '   <div class="position-text">This section has withdrawn by ' + data.actionperformedbyUser + '</div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                            if(contractArchieveStatus != true) {
+                            if (contractArchieveStatus != true) {
                                 htmlB += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                             }
                         }
@@ -2848,13 +2843,13 @@
                 if (data.status == "rejected") {
                     renderHTML += '<div class="message-wrapper red-color">\n' +
                         '       <div class="profile-picture">\n' +
-                        '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                        '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                         '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                         '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '       </div>\n' +
                         '       <div class="request-row">\n' +
                         '           <div class="request-content">\n' +
-                        '               <h4>' + (data.confirmationType == 'position' ? 'Position confirmation rejected' : 'Draft confirmation rejected') + '</h4>\n' +
+                        '               <h4>' + (data.confirmationType == 'position' ? 'Position confirmation rejected' : 'Drafting rejected') + '</h4>\n' +
                         '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                         '           </div>\n' +
                         '       </div>\n' +
@@ -2863,18 +2858,18 @@
                     if (data.flag === 'reassign' && chatWindow == "SS") {
                         renderHTML += '<div class="message-wrapper">\n' +
                             '       <div class="profile-picture">\n' +
-                            '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                            '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
                             '           <div class="request-content">\n' +
-                            '               <h4>Draft Request</h4>\n' +
+                            '               <h4>Position confirmation approved</h4>\n' +
                             '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                             '           </div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty") {
                             renderHTML += '        <div class="request-btn">\n' +
-                                '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + data.messageId + '">Assign for Drafting</button>\n' +
+                                '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + data.messageId + '">Assign user to draft changes</button>\n' +
                                 '           </div>\n';
                         }
                         renderHTML += '</div>\n' +
@@ -2886,18 +2881,18 @@
                         if (chatWindow == 'SS') {
                             renderHTML += '<div class="message-wrapper reverse">\n' +
                                 '       <div class="profile-picture">\n' +
-                                '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
                                 '           <div class="request-content">\n' +
-                                '               <h4>Draft Request</h4>\n' +
+                                '               <h4>Position confirmation approved</h4>\n' +
                                 '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                 '           </div>\n';
                             if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator") {
                                 renderHTML += '        <div class="request-btn">\n' +
-                                    '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + data.messageId + '">Assign for Drafting</button>\n' +
+                                    '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + data.messageId + '">Assign user to draft changes</button>\n' +
                                     '           </div>\n';
                             }
                             renderHTML += '</div>\n' +
@@ -2905,24 +2900,24 @@
                         } else {
                             renderHTML += '<div class="message-wrapper dark-gold-color">\n' +
                                 '       <div class="profile-picture">\n' +
-                                '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                                 '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '       </div>\n' +
                                 '       <div class="request-row">\n' +
                                 '           <div class="message-content">\n' +
-                                '               <h4>Draft Request</h4>\n' +
+                                '               <h4>Position confirmation approved</h4>\n' +
                                 '               <div class="message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                 '           </div>\n';
                             renderHTML += '</div>\n' +
                                 '</div>';
                             if (data.flagDraftAssigned) {
-                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft this clause';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section';
                             } else {
                                 if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this clause';
+                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
                                 } else {
-                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this clause';
+                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
                                 }
                             }
                         }
@@ -2931,7 +2926,7 @@
                 if (requestRowMessage) {
                     renderHTML += '<div class="message-wrapper' + (chatWindow == 'SS' ? " grey-color" : " dark-gold-color") + '">\n' +
                         '       <div class="profile-picture">\n' +
-                        '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                        '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                         '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                         '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '       </div>\n' +
@@ -2959,12 +2954,12 @@
             case "Attachment":
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'CP' ? " light-gold-color" : "") + ' ">\n' +
                     '   <div class="profile-picture">\n' +
-                    '      <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
                     '   <div class="attachment-content">' +
-                    '       <div class="attachment" data-link="' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
+                    '       <div class="attachment" data-filename="' + (data.attachmentName ? data.attachmentName.trim().replaceAll(/\n/g, '<br>') : '') + '" data-link="' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
                     '           <div class="icon">\n' +
                     '               <img src="images/pdf-link-icon.svg" alt="">\n' +
                     '           </div>\n' +
@@ -2977,7 +2972,7 @@
             default:
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'CP' ? " light-gold-color" : "") + '">\n' +
                     '   <div class="profile-picture">\n' +
-                    '      <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
@@ -3042,13 +3037,13 @@
             case "Invite":
                 var message = "";
                 if (data.invitedUserName) {
-                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
+                    message += data.invitedUserName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this section";
                 } else {
-                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this clause";
+                    message += data.invitedTeamName.trim() + " invited by " + data.actionperformedbyUser.trim() + " in this section";
                 }
                 renderHTML += '<strong class="message-wrapper reverse">\n' +
                     '   <div class="profile-picture">\n' +
-                    '      <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '      <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
@@ -3058,7 +3053,7 @@
             case "Position Confirmation":
                 renderHTML += '<div class="message-wrapper' + (data.chatWindow !== 'Counterparty' ? " grey-color reverse" : " dark-gold-color") + (data && data.messageStatus && data.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                     '       <div class="profile-picture">\n' +
-                    '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '       </div>\n' +
@@ -3073,13 +3068,13 @@
             case "Draft Confirmation":
                 renderHTML += '<div class="message-wrapper' + (data.chatWindow !== 'Counterparty' ? " grey-color reverse" : " dark-gold-color") + '">\n' +
                     '   <div class="profile-picture">\n' +
-                    '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
                     '   <div class="request-row">\n' +
                     '      <div class="' + (data.chatWindow !== 'Counterparty' ? "request-content" : "message-content") + '">\n' +
-                    '         <h4>Draft confirmation request ' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
+                    '         <h4>Sent drafting for approval ' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                     '         <div class="' + (data.chatWindow !== 'Counterparty' ? "content-message" : "message") + '">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                     '      </div>\n' +
                     '   </div>\n' +
@@ -3090,18 +3085,18 @@
                 if (data.confirmationType == 'position') {
                     requestRowMessage = (data.status == "approved" ? 'Position approved by ' : 'Position rejected by ') + data.actionperformedbyUser
                 } else if (data.confirmationType == 'request_draft' && data.sendTo) {
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft this clause';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft the changes to this section';
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Draft confirmation request approved by ' + data.actionperformedbyUser;
+                        requestRowMessage = 'Drafting approved by ' + data.actionperformedbyUser;
                     } else {
-                        requestRowMessage = 'Draft confirmation request rejected by ' + data.actionperformedbyUser;
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser;
                     }
                 } else if (data.confirmationType == "assign_draft") {
                     getContractDetails(socket, false);
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft this clause';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section';
                 } else if (data.confirmationType == "withdrawn") {
                     requestRowMessage = 'Contract section withdrawn by ' + data.actionperformedbyUser;
                 } else if (data.confirmationType == "Reopen") {
@@ -3131,13 +3126,13 @@
                 if (data.status == "rejected") {
                     renderHTML += '<div class="message-wrapper red-color' + (data.chatWindow !== 'Counterparty' ? " reverse" : "") + '">\n' +
                         '       <div class="profile-picture">\n' +
-                        '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                        '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                         '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                         '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '       </div>\n' +
                         '       <div class="request-row">\n' +
                         '           <div class="request-content">\n' +
-                        '               <h4>' + (data.confirmationType == 'position' ? 'Position confirmation rejected' : 'Draft confirmation rejected') + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
+                        '               <h4>' + (data.confirmationType == 'position' ? 'Position confirmation rejected' : 'Drafting rejected') + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                         '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                         '           </div>\n' +
                         '       </div>\n' +
@@ -3146,18 +3141,18 @@
                     if (data.chatWindow !== 'Counterparty') {
                         renderHTML += '<div class="message-wrapper reverse">\n' +
                             '       <div class="profile-picture">\n' +
-                            '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                            '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
                             '           <div class="request-content">\n' +
-                            '               <h4>Draft Request' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
+                            '               <h4>Position confirmation approved' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                             '               <div class="content-message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                             '           </div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator") {
                             renderHTML += '        <div class="request-btn">\n' +
-                                '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + data._id + '">Assign for Drafting</button>\n' +
+                                '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + data._id + '">Assign user to draft changes </button>\n' +
                                 '           </div>\n';
                         }
                         renderHTML += '</div>\n' +
@@ -3165,24 +3160,24 @@
                     } else {
                         renderHTML += '<div class="message-wrapper dark-gold-color">\n' +
                             '       <div class="profile-picture">\n' +
-                            '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                            '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                             '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '       </div>\n' +
                             '       <div class="request-row">\n' +
                             '           <div class="message-content">\n' +
-                            '               <h4>Draft Request' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
+                            '               <h4>Position confirmation approved' + (data.chatWindow !== 'Counterparty' ? ' - Sameside' : ' - Counterparty') + '</h4>\n' +
                             '               <div class="message">' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                             '           </div>\n';
                         renderHTML += '</div>\n' +
                             '</div>';
                         if (data.flagDraftAssigned) {
-                            requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft this clause';
+                            requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section';
                         } else {
                             if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft this clause';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
                             } else {
-                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft this clause';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
                             }
                         }
                     }
@@ -3190,7 +3185,7 @@
                 if (requestRowMessage) {
                     renderHTML += '<div class="message-wrapper' + (data.chatWindow !== 'Counterparty' ? " grey-color reverse" : " dark-gold-color") + '">\n' +
                         '       <div class="profile-picture">\n' +
-                        '           <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                        '           <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                         '           <p class="name">' + data.actionperformedbyUser + '</p>\n' +
                         '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '       </div>\n' +
@@ -3218,12 +3213,12 @@
             case "Attachment":
                 renderHTML += '<div class="message-wrapper' + (data.chatWindow == 'Counterparty' ? " light-gold-color" : " reverse") + ' ">\n' +
                     '   <div class="profile-picture">\n' +
-                    '      <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>(' + (data && data.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
                     '   <div class="attachment-content">' +
-                    '       <div class="attachment" data-link="' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
+                    '       <div class="attachment" data-filename="' + (data.attachmentName ? data.attachmentName.trim().replaceAll(/\n/g, '<br>') : '') + '" data-link="' + (data.message ? data.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
                     '           <div class="icon">\n' +
                     '               <img src="images/pdf-link-icon.svg" alt="">\n' +
                     '           </div>\n' +
@@ -3236,7 +3231,7 @@
             default:
                 renderHTML += '<div class="message-wrapper' + (data.chatWindow == 'Counterparty' ? " light-gold-color" : " reverse") + '">\n' +
                     '   <div class="profile-picture">\n' +
-                    '      <img src="' + (data.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                    '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                     '      <p class="name">' + data.actionperformedbyUser + '&nbsp;<small>' + (data && data.actionperformedbyUserRole ? '(' + data.actionperformedbyUserRole + ')' : '') + '</small>' + '</p>\n' +
                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                     '   </div>\n' +
@@ -3276,7 +3271,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(res => {
                     var response = res;
@@ -3323,7 +3318,7 @@
                             // TODO: Set logged in user images in details screen
                             // set logged-in user profile picture
                             $('.loggedin-user-profile').each(function () {
-                                $(this).attr('src', (loggedInUserDetails.imageKey ? IMAGE_USER_PATH_LINK + loggedInUserDetails.imageKey : 'images/no-profile-image.jpg'));
+                                $(this).attr('src', (loggedInUserDetails.imageKey ? loggedInUserDetails.imageKey : 'images/no-profile-image.jpg'));
                             });
                             // set logged-in user name
                             $('.loggedin-user-name').text(loggedInUserDetails.firstName + " " + loggedInUserDetails.lastName);
@@ -3363,7 +3358,7 @@
                             }
                             // set logged-in user profile picture
                             $('.counterparty-user-profile').each(function () {
-                                $(this).attr('src', (counterPartyDetail.imageKey ? IMAGE_USER_PATH_LINK + counterPartyDetail.imageKey : 'images/no-profile-image.jpg'));
+                                $(this).attr('src', (counterPartyDetail.imageKey ? counterPartyDetail.imageKey : 'images/no-profile-image.jpg'));
                             });
                             $('.counterparty-user-profile-name').text(counterPartyDetail.firstName + " " + counterPartyDetail.lastName);
                             $('.counterparty-user-profile-role').text(responseData.oppositeUserRole);
@@ -3529,7 +3524,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -3563,7 +3558,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -3611,7 +3606,7 @@
                 method: 'GET',
                 headers: headers,
             };
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -3672,7 +3667,7 @@
                                 var html = '';
                                 html += '<div class="filter-inner">';
                                 html += '<ul>';
-                                // ' + IMAGE_USER_PATH_LINK + ele.userImage + '
+                                // ' + ele.userImage + '
                                 // assets/images/no-profile-image.jpg
                                 userLists.forEach((ele) => {
                                     html += '<li>';
@@ -3681,7 +3676,7 @@
                                         '\t<label for="chkboxInviteUser_' + ele.itemId + '" class="form-check-label">\n' +
                                         '\t\t<div class="conversation-left">\n' +
                                         '\t\t\t<span class="user-icon" id="userProfileImage">\n' +
-                                        '\t\t\t\t<img src="' + (ele.userImage ? IMAGE_USER_PATH_LINK + ele.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                        '\t\t\t\t<img src="' + (ele.userImage ? ele.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                         '\t\t\t</span>\n' +
                                         '\t\t\t<div class="user-inner">\n' +
                                         '\t\t\t\t<span class="user-name" id="userProfileNameSpan">' + ele.itemName + '</span>\n' +
@@ -3709,7 +3704,7 @@
                                 var html = '';
                                 html += '<div class="filter-inner">';
                                 html += '<ul>';
-                                // ' + IMAGE_USER_PATH_LINK + ele.userImage + '
+                                // ' + ele.userImage + '
                                 // assets/images/no-profile-image.jpg
                                 userLists.forEach((ele) => {
                                     html += '<li>';
@@ -3717,7 +3712,7 @@
                                         '\t<label for="inviteuser" class="form-check-label">\n' +
                                         '\t\t<div class="conversation-left">\n' +
                                         '\t\t\t<span class="user-icon" id="userProfileImage">\n' +
-                                        '\t\t\t\t<img src="' + (ele.userImage ? IMAGE_USER_PATH_LINK + ele.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                        '\t\t\t\t<img src="' + (ele.userImage ? ele.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                         '\t\t\t</span>\n' +
                                         '\t\t\t<div class="user-inner">\n' +
                                         '\t\t\t\t<span class="user-name" id="userProfileNameSpan">' + ele.itemName + '</span>\n' +
@@ -3745,7 +3740,7 @@
                                 var renderHTML = '';
                                 renderHTML += '<div class="filter-inner">';
                                 renderHTML += '<ul>';
-                                // ' + IMAGE_USER_PATH_LINK + ele.userImage + '
+                                // ' + ele.userImage + '
                                 // assets/images/no-profile-image.jpg
                                 userLists.forEach((ele) => {
                                     renderHTML += '<li>';
@@ -3753,7 +3748,7 @@
                                         '\t<label for="inviteuser_' + ele.itemId + '" class="form-check-label">\n' +
                                         '\t\t<div class="conversation-left">\n' +
                                         '\t\t\t<span class="user-icon" id="userProfileImage">\n' +
-                                        '\t\t\t\t<img src="' + (ele.userImage ? IMAGE_USER_PATH_LINK + ele.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                        '\t\t\t\t<img src="' + (ele.userImage ? ele.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                         '\t\t\t</span>\n' +
                                         '\t\t\t<div class="user-inner">\n' +
                                         '\t\t\t\t<span class="user-name" id="userProfileNameSpan">' + ele.itemName + '</span>\n' +
@@ -3919,7 +3914,7 @@
             // Set queryparams
             requestURL += queryParam.join('&');
 
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -3970,7 +3965,7 @@
                                     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>Created by</h3>\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="contract-user" data-bs-toggle="tooltip" data-bs-placement="top" title="' + (ele && ele.createdByUserDetails ? ele.createdByUserDetails.firstName + ' ' + ele.createdByUserDetails.lastName : '') + '">\n';
 
-                                html += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (ele && ele.createdByUserDetails && ele.createdByUserDetails.imageKey ? IMAGE_USER_PATH_LINK + ele.createdByUserDetails.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                html += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (ele && ele.createdByUserDetails && ele.createdByUserDetails.imageKey ? ele.createdByUserDetails.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span>' + (ele && ele.createdByUserDetails ? ele.createdByUserDetails.firstName + ' ' + ele.createdByUserDetails.lastName : '') + '</span></div>\n';
 
                                 html += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
@@ -3981,7 +3976,7 @@
 
                                 if (ele && ele.actionRequiredByUsers && ele.actionRequiredByUsers.length > 0) {
                                     ele.actionRequiredByUsers.forEach((element) => {
-                                        html += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (element && ele?.imageKey ? IMAGE_USER_PATH_LINK + ele?.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                        html += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (element && ele?.imageKey ? ele?.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                             '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span>' + (element ? element.firstName + ' ' + element.lastName : '') + '</span></div>\n';
                                     });
                                 } else {
@@ -4044,7 +4039,7 @@
                                 }, 500);
                             }
                         } else {
-                            var norecordhtml = '<p class="nodata-info">No clauses available</p>';
+                            var norecordhtml = '<p class="nodata-info">No section found</p>';
                             elements.divContractListItems.innerHTML = norecordhtml;
                             switchClass(elements.btnScrollDown, displayNoneClass, true);
                         }
@@ -4074,7 +4069,7 @@
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
 
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     if (response && response.status == true && response.code == 200) {
@@ -4100,7 +4095,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            return fetch(requestURL, {headers: headers})
+            return fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     if (response && response.status == true && response.code == 200) {
@@ -4151,7 +4146,7 @@
                                             '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>Created by</h3>\n' +
                                             '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="contract-user" data-bs-toggle="tooltip" data-bs-placement="top" title="' + (ele && ele.createdByUserDetails ? ele.createdByUserDetails.firstName + ' ' + ele.createdByUserDetails.lastName : '') + '">\n';
 
-                                        iHTML += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (ele && ele.createdByUserDetails && ele.createdByUserDetails.imageKey ? IMAGE_USER_PATH_LINK + ele.createdByUserDetails.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                        iHTML += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (ele && ele.createdByUserDetails && ele.createdByUserDetails.imageKey ? ele.createdByUserDetails.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                             '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span>' + (ele && ele.createdByUserDetails ? ele.createdByUserDetails.firstName + ' ' + ele.createdByUserDetails.lastName : '') + '</span></div>\n';
 
                                         iHTML += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
@@ -4162,7 +4157,7 @@
 
                                         if (ele && ele.actionRequiredByUsers && ele.actionRequiredByUsers.length > 0) {
                                             ele.actionRequiredByUsers.forEach((element) => {
-                                                iHTML += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (element && ele?.imageKey ? IMAGE_USER_PATH_LINK + ele?.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                                iHTML += '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="approved-user-lists"><img src="' + (element && ele?.imageKey ? ele?.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                                     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span>' + (element ? element.firstName + ' ' + element.lastName : '') + '</span></div>\n';
                                             });
                                         } else {
@@ -4204,7 +4199,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            return fetch(requestURL, {headers: headers})
+            return fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -4268,7 +4263,7 @@
                             iHtml += '<li>\n' +
                                 '\t\t\t\t<div class="invite-user-inner">\n' +
                                 '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (contractCreatorDetails.userImage ? IMAGE_USER_PATH_LINK + contractCreatorDetails.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (contractCreatorDetails.userImage ? contractCreatorDetails.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                 '\t\t\t\t\t\t\t\t</div>\n' +
                                 '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
                                 '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + contractCreatorDetails.itemName + '</h3>\n' +
@@ -4285,7 +4280,7 @@
                             iHtml += '<li>\n' +
                                 '\t\t\t\t<div class="invite-user-inner">\n' +
                                 '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (contractCounterPartyDetails.userImage ? IMAGE_USER_PATH_LINK + contractCounterPartyDetails.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (contractCounterPartyDetails.userImage ? contractCounterPartyDetails.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                 '\t\t\t\t\t\t\t\t</div>\n' +
                                 '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
                                 '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + contractCounterPartyDetails.itemName + '</h3>\n' +
@@ -4307,7 +4302,7 @@
                                 iHtml += '<li>\n' +
                                     '\t\t\t\t<div class="invite-user-inner">\n' +
                                     '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userId && ele.userId.userImage ? IMAGE_USER_PATH_LINK + ele.userId.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userId && ele.userId.userImage ? ele.userId.userImage : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                     '\t\t\t\t\t\t\t\t</div>\n' +
                                     '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + ele.userId.firstName + ' ' + ele.userId.lastName + '</h3>\n' +
@@ -4381,7 +4376,7 @@
                             //     contractCreatorUsersHtml += '<li>\n' +
                             //         '\t\t\t\t<div class="invite-user-inner">\n' +
                             //         '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (selectedContractSectionDetails.contractCreatorDetail.imageKey ? IMAGE_USER_PATH_LINK + selectedContractSectionDetails.contractCreatorDetail.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                            //         '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (selectedContractSectionDetails.contractCreatorDetail.imageKey ? selectedContractSectionDetails.contractCreatorDetail.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                             //         '\t\t\t\t\t\t\t\t</div>\n' +
                             //         '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
                             //         '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + selectedContractSectionDetails.contractCreatorDetail.firstName + ' ' + selectedContractSectionDetails.contractCreatorDetail.lastName + '</h3>\n' +
@@ -4395,7 +4390,7 @@
                                     contractCreatorUsersHtml += '<li>\n' +
                                         '\t\t\t\t<div class="invite-user-inner">\n' +
                                         '\t\t\t\t\t\t\t\t<div class="invite-user-icon">\n' +
-                                        '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (el.userId.imageKey ? IMAGE_USER_PATH_LINK + el.userId.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                        '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (el.userId.imageKey ? el.userId.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                         '\t\t\t\t\t\t\t\t</div>\n' +
                                         '\t\t\t\t\t\t\t\t<div class="invite-user-name">\n' +
                                         '\t\t\t\t\t\t\t\t\t\t\t\t<h3>' + el.userId.firstName + ' ' + el.userId.lastName + '</h3>\n' +
@@ -4531,12 +4526,12 @@
                             if (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed") {
                                 message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName;
                             } else {
-                                message = 'This clause has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
+                                message = 'This section has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
                             }
                             renderHTML += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
                                 '   <div class="position-text">' + message + '</div>\n';
                             if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                                if(contractArchieveStatus != true) {
+                                if (contractArchieveStatus != true) {
                                     renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                                 }
                             }
@@ -4551,12 +4546,12 @@
                             if (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed") {
                                 message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName;
                             } else {
-                                message = 'This clause has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
+                                message = 'This section has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
                             }
                             renderHTML += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                                 '   <div class="position-text">' + message + '</div>\n';
                             if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                                if(contractArchieveStatus != true) {
+                                if (contractArchieveStatus != true) {
                                     renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                                 }
                             }
@@ -4619,7 +4614,7 @@
                         "Content-Type": "application/json"
                     };
                     if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-                    fetch(requestURL, {headers: headers})
+                    fetch(requestURL, { headers: headers })
                         .then(response => response.json())
                         .then(response => {
                             if (response && response.status == true && response.code == 200) {
@@ -4763,7 +4758,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     if (response && response.status == true && response.code == 200 && response.data) {
@@ -4788,7 +4783,7 @@
                                     case "Normal":
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -4800,12 +4795,12 @@
                                     case "Attachment":
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="attachment-content">' +
-                                            '           <div class="attachment" data-link="' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
+                                            '           <div class="attachment" data-filename="' + (element.attachmentName ? element.attachmentName.trim().replaceAll(/\n/g, '<br>') : '') + '" data-link="' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
                                             '               <div class="icon">\n' +
                                             '                   <img src="images/pdf-link-icon.svg" alt="">\n' +
                                             '               </div>\n' +
@@ -4824,10 +4819,10 @@
                                             var invitedUser = element.invitedUserDetails.firstName + " " + element.invitedUserDetails.lastName;
                                             inviteMessage += invitedUser.trim();
                                         }
-                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this clause';
+                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this section';
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + userName.trim() + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -4839,7 +4834,7 @@
                                     case "Position Confirmation":
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + (element.chatWindow == "Counterparty" && element.messageStatus != 'Reject' ? " dark-gold-color" : "") + ' ' + (element.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -4854,13 +4849,13 @@
                                     case "Draft Request":
                                         renderHTML += '<div class="message-wrapper ' + (element.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
                                             '           <div class="' + (element.chatWindow == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>Draft Request ' + (element.conversationType == 'OTM' ? ' - Counterparty' : ' - Sameside') + '</h4>\n' +
+                                            '               <h4>Position confirmation approved ' + (element.conversationType == 'OTM' ? ' - Counterparty' : ' - Sameside') + '</h4>\n' +
                                             '               <div class="' + (element.chatWindow == "Counterparty" ? "message" : "content-message") + '">' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '           </div>\n' +
                                             '    </div>\n' +
@@ -4869,13 +4864,13 @@
                                     case "Draft Confirmation":
                                         renderHTML += '<div class="message-wrapper ' + (element.messageStatus == 'Reject' ? "red-color" : "dark-gold-color") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
                                             '           <div class="' + (element.chatWindow == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Draft confirmation request' : (element.messageStatus == 'Approve' ? 'Draft confirmation approved' : 'Draft confirmation rejected')) + (element.conversationType == 'OTM' ? ' - Counterparty' : ' - Sameside') + '</h4>\n' +
+                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Sent drafting for approval' : (element.messageStatus == 'Approve' ? 'Draft confirmation approved' : 'Drafting rejected')) + (element.conversationType == 'OTM' ? ' - Counterparty' : ' - Sameside') + '</h4>\n' +
                                             '               <div class="' + (element.chatWindow == "Counterparty" ? "message" : "content-message") + '">' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '           </div>\n' +
                                             '    </div>\n' +
@@ -4890,16 +4885,16 @@
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
                                             if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + " to draft this clause";
+                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + " to draft the changes to this section. Go to my side to assign a user to draft changes.";
                                             } else {
-                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft this clause";
+                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section. Go to my side to assign a user to draft changes.";
                                             }
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
-                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this clause";
+                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft the changes to this section";
                                             } else {
-                                                notificationMessage = userName.trim() + " has assigned a team member to draft this clause";
+                                                notificationMessage = userName.trim() + " has assigned a team member to draft the changes to this section";
                                             }
                                         } else if (element.message == 'withdrawn') {
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
@@ -4908,7 +4903,7 @@
                                         }
                                         renderHTML += '<div class="message-wrapper ' + (element.conversationType == 'OTM' ? " light-gold-color" : " reverse") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -4935,7 +4930,7 @@
                                     default:
                                         renderHTML += '<div class="message-wrapper' + (element.conversationType == 'OTM' ? "" : " reverse") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -5015,7 +5010,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     if (response && response.status == true && response.code == 200 && response.data) {
@@ -5061,10 +5056,10 @@
                                             var invitedUser = element.invitedUserDetails.firstName + " " + element.invitedUserDetails.lastName;
                                             inviteMessage += invitedUser.trim();
                                         }
-                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this clause';
+                                        inviteMessage += ' ' + element.message + ' ' + userName.trim() + ' in this section';
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + userName.trim() + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -5076,7 +5071,7 @@
                                     case "Position Confirmation":
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (messageType == "Counterparty" && element.messageStatus != 'Reject' ? " dark-gold-color" : "") + ' ' + (element.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -5106,18 +5101,18 @@
                                     case "Draft Request":
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (messageType == "Counterparty" && element.messageStatus != 'Reject' ? " dark-gold-color" : "") + ' ' + (element.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
                                             '           <div class="' + (messageType == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>Draft Request</h4>\n' +
+                                            '               <h4>Position confirmation approved</h4>\n' +
                                             '               <div class="' + (messageType == "Counterparty" ? "message" : "content-message") + '">' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '           </div>\n';
                                         if (element.with == 'Our Team' && element.messageStatus == 'None' && element.sendTo == null && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty')) {
                                             renderHTML += '        <div class="request-btn">\n' +
-                                                '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + element._id + '">Assign for Drafting</button>\n' +
+                                                '               <button class="btn btn-primary assign-user" data-action="assign-user" data-id="' + element._id + '">Assign user to draft changes</button>\n' +
                                                 '           </div>\n';
                                         }
                                         renderHTML += '    </div>\n' +
@@ -5126,13 +5121,13 @@
                                     case "Draft Confirmation":
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (element.with == "Counterparty" && element.messageStatus != ' Reject' ? " dark-gold-color" : "") + ' ' + (element.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="request-row">\n' +
                                             '           <div class="' + (element.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Draft confirmation request' : (element.messageStatus == 'Approve' ? 'Draft confirmation approved' : 'Draft confirmation rejected')) + '</h4>\n' +
+                                            '               <h4>' + (element.messageStatus == 'None' || element.messageStatus == 'Updated' ? 'Sent drafting for approval' : (element.messageStatus == 'Approve' ? 'Draft confirmation approved' : 'Drafting rejected')) + '</h4>\n' +
                                             '               <div class="' + (element.with == "Counterparty" ? "message" : "content-message") + '">' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '           </div>\n';
                                         if (element.from != loggedInUserDetails._id && element.messageStatus == 'None' && openContractResponseData.canConfirmPosition && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty')) {
@@ -5148,13 +5143,13 @@
                                         var notificationMessage;
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft this clause";
+                                            notificationMessage = userName.trim() + " has assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section. Go to my side to assign a user to draft changes.";
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
-                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft this clause";
+                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft the changes to this section";
                                             } else {
-                                                notificationMessage = userName.trim() + " has assigned a team member to draft this clause";
+                                                notificationMessage = userName.trim() + " has assigned a team member to draft the changes to this section";
                                             }
                                         } else if (element.message == 'withdrawn') {
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
@@ -5163,7 +5158,7 @@
                                         }
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (messageType == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -5172,7 +5167,7 @@
                                         if (element.with == 'Our Team' && element.messageStatus == 'None' && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty') && element && element.messageReceiverUser && element.message == 'request_draft') {
                                             renderHTML += '<br/>' +
                                                 '<div class="request-btn">\n' +
-                                                '               <button class="btn btn-primary assign-user" data-action="reassign-user" data-id="' + element._id + '">Reassign for Drafting</button>\n' +
+                                                '               <button class="btn btn-primary assign-user" data-action="reassign-user" data-id="' + element._id + '">Reassign Drafting</button>\n' +
                                                 '           </div>\n';
                                         }
                                         renderHTML += '       </div>\n' +
@@ -5196,12 +5191,12 @@
                                     case "Attachment":
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '&nbsp;<small>(' + (element && element.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
                                             '       <div class="attachment-content">' +
-                                            '           <div class="attachment" data-link="' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
+                                            '           <div class="attachment" data-filename="' + (element.attachmentName ? element.attachmentName.trim().replaceAll(/\n/g, '<br>') : '') + '" data-link="' + (element.message ? element.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
                                             '               <div class="icon">\n' +
                                             '                   <img src="images/pdf-link-icon.svg" alt="">\n' +
                                             '               </div>\n' +
@@ -5214,7 +5209,7 @@
                                     default:
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (element.chatWindow == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? IMAGE_USER_PATH_LINK + element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '           <img src="' + (element && element.messageSenderUser && element.messageSenderUser.imageKey ? element.messageSenderUser.imageKey : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '           <p class="name">' + element.messageSenderUser.firstName + ' ' + element.messageSenderUser.lastName + '</p>\n' +
                                             '           <p class="last-seen">' + formatDate(element.createdAt) + '</p>\n' +
                                             '       </div>\n' +
@@ -5350,7 +5345,7 @@
                             case "Position Confirmation":
                                 renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                                     '       <div class="profile-picture">\n' +
-                                    '           <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '           <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                     '           <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '       </div>\n' +
@@ -5365,13 +5360,13 @@
                             case "Draft Confirmation":
                                 renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                                     '       <div class="profile-picture">\n' +
-                                    '           <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '           <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                     '           <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                     '           <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '       </div>\n' +
                                     '       <div class="request-row">\n' +
                                     '           <div class="' + (postData.with == "Counterparty" ? "message-content" : "request-content") + '">\n' +
-                                    '               <h4>Draft confirmation request</h4>\n' +
+                                    '               <h4>Sent drafting for approval</h4>\n' +
                                     '               <div class="' + (postData.with == "Counterparty" ? "message" : "content-message") + '">' + (postData.message ? postData.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                     '           </div>\n';
                                 renderHTML += '    </div>\n' +
@@ -5384,7 +5379,7 @@
                             default:
                                 renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                     '   <div class="profile-picture">\n' +
-                                    '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                     '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '   </div>\n' +
@@ -5451,7 +5446,6 @@
                     if (response && response.status == true && response.code == 201) {
                         if (response && response.data && response.data.length > 0) {
                             response.data.forEach((ele) => {
-                                console.log('ele', ele);
                                 var conversationType = 'OTM';
                                 if (loggedInCompanyDetails._id.toString() == contractInformation.companyId.toString() && ele.with == "Our Team") {
                                     conversationType = 'OTCC';
@@ -5492,12 +5486,12 @@
                                     default:
                                         renderHTML += '<div class="message-wrapper reverse ' + (otherDetails.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                             '   <div class="profile-picture">\n' +
-                                            '      <img src="' + (otherDetails.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + otherDetails.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '      <img src="' + (otherDetails.actionperformedbyUserImage ? otherDetails.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '      <p class="name">' + otherDetails.actionperformedbyUser + '&nbsp;<small>(' + (ele && ele.companyId === loggedInCompanyDetails._id ? 'Sameside' : 'Counterparty') + ')</small>' + '</p>\n' +
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '   <div class="attachment-content">' +
-                                            '       <div class="attachment" data-link="' + (ele.message ? ele.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
+                                            '       <div class="attachment" data-filename="' + (ele.attachmentName ? ele.attachmentName.trim().replaceAll(/\n/g, '<br>') : '') + '"  data-link="' + (ele.message ? ele.message.trim().replaceAll(/\n/g, '<br>') : '') + '">\n' +
                                             '           <div class="icon">\n' +
                                             '               <img src="images/pdf-link-icon.svg" alt="">\n' +
                                             '           </div>\n' +
@@ -5589,7 +5583,6 @@
                     elements.formRejectDraftRequest.reset();
                     // Handle the response data
                     // var responseData = response;t
-                    // console.log('responseData', responseData);
                     if (response && response.status == true && response.code == 200) {
 
                         if (response.data) {
@@ -5633,7 +5626,7 @@
                             case "position":
                                 renderHTML += '<div class="message-wrapper reverse' + (postData.status == 'rejected' ? ' red-color' : '') + '">\n' +
                                     '   <div class="profile-picture">\n' +
-                                    '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                     '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '   </div>\n' +
@@ -5651,7 +5644,7 @@
                                 if (postData.status == 'rejected') {
                                     renderHTML += '<div class="message-wrapper reverse' + (postData.with == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                         '   <div class="profile-picture">\n' +
-                                        '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                        '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                         '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                         '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                         '   </div>\n' +
@@ -5666,18 +5659,18 @@
                                     if (postData.sendTo) {
                                         renderHTML += '<div class="message-wrapper reverse light-gold-color">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '       <div class="request-row">\n' +
-                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned a team member to draft this clause</strong>\n';
+                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned a team member to draft the changes to this section</strong>\n';
                                         renderHTML += '       </div>\n' +
                                             '</div>\n';
                                         if (postData.messageConfirmationFor != "Same Side") {
                                             renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                                                 '   <div class="profile-picture">\n' +
-                                                '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                                '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                                 '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                                 '   </div>\n' +
@@ -5685,7 +5678,7 @@
                                                 '      <div class="message-content">\n' +
                                                 '         <h4>Draft contract request</h4>\n' +
                                                 '           <div class="message">\n' +
-                                                '               <p>Draft Request: ' + (postData.message ? postData.message.trim().replaceAll(/\n/g, '<br>') : '') + '</p>\n' +
+                                                '               <p>Position confirmation approved: ' + (postData.message ? postData.message.trim().replaceAll(/\n/g, '<br>') : '') + '</p>\n' +
                                                 '               <p>Note: ' + postData.actionperformedbyUser + ' has requested to give contract draft edit request to ' + postData.sendToName + '</p>\n' +
                                                 '           </div>\n' +
                                                 '      </div>\n' +
@@ -5698,13 +5691,13 @@
                                     } else {
                                         renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "dark-gold-color" : "") + '">\n' +
                                             '   <div class="profile-picture">\n' +
-                                            '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '   <div class="request-row">\n' +
                                             '      <div class="message-content">\n' +
-                                            '         <h4>Draft Request</h4>\n' +
+                                            '         <h4>Position confirmation approved</h4>\n' +
                                             '         <div class="message">' + (postData.message ? postData.message.trim().replaceAll(/\n/g, '<br>') : '') + '</div>\n' +
                                             '      </div>\n' +
                                             '   </div>\n' +
@@ -5714,13 +5707,13 @@
                                             postData.flagDraftAssigned = response.data.flagDraftAssigned;
                                             postData.assignedUserDetails = postData.sendToName;
                                             socket.emit('contractSectionMessage', postData);
-                                            message = postData.actionperformedbyUser + ' has assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft this clause';
+                                            message = postData.actionperformedbyUser + ' has assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft the changes to this section';
                                         } else {
-                                            message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft this clause';
+                                            message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
                                         }
                                         renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                             '   <div class="profile-picture">\n' +
-                                            '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
@@ -5733,16 +5726,16 @@
                                     if (postData.sendTo) {
                                         renderHTML += '<div class="message-wrapper reverse">\n' +
                                             '       <div class="profile-picture">\n' +
-                                            '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                            '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                             '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '       <div class="request-row">\n' +
-                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft this clause</strong>\n';
+                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft the changes to this section</strong>\n';
                                         if (postData.with == 'Our Team' && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty') && postData && postData.flag == 'reassign') {
                                             renderHTML += '<br/>' +
                                                 '<div class="request-btn">\n' +
-                                                '               <button class="btn btn-primary assign-user" data-action="reassign-user" data-id="' + postData._id + '">Reassign for Drafting</button>\n' +
+                                                '               <button class="btn btn-primary assign-user" data-action="reassign-user" data-id="' + postData._id + '">Reassign Drafting</button>\n' +
                                                 '           </div>\n';
                                         }
                                         renderHTML += '       </div>\n' +
@@ -5754,16 +5747,16 @@
                             case "assign_draft":
                                 renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                                     '       <div class="profile-picture">\n' +
-                                    '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                     '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '   </div>\n' +
                                     '       <div class="request-row">\n' +
-                                    '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft this clause</strong>\n';
+                                    '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft the changes to this section</strong>\n';
                                 if (postData.with == 'Our Team' && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty')) {
                                     renderHTML += '<br/>' +
                                         '<div class="request-btn">\n' +
-                                        '               <button class="btn btn-primary assign-user" data-action="reassign-user" data-id="' + postData._id + '">Reassign for Drafting</button>\n' +
+                                        '               <button class="btn btn-primary assign-user" data-action="reassign-user" data-id="' + postData._id + '">Reassign Drafting</button>\n' +
                                         '           </div>\n';
                                 }
                                 renderHTML += '       </div>\n' +
@@ -5789,19 +5782,19 @@
                                             element.classList.add(displayNoneClass);
                                         });
                                     }
-                                    message = 'Draft confirmation request approved by ' + postData.actionperformedbyUser;
+                                    message = 'Drafting approved by ' + postData.actionperformedbyUser;
                                 } else {
-                                    message = 'Draft confirmation request rejected by ' + postData.actionperformedbyUser;
+                                    message = 'Drafting rejected by ' + postData.actionperformedbyUser;
 
                                     renderHTML += '<div class="message-wrapper reverse red-color">\n' +
                                         '   <div class="profile-picture">\n' +
-                                        '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                        '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                         '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                         '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                         '   </div>\n' +
                                         '   <div class="request-row ">\n' +
                                         '      <div class="message-content">\n' +
-                                        '         <h4>Draft confirmation rejected</h4>\n' +
+                                        '         <h4>Drafting rejected</h4>\n' +
                                         '         <div class="message">\n' +
                                         '            <p>' + (postData.message ? postData.message.trim().replaceAll(/\n/g, '<br>') : '') + '</p>\n' +
                                         '         </div>\n' +
@@ -5811,7 +5804,7 @@
                                 }
                                 renderHTML += '<div class="message-wrapper reverse' + (postData.with == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                     '   <div class="profile-picture">\n' +
-                                    '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                     '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '   </div>\n' +
@@ -5825,7 +5818,7 @@
                             default:
                                 renderHTML += '<div class="message-wrapper reverse' + (postData.with == "Counterparty" ? " light-gold-color" : "") + ' ">\n' +
                                     '   <div class="profile-picture">\n' +
-                                    '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                    '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                     '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '   </div>\n' +
@@ -5962,9 +5955,9 @@
 
                         var renderHTML = '';
                         renderHTML += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
-                            '   <div class="position-text">This clause has withdrawn by ' + postData.actionperformedbyUser + '</div>\n';
+                            '   <div class="position-text">This section has withdrawn by ' + postData.actionperformedbyUser + '</div>\n';
                         if (openContractResponseData.userRole == "Admin" || openContractResponseData.userRole == "Contract Creator" || openContractResponseData.userRole == "Counterparty" || openContractResponseData.userRole == "Position Confirmer") {
-                            if(contractArchieveStatus != true) {
+                            if (contractArchieveStatus != true) {
                                 renderHTML += '   <div class="btn-box btn-box-re-open"><button class="btn-primary btn">Re-Open</button></div>\n';
                             }
                         }
@@ -5976,7 +5969,7 @@
                         var renderHTML = '';
                         renderHTML += '<div class="message-wrapper' + (postData.chatWindow == "Counterparty" ? " light-gold-color" : " reverse") + ' ">\n' +
                             '   <div class="profile-picture">\n' +
-                            '      <img src="' + (postData.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                            '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                             '      <p class="name">' + postData.actionperformedbyUser + '</p>\n' +
                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                             '   </div>\n' +
@@ -6074,7 +6067,7 @@
                     var renderHTML = '';
                     renderHTML += '<div class="message-wrapper' + (reopenDetail.chatWindow == "Counterparty" ? " light-gold-color reverse" : " ") + ' ">\n' +
                         '   <div class="profile-picture">\n' +
-                        '      <img src="' + (reopenDetail.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + reopenDetail.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                        '      <img src="' + (reopenDetail.actionperformedbyUserImage ? reopenDetail.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                         '      <p class="name">' + reopenDetail.actionperformedbyUser + '</p>\n' +
                         '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                         '   </div>\n' +
@@ -6199,11 +6192,11 @@
                             var html = '';
                             html += '<strong class="message-wrapper reverse ' + (inviteMessage.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                 '   <div class="profile-picture">\n' +
-                                '      <img src="' + (inviteMessage.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + inviteMessage.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                '      <img src="' + (inviteMessage.actionperformedbyUserImage ? inviteMessage.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '      <p class="name">' + inviteMessage.actionperformedbyUser + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
-                                '   <strong>\n' + inviteMessage.invitedUserName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this clause" + '</strong>\n' +
+                                '   <strong>\n' + inviteMessage.invitedUserName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this section" + '</strong>\n' +
                                 '</div>\n';
 
                             if (inviteMessage.with == "Counterparty") {
@@ -6268,11 +6261,11 @@
                             var html = '';
                             html += '<strong class="message-wrapper reverse ' + (inviteMessage.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                 '   <div class="profile-picture">\n' +
-                                '      <img src="' + (inviteMessage.actionperformedbyUserImage ? IMAGE_USER_PATH_LINK + inviteMessage.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
+                                '      <img src="' + (inviteMessage.actionperformedbyUserImage ? inviteMessage.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                 '      <p class="name">' + inviteMessage.actionperformedbyUser + '</p>\n' +
                                 '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                 '   </div>\n' +
-                                '   <strong>\n' + inviteMessage.invitedTeamName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this clause" + '</strong>\n' +
+                                '   <strong>\n' + inviteMessage.invitedTeamName.trim() + " invited by " + inviteMessage.actionperformedbyUser.trim() + " in this section" + '</strong>\n' +
                                 '</div>\n';
 
                             if (inviteMessage.with == "Counterparty") {
@@ -6404,7 +6397,7 @@
                         iHtml += '<li>\n' +
                             '\t\t\t\t<div class="meeting-user-item">\n' +
                             '\t\t\t\t\t\t\t\t<div class="left-item">\n' +
-                            '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (responseData.meetingOrganiser.imageKey ? IMAGE_USER_PATH_LINK + responseData.meetingOrganiser.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                            '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (responseData.meetingOrganiser.imageKey ? responseData.meetingOrganiser.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                             '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + responseData.meetingOrganiser.firstName + " " + responseData.meetingOrganiser.lastName + '(Organiser)</span>\n' +
                             '\t\t\t\t\t\t\t\t</div>\n' +
                             '\t\t\t\t</div>\n' +
@@ -6422,7 +6415,7 @@
                                 iHtml += '<li>\n' +
                                     '\t\t\t\t<div class="meeting-user-item">\n' +
                                     '\t\t\t\t\t\t\t\t<div class="left-item">\n' +
-                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userInfo.imageKey ? IMAGE_USER_PATH_LINK + ele.userInfo.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
+                                    '\t\t\t\t\t\t\t\t\t\t\t\t<img src="' + (ele.userInfo.imageKey ? ele.userInfo.imageKey : 'images/no-profile-image.jpg') + '" alt="">\n' +
                                     '\t\t\t\t\t\t\t\t\t\t\t\t<span>' + ele.userInfo.firstName + " " + ele.userInfo.lastName + '</span>\n' +
                                     '\t\t\t\t\t\t\t\t</div>\n' +
                                     '\t\t\t\t\t\t\t\t<div class="meeting-status">\n' +
@@ -6539,10 +6532,9 @@
                         var responseData = response.data;
                         let organisationList = [];
                         responseData.forEach((ele) => {
-                            organisationList.push({'id': ele._id, 'name': ele.companyName});
+                            organisationList.push({ 'id': ele._id, 'name': ele.companyName });
                             // organisationList.push(ele.companyName);
                         })
-                        console.log('organisationList', organisationList);
                         autocomplete(elements.inputOrganisationName, organisationList);
                     }
                 })
@@ -6702,7 +6694,6 @@
                     // Handle the response data
                     switchClass(elements.loader, displayNoneClass, true);
                     var responseData = data;
-                    console.log('responseData', responseData);
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         // location.reload(true);
                         selectedThreadID = '';
@@ -6762,7 +6753,6 @@
             for (i = 0; i < arr.length; i++) {
                 /*check if the item starts with the same letters as the text field value:*/
                 if (arr[i] && arr[i].name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                    console.log('arr[i]', arr[i].name);
                     /*create a DIV element for each matching element:*/
                     b = document.createElement("DIV");
                     b.className = 'dropdown-option';

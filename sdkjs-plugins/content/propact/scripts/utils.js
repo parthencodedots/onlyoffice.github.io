@@ -20,11 +20,11 @@ $(document).ready(function () {
 
     if (documentMode == 'markup') {
         document.getElementById('btnCreateClause').classList.add(displayNoneClass);
-        document.getElementById('btnMarkupMode').innerHTML = "Back to Contract";
+        document.getElementById('btnMarkupMode').innerHTML = "Master Document";
     } else {
         document.getElementById('btnCreateClause').classList.remove(displayNoneClass);
         document.getElementById('btnCreateClause').classList.add(disabledClass);
-        document.getElementById('btnMarkupMode').innerHTML = "Select Markup Mode";
+        document.getElementById('btnMarkupMode').innerHTML = "Our Working Draft";
     }
     /**================ Section Contract Lists End ========================*/
 
@@ -78,11 +78,9 @@ $(document).ready(function () {
                 headers: headers,
                 body: urlencoded
             };
-            console.log('requestOptions', requestOptions);
             fetch(inviteCounterpartiesUrl, requestOptions)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('data', data);
                     /*// Handle the response data
                     document.getElementById('mainLoader').classList.remove(displayNoneClass);
                     var responseData = data;

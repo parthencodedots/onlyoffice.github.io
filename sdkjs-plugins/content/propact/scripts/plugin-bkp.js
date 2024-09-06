@@ -130,11 +130,11 @@
          */
         if (contractMode == 'markup') {
             switchClass(elements.btnCreateClause, displayNoneClass, true);
-            elements.btnMarkupMode.innerHTML = 'Back to Contract';
+            elements.btnMarkupMode.innerHTML = 'Master Document';
         } else {
             switchClass(elements.btnCreateClause, displayNoneClass, false);
             switchClass(elements.btnCreateClause, disabledClass, true);
-            elements.btnMarkupMode.innerHTML = 'Select Markup Mode';
+            elements.btnMarkupMode.innerHTML = 'Our Working Draft';
             /*$('#clauseText').val(text);
             if (text) {
                 document.getElementById('btnCreateClause').classList.remove(disabledClass);
@@ -183,7 +183,7 @@
 
     /**====================== Section: Contract Lists ======================*/
     elements.btnCreateClause.onclick = function () {
-        alert('Button Clicked: Select Markup Mode');
+        alert('Button Clicked: Our Working Draft');
     };
 
     elements.btnMarkupMode.onclick = function () {
@@ -277,7 +277,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(res => {
                     var response = res;
@@ -467,7 +467,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -501,7 +501,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, {headers: headers})
+            fetch(requestURL, { headers: headers })
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data

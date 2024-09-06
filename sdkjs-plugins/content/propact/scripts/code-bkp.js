@@ -107,11 +107,11 @@
          */
         if (documentMode == 'markup') {
             document.getElementById('btnCreateClause').classList.add(displayNoneClass);
-            document.getElementById('btnMarkupMode').innerHTML = "Back to Contract";
+            document.getElementById('btnMarkupMode').innerHTML = "Master Document";
         } else {
             document.getElementById('btnCreateClause').classList.remove(displayNoneClass);
             document.getElementById('btnCreateClause').classList.add(disabledClass);
-            document.getElementById('btnMarkupMode').innerHTML = "Select Markup Mode";
+            document.getElementById('btnMarkupMode').innerHTML = "Our Working Draft";
             $('#clauseText').val(text);
             if (text) {
                 document.getElementById('btnCreateClause').classList.remove(disabledClass);
@@ -157,7 +157,7 @@
                 checkNewMessageAppear()
             }, 5000);
 
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 var divInviteUserTabs = document.getElementById('inviteUserTabs');
                 var imgInviteUserTeam = document.getElementById('imgInviteUserTeam');
 
@@ -570,8 +570,8 @@
                 }
             });
 
-            $('.scroll-down').click(function() {
-                $('#contractListItemsDiv').animate({scrollTop: document.getElementById('contractListItemsDiv').scrollHeight}, 'slow');
+            $('.scroll-down').click(function () {
+                $('#contractListItemsDiv').animate({ scrollTop: document.getElementById('contractListItemsDiv').scrollHeight }, 'slow');
                 return false;
             });
 
@@ -1121,7 +1121,7 @@
                     }
                 },
                 errorClass: "error", // CSS class for error messages
-                errorPlacement: function(error, element) {
+                errorPlacement: function (error, element) {
                     error.insertAfter(element); // Place error messages after the element
                 },
                 submitHandler: function (form) {
@@ -1408,7 +1408,7 @@
                 $(this).parent().addClass('d-none');
             });
 
-            $(document).on('click', '#toggleWithdrawnClause', function() {
+            $(document).on('click', '#toggleWithdrawnClause', function () {
                 var varWithdrawnContractSection = {
                     "contractId": documentID,
                     "contractSectionId": selectedThreadID,
@@ -1769,7 +1769,7 @@
     }
 
     socket = io.connect(baseUrl,
-        {auth: {authToken}}
+        { auth: { authToken } }
     );
 
     /**
@@ -1792,7 +1792,6 @@
             socket.emit('join_chat_room', chatRoomName);
 
             var chatRoomNameA = 'room_' + documentID;
-            // console.log('chatRoomNameA', chatRoomNameA);
             socket.emit('join_chat_room', chatRoomNameA);
 
             var documentChatRoomName = documentID;
@@ -1837,7 +1836,6 @@
 
             /** Socket On: user typing for counterparty side */
             socket.on('user_typing_notification_counter_contract_section', data => {
-                // console.log('user_typing_notification_counter_contract_section', data);
                 if (data) {
                     if (tyingUserCPArray.findIndex(x => x == data) == -1) {
                         tyingUserCPArray.push(data);
@@ -1865,7 +1863,6 @@
 
             /** Socket On: user message get for same side */
             socket.on('receive_contract_section_message', data => {
-                // console.log('receive_contract_section_message', data);
                 if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
                     unreadMessageForThread()
                 }
@@ -2100,7 +2097,6 @@
 
             /** Socket On: user message get for same side */
             socket.on('receive_counter_contract_section_message', data => {
-                // console.log('receive_counter_contract_section_message', data);
                 if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
                     unreadMessageForThread()
                 }
@@ -2379,7 +2375,6 @@
                     var newElementA = document.createElement("div");
                     newElementA.innerHTML = htmlA;
                     contentDivA.appendChild(newElementA);
-                    // console.log('loggedinuser', loggedInUserDetails);
                     let htmlB = '';
                     htmlB += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
                         '   <div class="position-text">This contract section has been withdrawn by ' + data.actionperformedbyUser + '</div>\n';
@@ -2437,7 +2432,6 @@
 
             /** Socket On: user message get for conversion history */
             socket.on('receive_conversion_history_message', data => {
-                // console.log('receive_conversion_history_message', data);
                 if (document.getElementById('divContractLists').classList.contains(displayNoneClass)) {
                     unreadMessageForThread()
                 }
@@ -2454,7 +2448,6 @@
                     if (openContractUserDetails && openContractUserDetails.canCommunicateWithCounterparty) {
                         conversionTypeArr.push('OTM');
                     }
-                    // console.log('asd', conversionTypeArr.includes(data.conversationType));
                     if (!conversionTypeArr.includes(data.conversationType)) {
                         return false;
                     }
@@ -2868,7 +2861,6 @@
 
             socket.on('forward_new_clause_create', async function (data) {
                 if (data) {
-                    // console.log('forward_new_clause_create __data', data);
                     tagLists.push(JSON.parse(data));
                     clauseNextPage = 1;
                     clauseHasNextPage = true;
@@ -2879,7 +2871,6 @@
 
             socket.on('forward_refresh_clause_list', async function (data) {
                 if (data) {
-                    console.log('forward_refresh_clause_list __data', data);
                     window.Asc.plugin.executeMethod("GetAllContentControls");
                     clauseNextPage = 1;
                     clauseHasNextPage = true;
@@ -3019,7 +3010,7 @@
                         }
                         document.getElementById('oppsiteUserProfileImage').src = responseData.data.oppositeUser.imageUrl ? responseData.data.oppositeUser.imageUrl : 'images/no-profile-image.jpg';
                         document.getElementById('counterpartyImage').src = responseData.data.oppositeUser.imageUrl ? responseData.data.oppositeUser.imageUrl : 'images/no-profile-image.jpg';
-                        document.getElementById('oppsiteUserProfileName').innerHTML = responseData.data.oppositeUser.firstName + " " + responseData.data.oppositeUser.lastName  + '<img src="images/icon-info.png" class="img-info">';
+                        document.getElementById('oppsiteUserProfileName').innerHTML = responseData.data.oppositeUser.firstName + " " + responseData.data.oppositeUser.lastName + '<img src="images/icon-info.png" class="img-info">';
                         document.getElementById('oppsiteUserProfilerole').textContent = responseData.data.oppositeUser.role;
                         document.getElementById('organizationName').textContent = responseData.data.oppositeUser.company.companyName;
                         document.getElementById('counterpartyName').textContent = responseData.data.oppositeUser.firstName + " " + responseData.data.oppositeUser.lastName;
@@ -3534,7 +3525,6 @@
                     // Handle the response data
                     var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
-                        // console.log(responseData.message);
                         var x = document.getElementById("snackbar");
                         x.textContent = responseData.message;
                         x.className = "show";
@@ -3939,7 +3929,7 @@
                                         var notificationMessage;
                                         var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
+                                            notificationMessage = userName.trim() + " has assigned " + (loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName) + " to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
                                                 var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
@@ -4107,7 +4097,7 @@
                                         var notificationMessage = '';
                                         var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
+                                            notificationMessage = userName.trim() + " has assigned " + (loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName) + " to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
                                                 var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
@@ -4328,8 +4318,7 @@
                                             var notificationMessage;
                                             var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                             if (chatMessage.message == 'request_draft_counter') {
-                                                // console.log(loggedInUserDetails.company._id == chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName);
-                                                notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
+                                                notificationMessage = userName.trim() + " has assigned " + (loggedInUserDetails.company._id !== chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName) + " to draft this contract section";
                                             } else if (chatMessage.message == 'request_draft') {
                                                 if (chatMessage && chatMessage.messageReceiverUser) {
                                                     var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
@@ -4511,7 +4500,7 @@
                                         var notificationMessage;
                                         var userName = chatMessage.messageSenderUser.firstName + " " + chatMessage.messageSenderUser.lastName;
                                         if (chatMessage.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has assigned "+(loggedInUserDetails.company._id == chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+" to draft this contract section";
+                                            notificationMessage = userName.trim() + " has assigned " + (loggedInUserDetails.company._id == chatMessage.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName) + " to draft this contract section";
                                         } else if (chatMessage.message == 'request_draft') {
                                             if (chatMessage && chatMessage.messageReceiverUser) {
                                                 var userReceiverName = chatMessage.messageReceiverUser.firstName + " " + chatMessage.messageReceiverUser.lastName;
@@ -4626,7 +4615,7 @@
             inviteUserSelect.forEach((el) => {
                 postInviteUserSelect.push(el.itemId)
             });
-            var data = JSON.stringify({"selectedMemberToInvite": postInviteUserSelect});
+            var data = JSON.stringify({ "selectedMemberToInvite": postInviteUserSelect });
             var inviteMembersInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/user';
             var headers = {
                 'Content-Type': 'application/json',
@@ -4742,7 +4731,7 @@
             inviteTeamSelect.forEach((el) => {
                 postInviteTeamSelect.push(el.itemId)
             });
-            var data = JSON.stringify({"selectedMemberToInvite": postInviteTeamSelect});
+            var data = JSON.stringify({ "selectedMemberToInvite": postInviteTeamSelect });
             var inviteTeamsInContractSectionUrl = apiBaseUrl + '/contractSection/inviteMembersInContractSection/' + selectedThreadID + '/team';
             var headers = {
                 'Content-Type': 'application/json',
@@ -5099,7 +5088,7 @@
                             actionCounterparty.forEach(function (element) {
                                 element.classList.add(displayNoneClass);
                             });
-                            let html ='';
+                            let html = '';
                             if (selectedContractSectionDetailsA.contractSectionData.contractStatus == "Completed") {
                                 html += '<div class="chat-typing-area" id="draftConfirmCP">\n' +
                                     '   <div class="position-text">' + selectedContractSectionDetailsA.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetailsA.contractSectionData.confirmByUserId.lastName + '</div>\n';
@@ -5119,7 +5108,6 @@
                             var newElement = document.createElement("div");
                             newElement.innerHTML = html;
                             contentDiv.appendChild(newElement);
-                            // console.log('loggedinuser', loggedInUserDetails);
                             htmlA = '';
                             if (selectedContractSectionDetailsA.contractSectionData.contractStatus == "Completed") {
                                 htmlA += '<div class="chat-typing-area" id="draftConfirmSS">\n' +
@@ -5481,7 +5469,7 @@
                                         '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                         '   </div>\n' +
                                         '   <div class="request-row">\n' +
-                                        '      <strong>' + postData.actionperformedbyUser + ' has assigned '+(responseData.data.assignedUserDetails ? responseData.data.assignedUserDetails.firstName + ' ' + responseData.data.assignedUserDetails.lastName : "")+' to draft this contract section</strong>\n' +
+                                        '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + (responseData.data.assignedUserDetails ? responseData.data.assignedUserDetails.firstName + ' ' + responseData.data.assignedUserDetails.lastName : "") + ' to draft this contract section</strong>\n' +
                                         '   </div>\n' +
                                         '</div>';
                                 } else {
@@ -5492,7 +5480,7 @@
                                         '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
                                         '   </div>\n' +
                                         '   <div class="request-row">\n' +
-                                        '      <strong>' + postData.actionperformedbyUser + ' has assigned '+(loggedInUserDetails.company._id !== postData.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName)+' to draft this contract section</strong>\n' +
+                                        '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + (loggedInUserDetails.company._id !== postData.companyId ? loggedInUserDetails.company.companyName : openContractUserDetails.oppositeUser.company.companyName) + ' to draft this contract section</strong>\n' +
                                         '   </div>\n' +
                                         '</div>';
                                 }
@@ -5940,7 +5928,6 @@
                     var responseData = data;
                     if (responseData && responseData.status == true && responseData.code == 200) {
                         var response = responseData.data;
-                        // console.log('data', response);
 
                         var participantCount = response.meetingParticipants ? response.meetingParticipants.length : 0
 
@@ -6015,7 +6002,6 @@
     async function redirectToMessageScreen() {
         try {
             if (selectedThreadID) {
-                // console.log('selectedContractSectionDetails', selectedContractSectionDetails);
                 if (selectedContractSectionDetails && selectedContractSectionDetails.contractStatus && selectedContractSectionDetails.contractStatus == "Completed") {
                     chatHistoryNextPage = 1;
                     chatHistoryHasNextPage = true;
@@ -6040,7 +6026,6 @@
                             var responseData = data;
                             if (responseData && responseData.status == true && responseData.code == 200) {
                                 var response = responseData.data;
-                                // console.log('data', response.data);
                                 if (response.total > 0) {
                                     document.getElementById('mainLoader').classList.add(displayNoneClass);
                                     var draftEditRequest = response.data.filter(item => item.messageConfirmationFor == "Same Side" && item.messageType == "Draft Edit Request");
@@ -6238,11 +6223,9 @@
                         var responseData = data;
                         if (responseData && responseData.data) {
                             var resData = responseData.data;
-                            // console.log('resData', resData.data);
                             var divElements = document.querySelectorAll('.contract-item');
 
                             divElements.forEach(function (element) {
-                                // console.log('getAttribute', element.dataset.id);
                                 var clauseItemTemp = resData.data.filter((ele) => ele._id === element.dataset.id);
                                 if (clauseItemTemp && clauseItemTemp.length > 0 && clauseItemTemp[0].hasUnreadMessage) {
                                     element.querySelector('.notification-no').classList.remove(displayNoneClass);
