@@ -63,9 +63,7 @@
                         <img src="images/plus.svg" alt="plus">
                         Invite Counterparty
                     </a>
-                    <p>If you are working on a document without a Counterparty (eg a contract, a Witness Statement or
-                        RFP) we recommend inviting the ultimate approver (eg the Witness or ‘Owner’ of the document) to
-                        be the Counterparty and only using the Counterparty negotiation pane - see <a href="#">FAQ</a>
+                    <p>If you are working on a document without a Counterparty you can also  invite another decision maker or team to discuss a document as the Counterparty - see <a href="https://propact.com.au/faq" target="_blank">FAQ</a>
                     </p>
                 </div>
                 <div class="invite-counterpartie-pending d-none" id="divInviteCounterpartyInvited">
@@ -153,6 +151,7 @@
                             <label class="">Organisation name</label>
                             <input id="inputOrganisationName" class="form-control" type="text" name="organisationName"
                                 placeholder="Organisation name" required>
+                            <label class="">Please use your counterparties full business name.  Use abr.business.gov.au to confirm.</label>
                         </div>
                         <div class="submit-btn">
                             <a class="btn btn-secondary" href="#" id="btnInviteCounterpartyCancel">Cancel</a>
@@ -215,9 +214,7 @@
                                             data-bs-parent="#accordionExample">
                                             <div class="accordion-body" id="accordionBodyTeams">
                                                 <p class="text-left" id="paragraphTeamsNotFoundMessage">
-                                                    There are no teams to select. You need to add Teams from the
-                                                    contract
-                                                    dashboard first.
+                                                    No teams have been created. Contract creators can create teams from their dashboard.
                                                 </p>
                                             </div>
                                         </div>
@@ -236,8 +233,7 @@
                                             data-bs-parent="#accordionExample">
                                             <div class="accordion-body" id="accordionBodyUsers">
                                                 <p class="text-left" id="paragraphUsersNotFoundMessage">
-                                                    There are no users to select. You need to add them from the contract
-                                                    dashboard first.
+                                                    No users have been added. Contract creators can add users from their dashboard.
                                                 </p>
                                             </div>
                                         </div>
@@ -274,7 +270,7 @@
                     <!--                <h3>Conversation History</h3>-->
                     <div class="chat-top-new-part">
                         <div class="line">Conversation History</div>
-                        <div class="line" id="clauseSectionTitleCHistory"></div>
+                        <div class="line line3">Section: <span class="text" id="clauseSectionTitleCHistory"></span></div>
                         <!--                    <div class="line line3">-->
                         <!--                        <div>My Team: </div>-->
                         <!--                        <div class="text"> Andreq, Temogen, Adam, Tax Team, Sue, Ritvik</div>-->
@@ -475,7 +471,8 @@
                         <!--                    </div>-->
                         <div class="chat-top-new-part">
                             <div class="line">Messaging Counterparty</div>
-                            <div class="line" id="clauseSectionTitleCounterParty"></div>
+                            <div class="line line3">Section: <span class="text" id="clauseSectionTitleCounterParty"></span></div>
+<!--                            <div class="line" id="clauseSectionTitleCounterParty"></div>-->
                             <!--                        <div class="line line3">-->
                             <!--                            <div>My Team: </div>-->
                             <!--                            <div class="text" id="counterPartyTeamList"></div>-->
@@ -576,8 +573,7 @@
                 <div class="invite-users-inner">
                     <img src="images/invite-user-icon.svg" alt="Invite Users">
                     <h3 id="allUserInvitedMessage" class="d-none">All the users are selected</h3>
-                    <h3 id="noUserInviteListMessage" class="d-none">There are no Users to select. You need to add Users
-                        from the contract dashboard first</h3>
+                    <h3 id="noUserInviteListMessage" class="d-none">There are no users to select. Contract creators can add users from their dashboard.</h3>
                     <h3 id="partiallyInvitedUserListMessage" class="d-none">Add a user to this section</h3>
                     <div class="select-user-table d-none" id="inviteUserTable">
                     </div>
@@ -601,8 +597,7 @@
                 <div class="invite-users-inner">
                     <img src="images/invite-user-icon.svg" alt="Invite Users">
                     <h3 id="allTeamInvitedMessage" class="d-none">All the teams are selected</h3>
-                    <h3 id="noTeamInviteListMessage" class="d-none">There are no teams to select. You need to add teams
-                        from the contract dashboard first</h3>
+                    <h3 id="noTeamInviteListMessage" class="d-none">There are no teams to select. Contract creators can create teams from their dashboard.</h3>
                     <h3 id="partiallyInvitedTeamListMessage" class="d-none">Add a team to this section</h3>
                     <div class="select-user-table d-none" id="inviteTeamTable">
                     </div>
@@ -759,11 +754,11 @@
             </div>
             <!--  Section: Reject Position popup  -->
 
-            <!--  Section: Assign Draft Request popup  -->
+            <!--  Section: Assign user to draft changes  popup  -->
             <div class="position-confirmation-popup d-none" id="assignDraftRequestPopup">
                 <div class="invite-users-inner">
-                    <img src="images/position_confirmation.svg" alt="Assign Draft Request">
-                    <h3>Assign Draft Request</h3>
+                    <img src="images/position_confirmation.svg" alt="Assign user to draft changes">
+                    <h3>Assign user to draft changes</h3>
                     <div class="confirmation-form">
                         <form id="formAssignDraftRequest" method="get" action>
                             <input type="hidden" id="assignDraftRequestMessageId" value="" />
@@ -809,7 +804,7 @@
                     </div>
                 </div>
             </div>
-            <!--  Section: Assign Draft Request popup  -->
+            <!--  Section: Assign user to draft changes  popup  -->
 
             <!--  Section: Submit Drafting for Approval popup  -->
             <div class="position-confirmation-popup d-none" id="sendDraftConfirmationPopup">
@@ -1014,7 +1009,7 @@
             <!--  Section: Reassign Draft Request popup  -->
             <div class="position-confirmation-popup d-none" id="reassignDraftRequestPopup">
                 <div class="invite-users-inner">
-                    <img src="images/position_confirmation.svg" alt="Assign Draft Request">
+                    <img src="images/position_confirmation.svg" alt="Reassign Drafting">
                     <h3>Reassign Drafting</h3>
                     <div class="confirmation-form">
                         <form id="formReassignDraftRequest" method="get" action>

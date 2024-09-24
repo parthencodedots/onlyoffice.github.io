@@ -376,6 +376,7 @@
             }
         }
 
+
         /**
          * @desc Get the open contract and user details
          */
@@ -2915,9 +2916,9 @@
                                 requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section';
                             } else {
                                 if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
+                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
                                 } else {
-                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
+                                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
                                 }
                             }
                         }
@@ -3175,9 +3176,9 @@
                             requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section';
                         } else {
                             if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section.';
                             } else {
-                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section.';
                             }
                         }
                     }
@@ -3288,6 +3289,26 @@
                         } else {
                             switchClass(elements.btnCreateClause, displayNoneClass, (contractInformation && contractInformation.contractCurrentStatus != "Under Negotiation"));
                         }
+
+                        var clauseToolTip = document.getElementById('btnCreateClause');
+
+                        var tooltipContent = new bootstrap.Tooltip(clauseToolTip, {
+                            title: 'Start by selecting content in the document',
+                            html: false,
+                            placement: 'bottom',
+                            // customClass: 'custom-tooltip-class' // Add your custom class here
+                        });
+
+                        // Show the tooltip on mouseover
+                        clauseToolTip.addEventListener('mouseover', function () {
+                            tooltipContent.show();
+                        });
+
+                        // Hide the tooltip on mouseleave
+                        clauseToolTip.addEventListener('mouseleave', function () {
+                            tooltipContent.hide();
+                        });
+
                         if (contractInformation.counterPartyInviteStatus !== 'Pending') {
                             counterPartyDetail = responseData.oppositeUser;
                         } else {
@@ -3446,6 +3467,35 @@
                                 window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
                             }
                         }
+
+                        var contractBtnText = document.getElementById('btnMarkupMode');
+                        var getBtnText = document.getElementById("btnMarkupMode").innerHTML;
+
+                        let messageContent = new bootstrap.Tooltip(contractBtnText, {
+                            title: 'Use Our Working Draft to test drafting or have your team review it without the Counterparty being aware.  See FAQ.',
+                            html: false,
+                            placement: 'bottom',
+                            // customClass: 'custom-tooltip-class' // Add your custom class here
+                        });
+                        if(getBtnText == 'Master Document'){
+                            messageContent = new bootstrap.Tooltip(contractBtnText, {
+                                title: 'The Master Document is visible to Counterparty Users and is where the majority of your negotiation occurs.  See FAQ',
+                                html: false,
+                                placement: 'bottom',
+                                // customClass: 'custom-tooltip-class' // Add your custom class here
+                            });
+
+                            // Show the tooltip on mouseover
+
+                        }
+                        contractBtnText.addEventListener('mouseover', function () {
+                            messageContent.show();
+                        });
+
+                        // Hide the tooltip on mouseleave
+                        contractBtnText.addEventListener('mouseleave', function () {
+                            messageContent.hide();
+                        });
                     } else {
                         console.log('Error: 14031200', 'Contract details not found');
                     }
@@ -4885,9 +4935,9 @@
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
                                             if (loggedInCompanyDetails._id == contractInformation.companyId) {
-                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + " to draft the changes to this section. Go to my side to assign a user to draft changes.";
+                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + " to draft the changes to this section.";
                                             } else {
-                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section. Go to my side to assign a user to draft changes.";
+                                                notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section.";
                                             }
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
@@ -5143,7 +5193,7 @@
                                         var notificationMessage;
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
-                                            notificationMessage = userName.trim() + " has assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section. Go to my side to assign a user to draft changes.";
+                                            notificationMessage = userName.trim() + " has assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section.";
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
@@ -5709,7 +5759,7 @@
                                             socket.emit('contractSectionMessage', postData);
                                             message = postData.actionperformedbyUser + ' has assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft the changes to this section';
                                         } else {
-                                            message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section. Go to my side to assign a user to draft changes.';
+                                            message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
                                         }
                                         renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                             '   <div class="profile-picture">\n' +
