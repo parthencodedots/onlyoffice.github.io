@@ -10,9 +10,9 @@ ul {padding: 0; margin: 0;}
 li {list-style: none;}
 img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 /* ======================================= Editor Css ======================================= */
-.btn {width: auto; display: inline-block; margin: 0;  padding: 10px 18px; border: 0; font-size: 14px; color: #282756;  font-weight: 400; font-family: 'Poppins', sans-serif;  border-radius: 4px; min-width: 86px; text-align: center; box-shadow: none !important; outline: none !important; }
-.btn-secondary {background: #E5E5E5;}
-.btn-secondary:hover { background-color: #69DAEE; }
+.btn {width: auto; display: inline-block; margin: 0;  padding: 10px 8px; border: 0; font-size: 14px; color: #282756;  font-weight: 400; font-family: 'Poppins', sans-serif;  border-radius: 4px; min-width: 86px; text-align: center; box-shadow: none !important; outline: none !important; }
+.btn-secondary {background: #E5E5E5;border: 1px solid transparent}
+.btn-secondary:hover {     background-color: #ffffff !important;border: 1px solid #282756;color: #282756;}
 /*#divCounterpartyTextbox .btn-secondary:hover { background-color: #FFBC81 !important; }*/
 .btn-primary { color: #ffffff !important; border: 1px solid !important; background: #282756 !important; }
 .btn-primary:hover { background-color: transparent !important; border-color: #282756 !important; color: #282756 !important; }
@@ -27,7 +27,7 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .invite-counterpartie .invite-button { display: flex; width: 100%; margin: 0; padding: 18px 18px; text-align: center; border: 1px dashed #A2A6A7; font-size: 14px; color: #282756;  font-weight: 400; line-height: normal; border-radius: 4px; justify-content: center; align-items: center;}
 .invite-counterpartie .invite-button img {margin: 0 12px 0 0;}
 .invite-counterpartie-form, .invite-counterpartie-pending, .contract-sameside-chat, .contract-create-form, .contract-chat-history, .contract-lists { width: 100%; }
-.invite-form{width: 100%; float: left; margin: 0; padding: 0;}
+.invite-form{width: 100%; float: left; margin: 0; padding: 0; overflow: auto; height: calc(100vh - 24px);}
 .invite-form .invite-form-header { width: 100%; margin: 0; padding: 13px 20px; display: flex; align-items: center; justify-content: space-between; background: #F5F9FF;}
 .invite-form-header h3 {margin: 0; padding:0 15px 0 0; font-size: 14px; color: #282756; font-weight: 600; }
 .form-inner { width: 100%; margin: 0; padding: 20px; float: left;}
@@ -100,9 +100,9 @@ img {max-width: 100%;vertical-align: middle;border-style: none; height: auto;}
 .chat-body { overflow: auto; width: 100%; float: left; margin: 0; padding: 12px 20px 20px; height:calc(100vh - 137px); overflow-y: auto; overflow-x: hidden;}
 .chat-body .chat-area { width: 100%; margin: 0; padding: 0; float: left;}
 .chat-body .chat-area .message-wrapper { width: 100%; float: left; margin: 0 0 20px 0; padding: 0;}
-.chat-body .chat-area .message-wrapper.reverse {direction: rtl;}
+/*.chat-body .chat-area .message-wrapper.reverse {direction: rtl;}*/
 .message-wrapper .profile-picture {width: 100%; display: flex; margin: 0; padding: 0; align-items: start;}
-.message-wrapper.reverse .profile-picture {direction: rtl; justify-content: start;}
+/*.message-wrapper.reverse .profile-picture {direction: rtl; justify-content: start;}*/
 .message-wrapper.reverse .profile-picture .last-seen {margin: 0 6px 0 0;}
 .message-wrapper.reverse .profile-picture .name {margin: 0 8px 0 0;}
 .message-wrapper .profile-picture .last-seen { font-size: 12px; font-weight: 400; margin: 0 0 0 6px; padding: 0; display: inline-block; color: #282756; opacity: 50%;}
@@ -476,7 +476,7 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
     .conversation-right > ul li:first-child a img{max-height: 23px; max-width: 23px; width: 100%; }
     .conversation-right > ul li {padding: 0 2px;}
     .chat-create-footer {padding: 10px 10px 10px;}
-    .conversion-history .chat-body {height: calc(100vh - 217px); }
+    .conversion-history .chat-body {height: calc(100vh - 265px); }
     .conversion-history .chat-footer-inner .send-btn .btn-primary {height: 32px; line-height: 30px; padding: 0 5px; font-size: 10px;}
     .conversion-history .chat-footer-inner .btn {margin: 0; height: 32px;}
     .chat-footer-inner { flex-wrap: inherit;}
@@ -523,3 +523,7 @@ p#txtMeetingViewOutcomes { font-size: 14px; font-weight: 400; }
 #divGroupClauseListItems .contract-list-items:last-child { margin-bottom: 0px !important }
 #divContractClauseSections .contract-list-items:first-child { padding-top: 0px !important }
 .contract-list .contract-list-items { padding-bottom: 0px; }
+
+.btn-secondary{
+    background: #69daee;
+}

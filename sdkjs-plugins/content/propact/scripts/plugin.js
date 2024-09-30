@@ -1216,11 +1216,19 @@
         var getClauseDetails = clauseLists.find((ele) => ele._id == selectedClauseID);
         if (getClauseDetails) {
             var isAllInvited = [];
-            if (inviteTeamListIDs.length !== selectedContractSectionDetails.contractAssignedTeams.length) {
-                isAllInvited.push(false);
+
+            if (openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty' || openContractResponseData.userRole == 'Contract Creator') {
+                inviteTeamListIDs.forEach((el) => {
+                    if (!(selectedContractSectionDetails.contractAssignedTeams.findIndex((ele) => ele._id == el.itemId) > -1)) {
+                        isAllInvited.push(false);
+                    } else {
+                        isAllInvited.push(true);
+                    }
+                });
             } else {
                 inviteTeamListIDs.forEach((el) => {
-                    if (!getClauseDetails.assignedTeam.includes(el.itemId)) {
+                    // if (!getClauseDetails.assignedUser.includes(el.itemId)) {
+                    if (!(selectedContractSectionDetails.contractAssignedTeams.findIndex((ele) => ele._id == el.itemId) > -1)) {
                         isAllInvited.push(false);
                     } else {
                         isAllInvited.push(true);
@@ -1263,7 +1271,7 @@
                     '\t\t\t\t\t\t\t\t<tbody>\n';
                 inviteTeamListIDs.forEach((el) => {
                     // var checkFindIndex = inviteUserListIDs.findIndex((e) => e.itemId == el);
-                    if (!getClauseDetails.assignedTeam.includes(el.itemId)) {
+                    if (!(selectedContractSectionDetails.contractAssignedTeams.findIndex((ele) => ele._id == el.itemId) > -1)) {
                         iHtml += '\t\t\t\t\t\t\t\t<tr>\n' +
                             '\t\t\t\t\t\t\t\t\t\t\t\t<td>\n' +
                             '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="form-check" data-id="' + el.itemId + '"><input type="checkbox" class="form-check-input invite-team-chkbox" value=""></div>\n' +
@@ -2751,10 +2759,10 @@
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                     requestRowMessage = (data.status == "approved" ? 'Position approved by ' : 'Position rejected by ') + data.actionperformedbyUser
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag != 'reassign') {
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft the changes to this section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft the changes to this section.';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag == 'reassign') {
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section.';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
@@ -2768,7 +2776,7 @@
                 } else if (data.confirmationType == "assign_draft") {
                     getContractSectionDetails();
                     getContractDetails(socket, false);
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section.';
                 } else if (data.confirmationType == "withdrawn") {
                     renderHTML += '<div class="message-wrapper grey-color ' + (data.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
                         '   <div class="profile-picture">\n' +
@@ -2913,7 +2921,7 @@
                             renderHTML += '</div>\n' +
                                 '</div>';
                             if (data.flagDraftAssigned) {
-                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section';
+                                requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section.';
                             } else {
                                 if (loggedInCompanyDetails._id == contractInformation.companyId) {
                                     requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
@@ -3014,7 +3022,6 @@
     }
 
     function renderSocketHistoryMessage(data, chatWindow) {
-        // debugger;
         if (loggedInCompanyDetails._id != contractInformation.companyId) {
             var conversionTypeArr = ['OTCP'];
             if (openContractResponseData && openContractResponseData.canCommunicateWithCounterparty) {
@@ -3086,7 +3093,7 @@
                 if (data.confirmationType == 'position') {
                     requestRowMessage = (data.status == "approved" ? 'Position approved by ' : 'Position rejected by ') + data.actionperformedbyUser
                 } else if (data.confirmationType == 'request_draft' && data.sendTo) {
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft the changes to this section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft the changes to this section.';
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
                         getContractSectionDetails();
@@ -3097,7 +3104,7 @@
                     }
                 } else if (data.confirmationType == "assign_draft") {
                     getContractDetails(socket, false);
-                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section';
+                    requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section.';
                 } else if (data.confirmationType == "withdrawn") {
                     requestRowMessage = 'Contract section withdrawn by ' + data.actionperformedbyUser;
                 } else if (data.confirmationType == "Reopen") {
@@ -3173,7 +3180,7 @@
                         renderHTML += '</div>\n' +
                             '</div>';
                         if (data.flagDraftAssigned) {
-                            requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section';
+                            requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (data.assignedUserDetails ? data.assignedUserDetails.firstName + " " + data.assignedUserDetails.lastName : "") + ' to draft the changes to this section.';
                         } else {
                             if (loggedInCompanyDetails._id == contractInformation.companyId) {
                                 requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section.';
@@ -4574,7 +4581,7 @@
                             var renderHTML = '';
                             var message = '';
                             if (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed") {
-                                message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName;
+                                message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName + ". Section complete.";
                             } else {
                                 message = 'This section has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
                             }
@@ -4594,7 +4601,7 @@
                             var renderHTML = '';
                             var message = '';
                             if (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed") {
-                                message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName;
+                                message = selectedContractSectionDetails.contractSectionData.draftConfirmMessage + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByCounterPartyId.lastName + " and " + selectedContractSectionDetails.contractSectionData.confirmByUserId.firstName + " " + selectedContractSectionDetails.contractSectionData.confirmByUserId.lastName + ". Section complete.";
                             } else {
                                 message = 'This section has withdrawn by ' + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.firstName + " " + selectedContractSectionDetails.contractSectionData.contractSectionWithdrawnBy.lastName;
                             }
@@ -4927,7 +4934,6 @@
                                             '</div>\n';
                                         break;
                                     case "Notification":
-                                        // debugger;
                                         if (element.message == 'Ignore') {
                                             break;
                                         }
@@ -4942,9 +4948,9 @@
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
-                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft the changes to this section";
+                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft the changes to this section.";
                                             } else {
-                                                notificationMessage = userName.trim() + " has assigned a team member to draft the changes to this section";
+                                                notificationMessage = userName.trim() + " has assigned a team member to draft the changes to this section.";
                                             }
                                         } else if (element.message == 'withdrawn') {
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
@@ -5197,9 +5203,9 @@
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
-                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft the changes to this section";
+                                                notificationMessage = userName.trim() + " has assigned " + userReceiverName.trim() + " to draft the changes to this section.";
                                             } else {
-                                                notificationMessage = userName.trim() + " has assigned a team member to draft the changes to this section";
+                                                notificationMessage = userName.trim() + " has assigned a team member to draft the changes to this section.";
                                             }
                                         } else if (element.message == 'withdrawn') {
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
@@ -5714,7 +5720,7 @@
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '       <div class="request-row">\n' +
-                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned a team member to draft the changes to this section</strong>\n';
+                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned a team member to draft the changes to this section.</strong>\n';
                                         renderHTML += '       </div>\n' +
                                             '</div>\n';
                                         if (postData.messageConfirmationFor != "Same Side") {
@@ -5757,7 +5763,7 @@
                                             postData.flagDraftAssigned = response.data.flagDraftAssigned;
                                             postData.assignedUserDetails = postData.sendToName;
                                             socket.emit('contractSectionMessage', postData);
-                                            message = postData.actionperformedbyUser + ' has assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft the changes to this section';
+                                            message = postData.actionperformedbyUser + ' has assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft the changes to this section.';
                                         } else {
                                             message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
                                         }
@@ -5781,7 +5787,7 @@
                                             '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                             '   </div>\n' +
                                             '       <div class="request-row">\n' +
-                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft the changes to this section</strong>\n';
+                                            '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft the changes to this section.</strong>';
                                         if (postData.with == 'Our Team' && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty') && postData && postData.flag == 'reassign') {
                                             renderHTML += '<br/>' +
                                                 '<div class="request-btn">\n' +
@@ -5802,7 +5808,7 @@
                                     '      <p class="last-seen">' + formatDate(new Date()) + '</p>\n' +
                                     '   </div>\n' +
                                     '       <div class="request-row">\n' +
-                                    '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft the changes to this section</strong>\n';
+                                    '      <strong>' + postData.actionperformedbyUser + ' has assigned ' + postData.sendToName + ' to draft the changes to this section.</strong>';
                                 if (postData.with == 'Our Team' && (openContractResponseData.userRole == 'Contract Creator' || openContractResponseData.userRole == 'Admin' || openContractResponseData.userRole == 'Counterparty')) {
                                     renderHTML += '<br/>' +
                                         '<div class="request-btn">\n' +
@@ -6585,7 +6591,9 @@
                             organisationList.push({ 'id': ele._id, 'name': ele.companyName });
                             // organisationList.push(ele.companyName);
                         })
-                        autocomplete(elements.inputOrganisationName, organisationList);
+                        if(organisationList.length > 0) {
+                            autocomplete(elements.inputOrganisationName, organisationList);
+                        }
                     }
                 })
                 .catch(error => {
@@ -6792,6 +6800,7 @@
             if (!val) {
                 return false;
             }
+            let matchFound = false
             currentFocus = -1;
             /*create a DIV element that will contain the items (values):*/
             a = document.createElement("DIV");
@@ -6803,6 +6812,7 @@
             for (i = 0; i < arr.length; i++) {
                 /*check if the item starts with the same letters as the text field value:*/
                 if (arr[i] && arr[i].name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    matchFound = true
                     /*create a DIV element for each matching element:*/
                     b = document.createElement("DIV");
                     b.className = 'dropdown-option';
@@ -6825,6 +6835,10 @@
                 } else {
                     inp.setAttribute('data-id', '');
                 }
+            }
+
+            if (!matchFound) {
+                closeAllLists();
             }
         });
         /*execute a function presses a key on the keyboard:*/

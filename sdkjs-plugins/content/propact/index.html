@@ -63,7 +63,7 @@
                         <img src="images/plus.svg" alt="plus">
                         Invite Counterparty
                     </a>
-                    <p>If you are working on a document without a Counterparty you can also  invite another decision maker or team to discuss a document as the Counterparty - see <a href="https://propact.com.au/faq" target="_blank">FAQ</a>
+                    <p style="font-size: 12px; line-height: 20px;">If you are working on a document without a Counterparty you can also  invite another decision maker or team to discuss a document as the Counterparty - see <a href="https://propact.com.au/faq" target="_blank">FAQ</a>
                     </p>
                 </div>
                 <div class="invite-counterpartie-pending d-none" id="divInviteCounterpartyInvited">
@@ -148,10 +148,9 @@
                                required>
                     </div>-->
                         <div class="form-group autocomplete">
-                            <label class="">Organisation name</label>
+                            <label class="">Organisation name(Please use your counterparties full business name.  Use abr.business.gov.au to confirm.)</label>
                             <input id="inputOrganisationName" class="form-control" type="text" name="organisationName"
-                                placeholder="Organisation name" required>
-                            <label class="">Please use your counterparties full business name.  Use abr.business.gov.au to confirm.</label>
+                                placeholder="Organisation name" required autocomplete="off">
                         </div>
                         <div class="submit-btn">
                             <a class="btn btn-secondary" href="#" id="btnInviteCounterpartyCancel">Cancel</a>
@@ -214,7 +213,7 @@
                                             data-bs-parent="#accordionExample">
                                             <div class="accordion-body" id="accordionBodyTeams">
                                                 <p class="text-left" id="paragraphTeamsNotFoundMessage">
-                                                    No teams have been created. Contract creators can create teams from their dashboard.
+                                                    No teams have been created. Contract creators and admins can create teams from their dashboard.
                                                 </p>
                                             </div>
                                         </div>
@@ -233,7 +232,7 @@
                                             data-bs-parent="#accordionExample">
                                             <div class="accordion-body" id="accordionBodyUsers">
                                                 <p class="text-left" id="paragraphUsersNotFoundMessage">
-                                                    No users have been added. Contract creators can add users from their dashboard.
+                                                    No users have been added. Contract creators and admins can add users from their dashboard.
                                                 </p>
                                             </div>
                                         </div>
@@ -572,7 +571,7 @@
             <div class="invite-users-popup d-none" id="inviteUserPopup">
                 <div class="invite-users-inner">
                     <img src="images/invite-user-icon.svg" alt="Invite Users">
-                    <h3 id="allUserInvitedMessage" class="d-none">All users have been added to this clause.  Position confirmers can add users to the contract from their dashboard.</h3>
+                    <h3 id="allUserInvitedMessage" class="d-none">All users have been added to this clause. Contract creators and Admins can add users to the contract from their dashboard.</h3>
                     <h3 id="noUserInviteListMessage" class="d-none">There are no users to select. Contract creators can add users from their dashboard.</h3>
                     <h3 id="partiallyInvitedUserListMessage" class="d-none">Add a user to this section</h3>
                     <div class="select-user-table d-none" id="inviteUserTable">
@@ -596,9 +595,9 @@
             <div class="invite-teams-popup d-none" id="inviteTeamPopup">
                 <div class="invite-users-inner">
                     <img src="images/invite-user-icon.svg" alt="Invite Users">
-                    <h3 id="allTeamInvitedMessage" class="d-none">All teams have been added to this clause.  Position confirmers can create teams from their dashboard.
+                    <h3 id="allTeamInvitedMessage" class="d-none">All teams have been added to this clause. Contract creators and Admins can create teams from their dashboard.
                     </h3>
-                    <h3 id="noTeamInviteListMessage" class="d-none">There are no teams to select. Contract creators can create teams from their dashboard.</h3>
+                    <h3 id="noTeamInviteListMessage" class="d-none">There are no teams to select. Contract creators and Admins can create teams from their dashboard.</h3>
                     <h3 id="partiallyInvitedTeamListMessage" class="d-none">Add a team to this section</h3>
                     <div class="select-user-table d-none" id="inviteTeamTable">
                     </div>
