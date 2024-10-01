@@ -2928,6 +2928,9 @@
                                 } else {
                                     requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
                                 }
+                                if(loggedInCompanyDetails._id != data.companyId ||chatWindow == 'CP' ){
+                                    requestRowMessage += " Go to my side to assign a user to draft changes."
+                                }
                             }
                         }
                     }
@@ -3186,6 +3189,10 @@
                                 requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section.';
                             } else {
                                 requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section.';
+                            }
+
+                            if(loggedInCompanyDetails._id != data.companyId){
+                                requestRowMessage += " Go to my side to assign a user to draft changes."
                             }
                         }
                     }
@@ -3504,14 +3511,11 @@
                             messageContent.hide();
                         });
                     } else {
-                        console.log('Error: 14031200', 'Contract details not found');
                     }
                 })
                 .catch(function (err) {
-                    console.log('Error #14031301:', err);
                 });
         } catch (error) {
-            console.log('Error #14031431:', error);
         }
     }
 
@@ -3566,7 +3570,6 @@
             })
             .catch(error => {
                 // Handle any errors
-                console.log('Error #14031455:', error);
                 switchClass(elements.loader, displayNoneClass, true);
             });
     }
@@ -3597,11 +3600,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #14031500:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #14031440:', error);
         }
     }
 
@@ -3640,11 +3641,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #14031505:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #14031506:', error);
         }
     }
 
@@ -3830,11 +3829,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #14031510:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #14031511:', error);
         }
     }
 
@@ -3935,11 +3932,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #14031515:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #14031516:', error);
         }
     }
 
@@ -4105,11 +4100,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #19031259:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #19031300:', error);
         }
     }
 
@@ -4137,11 +4130,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #19031259:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #20061050', error);
         }
     }
 
@@ -4238,11 +4229,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #19031631:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #20061625:', error);
         }
     }
 
@@ -4644,11 +4633,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #19031631:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #19031635:', error);
         }
     }
 
@@ -4780,13 +4767,11 @@
                         })
                         .catch(error => {
                             // Handle any errors
-                            console.log('Error #26031555:', error);
                             switchClass(elements.loader, displayNoneClass, true);
                         });
                 }
             }
         } catch (error) {
-            console.error('Error #26031230:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -4945,6 +4930,9 @@
                                             } else {
                                                 notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section.";
                                             }
+                                            if(loggedInCompanyDetails._id != element.companyId){
+                                                notificationMessage += " Go to my side to assign a user to draft changes."
+                                            }
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
@@ -5032,11 +5020,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #26031560:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #19031635:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -5200,6 +5186,9 @@
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
                                             notificationMessage = userName.trim() + " has assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section.";
+                                            if(loggedInCompanyDetails._id != element.companyId){
+                                                notificationMessage += " Go to my side to assign a user to draft changes."
+                                            }
                                         } else if (element.message == 'request_draft') {
                                             if (element && element.messageReceiverUser) {
                                                 var userReceiverName = element.messageReceiverUser.firstName + " " + element.messageReceiverUser.lastName;
@@ -5332,11 +5321,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #26031565:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #19031635:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -5365,8 +5352,6 @@
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
-                    // var responseData = response;
-                    // console.log('responseData', responseData);
                     if (response && response.status == true && response.code == 200) {
                         postData._id = response.data._id;
                         var conversationType = 'OTM';
@@ -5474,11 +5459,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #29031200:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #29031150:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -5598,11 +5581,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #29031200:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #29031150:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -5761,11 +5742,14 @@
                                         var message = '';
                                         if (response.data.flagDraftAssigned) {
                                             postData.flagDraftAssigned = response.data.flagDraftAssigned;
-                                            postData.assignedUserDetails = postData.sendToName;
+                                            postData.assignedUserDetails = response.data.assignedUserDetails;
                                             socket.emit('contractSectionMessage', postData);
-                                            message = postData.actionperformedbyUser + ' has assigned ' + (postData.sendToName ? postData.sendToName : "") + ' to draft the changes to this section.';
+                                            message = postData.actionperformedbyUser + ' has assigned ' + (response.data.assignedUserDetails ? response.data.assignedUserDetails.firstName + " " + response.data.assignedUserDetails.lastName : "") + ' to draft the changes to this section.';
                                         } else {
                                             message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
+                                            if(loggedInCompanyDetails._id !== postData.companyId){
+                                                message += ' Go to my side to assign a user to draft changes.'
+                                            }
                                         }
                                         renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                             '   <div class="profile-picture">\n' +
@@ -5944,11 +5928,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #01041835:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #01041830:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6064,11 +6046,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #01040924:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #01040923:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6157,11 +6137,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #02041333:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #02041331:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6357,11 +6335,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.log('Error #01040924:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #01041607:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6401,11 +6377,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.error('Error #04040714:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #04040707:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6515,11 +6489,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.error('Error #04040714:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #08040804:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6560,7 +6532,6 @@
             })
             .catch(error => {
                 // Handle any errors
-                console.log('Error #14031455:', error);
                 switchClass(elements.loader, displayNoneClass, true);
             });
     }
@@ -6598,11 +6569,9 @@
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.error('Error #21050542:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #22051042:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6650,17 +6619,14 @@
                         };
                         socket.emit('refreshClauseList', data);
                     } else {
-                        console.error('Error fetching data:', responseData);
                     }
                     return true;
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.error('Error #04040714:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #20050358:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6708,17 +6674,14 @@
                         };
                         socket.emit('refreshClauseList', data);
                     } else {
-                        console.error('Error fetching data:', responseData);
                     }
                     return true;
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.error('Error #04040714:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #20050358:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
@@ -6771,17 +6734,14 @@
                         };
                         socket.emit('refreshClauseList', data);
                     } else {
-                        console.error('Error fetching data:', responseData);
                     }
                     return true;
                 })
                 .catch(error => {
                     // Handle any errors
-                    console.error('Error #04040714:', error);
                     switchClass(elements.loader, displayNoneClass, true);
                 });
         } catch (error) {
-            console.log('Error #20050358:', error);
             switchClass(elements.loader, displayNoneClass, true);
         }
     }
