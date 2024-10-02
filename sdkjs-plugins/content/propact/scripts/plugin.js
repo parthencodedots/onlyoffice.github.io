@@ -2760,9 +2760,13 @@
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag != 'reassign') {
                     requestRowMessage = data.actionperformedbyUser + ' has assigned a team member to draft the changes to this section.';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
+                    getContractSectionDetails();
+                    getContractDetails(socket, redirection = false);
                 } else if (data.confirmationType == 'request_draft' && data.sendTo && data.flag == 'reassign') {
                     requestRowMessage = data.actionperformedbyUser + ' has assigned ' + data.sendToName + ' to draft the changes to this section.';
                     $('.reconfirm-approve[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
+                    getContractSectionDetails();
+                    getContractDetails(socket, redirection = false);
                 } else if (data.confirmationType == "draft") {
                     if (data.status == 'approved') {
                         getContractSectionDetails();
