@@ -2570,7 +2570,6 @@
             });
 
             socket.on('forwardNewClauseCreated', async function (data) {
-                // debugger;
                 if (data) {
                     tagLists.push(JSON.parse(data));
                     clauseNextPage = 1;
@@ -2770,6 +2769,8 @@
                         getContractDetails(socket, redirection = false);
                         requestRowMessage = 'Drafting approved by ' + data.actionperformedbyUser;
                     } else {
+                        getContractSectionDetails();
+                        getContractDetails(socket, redirection = false);
                         requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser;
                     }
                     $('.draft-reject[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
@@ -3103,6 +3104,8 @@
                         getContractDetails(socket, redirection = false);
                         requestRowMessage = 'Drafting approved by ' + data.actionperformedbyUser;
                     } else {
+                        getContractSectionDetails();
+                        getContractDetails(socket, redirection = false);
                         requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser;
                     }
                 } else if (data.confirmationType == "assign_draft") {
@@ -3873,7 +3876,6 @@
                     // Handle the response data
                     var responseData = response;
                     if (responseData && responseData.status == true && responseData.code == 201) {
-                        // debugger;
                         // Handle the response data
                         // redirectToClauseList();
                         if (typeof window.Asc.plugin.executeMethod === 'function') {
@@ -4073,7 +4075,6 @@
                                     flagRedirectFirst = true;
                                 }, 500);
                             } else if (commentThreadID) {
-                                // debugger;
                                 setTimeout(function () {
                                     flagRedirectClauseCreate = true;
                                     $('.contract-item[data-commentid="' + commentThreadID + '"]').click();
@@ -5611,7 +5612,6 @@
             fetch(requestURL, requestOptions)
                 .then(response => response.json())
                 .then(response => {
-                    // debugger;
                     // Handle the response data
                     elements.formReconfirmPosition.reset();
                     elements.formRejectPosition.reset();
@@ -5621,7 +5621,7 @@
                     // Handle the response data
                     // var responseData = response;t
                     if (response && response.status == true && response.code == 200) {
-
+                        console.log("postData",postData)
                         if (response.data) {
                             if (response.data.addedMessageId) {
                                 postData._id = response.data.addedMessageId;
