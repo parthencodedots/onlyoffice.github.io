@@ -5783,6 +5783,8 @@
                                     }
                                     document.querySelector('button.assign-user[data-id="' + postData.messageId + '"]').style.display = 'none';
                                 }
+                                getContractSectionDetails();
+                                getContractDetails(socket, false);
                                 break;
                             case "assign_draft":
                                 renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + '">\n' +
