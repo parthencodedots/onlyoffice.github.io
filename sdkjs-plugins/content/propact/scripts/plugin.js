@@ -5636,9 +5636,14 @@
                         }
                         if (postData.messageType == 'Notification' && postData.confirmationType == 'request_draft') {
                             if (postData.sendTo) {
+                                console.log("INSIDE FIRST")
                                 socket.emit('contractSectionMessage', postData);
                             } else {
                                 if (!(response.data && response.data.flagDraftAssigned)) {
+                                    console.log("INSIDE SECOND")
+                                    socket.emit('contractSectionMessage', postData);
+                                }else{
+                                    console.log("INSIDE THIRD")
                                     socket.emit('contractSectionMessage', postData);
                                 }
                             }
