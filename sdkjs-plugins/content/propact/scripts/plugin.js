@@ -2775,7 +2775,7 @@
                     } else {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser;
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This wil need to be redrafted and sent for approval.';
                     }
                     $('.draft-reject[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "assign_draft") {
@@ -3110,7 +3110,7 @@
                     } else {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser;
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This wil need to be redrafted and sent for approval.';
                     }
                 } else if (data.confirmationType == "assign_draft") {
                     getContractDetails(socket, false);
@@ -4949,6 +4949,9 @@
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
+                                            if(element.message == 'Drafting rejected by'){
+                                                notificationMessage += '. This wil need to be redrafted and sent for approval.'
+                                            }
                                         }
                                         renderHTML += '<div class="message-wrapper ' + (element.conversationType == 'OTM' ? " light-gold-color" : " reverse") + '">\n' +
                                             '       <div class="profile-picture">\n' +
@@ -5205,6 +5208,9 @@
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
+                                            if(element.message == 'Drafting rejected by'){
+                                                notificationMessage += '. This wil need to be redrafted and sent for approval.'
+                                            }
                                         }
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (messageType == "Counterparty" ? " light-gold-color" : "") + '">\n' +
                                             '       <div class="profile-picture">\n' +
@@ -5830,7 +5836,7 @@
                                     }
                                     message = 'Drafting approved by ' + postData.actionperformedbyUser;
                                 } else {
-                                    message = 'Drafting rejected by ' + postData.actionperformedbyUser;
+                                    message = 'Drafting rejected by ' + postData.actionperformedbyUser + '. This wil need to be redrafted and sent for approval.';
 
                                     renderHTML += '<div class="message-wrapper reverse red-color">\n' +
                                         '   <div class="profile-picture">\n' +
