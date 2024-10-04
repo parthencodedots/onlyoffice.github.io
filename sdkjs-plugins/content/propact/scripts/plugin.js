@@ -94,6 +94,8 @@
     var attachFileSameSide = [];
     var attachFileCounterparty = [];
     var contractClauseGroups = [];
+    var inviteUserListIDs = [];
+    var inviteTeamListIDs = [];
     let contractArchieveStatus = false
     /**
      * @constant
@@ -685,7 +687,7 @@
                         document.getElementById('userTabContent').innerHTML = iHtml;
                     } else {
                         var html = '<ul>' +
-                            '<li><p>No user selected</p></li>' +
+                            '<li><p>No user invited</p></li>' +
                             '</ul>';
                         document.getElementById('userTabContent').innerHTML = html;
                     }
@@ -707,7 +709,7 @@
                         document.getElementById('teamTabContent').innerHTML = iHtml;
                     } else {
                         var html = '<ul>' +
-                            '<li><p>No team selected</p></li>' +
+                            '<li><p>No team invited</p></li>' +
                             '</ul>';
                         document.getElementById('teamTabContent').innerHTML = html;
                     }
@@ -2775,7 +2777,7 @@
                     } else {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This wil need to be redrafted and sent for approval.';
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.';
                     }
                     $('.draft-reject[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "assign_draft") {
@@ -3110,7 +3112,7 @@
                     } else {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This wil need to be redrafted and sent for approval.';
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.';
                     }
                 } else if (data.confirmationType == "assign_draft") {
                     getContractDetails(socket, false);
@@ -4402,7 +4404,7 @@
                             // elements.sameSideTeamList.innerHTML = teamListHeader;
                         } else {
                             var html = '<ul>' +
-                                '<li><p>No team selected</p></li>' +
+                                '<li><p>No team invited</p></li>' +
                                 '</ul>';
                             elements.divInvitedTeams.innerHTML = html;
                             // elements.sameSideTeamList.innerHTML = '-';
@@ -4618,14 +4620,14 @@
                     } else {
                         var noUserAssigned = '<ul>' +
                             '<li>' +
-                            '<p>No user selected</p>' +
+                            '<p>No user invited</p>' +
                             '</li>' +
                             '</ul>';
                         elements.divInvitedUsers.innerHTML = noUserAssigned;
 
                         var noTeamAssigned = '<ul>' +
                             '<li>' +
-                            '<p>No team selected</p>' +
+                            '<p>No team invited</p>' +
                             '</li>' +
                             '</ul>';
                         elements.divInvitedTeams.innerHTML = noTeamAssigned;
@@ -4950,7 +4952,7 @@
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
                                             if(element.message == 'Drafting rejected by'){
-                                                notificationMessage += '. This wil need to be redrafted and sent for approval.'
+                                                notificationMessage += '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.'
                                             }
                                         }
                                         renderHTML += '<div class="message-wrapper ' + (element.conversationType == 'OTM' ? " light-gold-color" : " reverse") + '">\n' +
@@ -5209,7 +5211,7 @@
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
                                             if(element.message == 'Drafting rejected by'){
-                                                notificationMessage += '. This wil need to be redrafted and sent for approval.'
+                                                notificationMessage += '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.'
                                             }
                                         }
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (messageType == "Counterparty" ? " light-gold-color" : "") + '">\n' +
@@ -5836,7 +5838,7 @@
                                     }
                                     message = 'Drafting approved by ' + postData.actionperformedbyUser;
                                 } else {
-                                    message = 'Drafting rejected by ' + postData.actionperformedbyUser + '. This wil need to be redrafted and sent for approval.';
+                                    message = 'Drafting rejected by ' + postData.actionperformedbyUser + '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.';
 
                                     renderHTML += '<div class="message-wrapper reverse red-color">\n' +
                                         '   <div class="profile-picture">\n' +
