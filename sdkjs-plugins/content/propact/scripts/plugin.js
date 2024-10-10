@@ -2566,7 +2566,6 @@
             socket.emit('joinChatRoom', documentChatRoomName);
 
             socket.on('counterpartyInvited', data => {
-                console.log("INSIDE THE COUNTERPSRTY SOCKET")
                 if (data) {
                     getContractDetails(socket, redirection = true);
                 }
@@ -3566,7 +3565,7 @@
                     switchClass(elements.sectionContractLists, displayNoneClass, false);
                     switchClass(elements.divContractListItems, displayedInvitecpPending, true);
                     switchClass(elements.divContractListItems, displayedInviteCP, false);
-                    getContractDetails();
+                    getContractDetails(null,false);
                 } else if (responseData && responseData.status == false && responseData.message) {
                     $('#inviteEmailAddress').parent().append('<label class="error api-error">' + responseData.message + '</label>');
                 }
