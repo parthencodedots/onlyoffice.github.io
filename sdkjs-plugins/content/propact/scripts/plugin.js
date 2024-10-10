@@ -535,14 +535,12 @@
                 clauseNextPage = 1;
                 clauseHasNextPage = true;
                 clauseLists = [];
-                console.log("SEARCH SECTION")
                 await getClauses();
             } else {
                 searchText = '';
                 clauseNextPage = 1;
                 clauseHasNextPage = true;
                 clauseLists = [];
-                console.log("SEARCH SECTION FIRST")
                 await getClauses();
             }
         }, 500);
@@ -551,7 +549,6 @@
     elements.divContractClauseSections.onscroll = async function (e) {
         if (elements.divContractClauseSections.scrollTop + elements.divContractClauseSections.offsetHeight >= (elements.divContractClauseSections.scrollHeight - 1)) {
             if (clauseHasNextPage) {
-                console.log("SCROLL PAGINATION")
                 await getClauses();
             } else {
                 switchClass(elements.btnScrollDown, displayNoneClass, true);
@@ -852,7 +849,6 @@
             clauseNextPage = 1;
             clauseHasNextPage = true;
             clauseLists = [];
-            console.log("CLOSE CON HISTORY")
             await getClauses();
             switchClass(elements.sectionContractLists, displayNoneClass, false);
             switchClass(elements.sectionConversionHistory, displayNoneClass, true);
@@ -1129,7 +1125,6 @@
             clauseNextPage = 1;
             clauseHasNextPage = true;
             clauseLists = [];
-            console.log("CLOSE SAME SIDE SECTION")
             await getClauses();
             switchClass(elements.sectionContractLists, displayNoneClass, false);
             switchClass(elements.sectionSameSideChat, displayNoneClass, true);
@@ -1764,7 +1759,6 @@
             clauseNextPage = 1;
             clauseHasNextPage = true;
             clauseLists = [];
-            console.log("CLOSE COUNTER SECTION")
             await getClauses();
             switchClass(elements.sectionContractLists, displayNoneClass, false);
             switchClass(elements.sectionCounterpartyChat, displayNoneClass, true);
@@ -2572,6 +2566,7 @@
             socket.emit('joinChatRoom', documentChatRoomName);
 
             socket.on('counterpartyInvited', data => {
+                console.log("INSIDE THE COUNTERPSRTY SOCKET")
                 if (data) {
                     getContractDetails(socket, redirection = true);
                 }
@@ -2579,7 +2574,6 @@
 
             socket.on('forwardNewClauseCreated', async function (data) {
                 if (data) {
-                    console.log("forwardNewClauseCreated")
                     tagLists.push(JSON.parse(data));
                     clauseNextPage = 1;
                     clauseHasNextPage = true;
@@ -2590,7 +2584,6 @@
 
             socket.on('forwardInviteClause', async function (data) {
                 if (data) {
-                    console.log("forwardInviteClause")
                     clauseNextPage = 1;
                     clauseHasNextPage = true;
                     clauseLists = [];
@@ -2682,7 +2675,6 @@
                     clauseNextPage = 1;
                     clauseHasNextPage = true;
                     clauseLists = [];
-                    console.log("forwardRefreshClauseList")
                     await getClauses();
                     await getGroupClauses();
                     await getClauseGroups();
@@ -3395,7 +3387,6 @@
                                 clauseNextPage = 1;
                                 clauseHasNextPage = true;
                                 clauseLists = [];
-                                console.log("NOT ACCEPTED SECTION")
                                 getClauses();
                             }
                         }
@@ -3424,7 +3415,6 @@
                                 clauseNextPage = 1;
                                 clauseHasNextPage = true;
                                 clauseLists = [];
-                                console.log("ACCEPTED SECTION")
                                 getClauses();
                             }
                         } else if (contractInformation.counterPartyInviteStatus == 'Invited') {
@@ -3934,7 +3924,6 @@
                         clauseHasNextPage = true;
                         clauseLists = [];
                         getClauses(commentID);
-                        console.log("NEW CREATE SECTION")
                         var data = {
                             chatRoomName: contractID,
                             tagData: JSON.stringify(nContentControlProperties)
@@ -3964,7 +3953,6 @@
      */
     async function getClauses(commentThreadID = null) {
         try {
-            console.log("INSIDE THE FUNCTION")
             switchClass(elements.loader, displayNoneClass, false);
             var requestURL = apiBaseUrl + '/contract-section/get-contract-sections/' + contractID;
             requestURL += '?';
@@ -5947,7 +5935,6 @@
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
-                        console.log("UPDATE SECTION SECTION")
                         getClauses();
                     }
                     switchClass(elements.loader, displayNoneClass, true);
@@ -6068,7 +6055,6 @@
                         clauseHasNextPage = true;
                         clauseLists = [];
                         getClauses();
-                        console.log("WITHDRAWN SECTION")
                     }
                     switchClass(elements.loader, displayNoneClass, true);
                 })
@@ -6635,7 +6621,6 @@
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
-                        console.log("ADD NEW SECTION")
                         getClauses();
                         getGroupClauses();
                         getClauseGroups();
@@ -6691,7 +6676,6 @@
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
-                        console.log("EXISTING ADD GROUP SECTION")
                         getClauses();
                         getGroupClauses();
                         getClauseGroups();
@@ -6752,7 +6736,6 @@
                         clauseNextPage = 1;
                         clauseHasNextPage = true;
                         clauseLists = [];
-                        console.log("REMOVE ACCEPTED SECTION")
                         getClauses();
                         getGroupClauses();
                         getClauseGroups();
