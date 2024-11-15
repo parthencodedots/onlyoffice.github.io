@@ -97,6 +97,7 @@
     var inviteUserListIDs = [];
     var inviteTeamListIDs = [];
     let contractArchieveStatus = false
+    let normalMessageSent = false
     /**
      * @constant
      * @description Define the variables for socket functionality
@@ -310,6 +311,13 @@
         sameSideUserList: document.getElementById("sameSideUserList"),
         counterPartyTeamList: document.getElementById("counterPartyTeamList"),
         counterPartyUserList: document.getElementById("counterPartyUserList"),
+
+        initialMessageMySide: document.getElementById("initialMessageMySide"),
+        positionMessageMySide: document.getElementById("positionMessageMySide"),
+        draftingMessageMySide: document.getElementById("draftingMessageMySide"),
+        initialMessage: document.getElementById("initialMessage"),
+        positionMessage: document.getElementById("positionMessage"),
+        draftingMessage: document.getElementById("draftingMessage"),
     }
 
     /**================================== Plugin Init Start ===============================*/
@@ -338,7 +346,7 @@
 
         if (!flagSocketInit) {
             socket = io.connect(baseUrl,
-                { auth: { authToken } }
+                {auth: {authToken}}
             );
             flagSocketInit = true;
         }
@@ -435,7 +443,7 @@
 
     if (!flagSocketInit) {
         socket = io.connect(baseUrl,
-            { auth: { authToken } }
+            {auth: {authToken}}
         );
         flagSocketInit = true;
     }
@@ -563,7 +571,7 @@
     };
 
     elements.btnScrollDown.onclick = function () {
-        $('#divContractClauseSections').animate({ scrollTop: elements.divContractClauseSections.scrollHeight }, 'slow');
+        $('#divContractClauseSections').animate({scrollTop: elements.divContractClauseSections.scrollHeight}, 'slow');
         return false;
     };
 
@@ -1490,7 +1498,7 @@
                     if (match && match2) {
                         var dataIdValue = match[1];
                         var dataCompanyIdValue = match2[1];
-                        tagUserInMessage.push({ "userId": dataIdValue, "companyId": dataCompanyIdValue });
+                        tagUserInMessage.push({"userId": dataIdValue, "companyId": dataCompanyIdValue});
                     }
                     return value;
                 }
@@ -2290,7 +2298,7 @@
                     if (match && match2) {
                         var dataIdValue = match[1];
                         var dataCompanyIdValue = match2[1];
-                        tagUserInMessage.push({ "userId": dataIdValue, "companyId": dataCompanyIdValue });
+                        tagUserInMessage.push({"userId": dataIdValue, "companyId": dataCompanyIdValue});
                     }
                     return value;
                 }
@@ -2935,7 +2943,7 @@
                                 } else {
                                     requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
                                 }
-                                if(loggedInCompanyDetails._id != data.companyId ||chatWindow == 'CP' ){
+                                if (loggedInCompanyDetails._id != data.companyId || chatWindow == 'CP') {
                                     requestRowMessage += " Go to my side to assign a user to draft changes."
                                 }
                             }
@@ -2989,6 +2997,7 @@
                     '</div>\n';
                 break;
             default:
+                normalMessageSent = true
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'CP' ? " light-gold-color" : "") + '">\n' +
                     '   <div class="profile-picture">\n' +
                     '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
@@ -3000,6 +3009,13 @@
                     '   </div>\n' +
                     '</div>\n';
                 break;
+        }
+
+        if (normalMessageSent) {
+            switchClass(elements.initialMessageMySide, displayNoneClass, true);
+            switchClass(elements.initialMessage, displayNoneClass, true);
+            switchClass(elements.positionMessageMySide, displayNoneClass, false);
+            switchClass(elements.positionMessage, displayNoneClass, false);
         }
 
         if (chatWindow == 'SS') {
@@ -3200,7 +3216,7 @@
                                 requestRowMessage = data.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id == data.companyId ? counterPartyCompanyDetail.companyName : loggedInCompanyDetails.companyName) + ' to draft the changes to this section.';
                             }
 
-                            if(loggedInCompanyDetails._id != data.companyId){
+                            if (loggedInCompanyDetails._id != data.companyId) {
                                 requestRowMessage += " Go to my side to assign a user to draft changes."
                             }
                         }
@@ -3295,7 +3311,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(res => {
                     var response = res;
@@ -3350,7 +3366,13 @@
                                 }
                             }
                         }
+                        switchClass(elements.draftingMessageMySide, displayNoneClass, true);
+                        switchClass(elements.draftingMessage, displayNoneClass, true);
                         if (contractInformation.userWhoHasEditAccess && contractInformation.userWhoHasEditAccess == loggedInUserDetails._id && responseData.contractCurrentState == 'Edit') {
+                            switchClass(elements.positionMessageMySide, displayNoneClass, true);
+                            switchClass(elements.positionMessage, displayNoneClass, true);
+                            switchClass(elements.draftingMessageMySide, displayNoneClass, false);
+                            switchClass(elements.draftingMessage, displayNoneClass, false);
                             if (typeof window.Asc.plugin.executeMethod === 'function') {
                                 var sDocumentEditingRestrictions = "none";
                                 window.Asc.plugin.executeMethod("SetEditingRestrictions", [sDocumentEditingRestrictions]);
@@ -3500,7 +3522,7 @@
                             placement: 'bottom',
                             // customClass: 'custom-tooltip-class' // Add your custom class here
                         });
-                        if(getBtnText == 'Master Document'){
+                        if (getBtnText == 'Master Document') {
                             messageContent = new bootstrap.Tooltip(contractBtnText, {
                                 title: 'The Master Document is visible to Counterparty Users and is where the majority of your negotiation occurs.  See FAQ',
                                 html: false,
@@ -3565,7 +3587,7 @@
                     switchClass(elements.sectionContractLists, displayNoneClass, false);
                     switchClass(elements.divContractListItems, displayedInvitecpPending, true);
                     switchClass(elements.divContractListItems, displayedInviteCP, false);
-                    getContractDetails(null,false);
+                    getContractDetails(null, false);
                 } else if (responseData && responseData.status == false && responseData.message) {
                     $('#inviteEmailAddress').parent().append('<label class="error api-error">' + responseData.message + '</label>');
                 }
@@ -3593,7 +3615,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -3625,7 +3647,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -3671,7 +3693,7 @@
                 method: 'GET',
                 headers: headers,
             };
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -3974,7 +3996,7 @@
             // Set queryparams
             requestURL += queryParam.join('&');
 
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -4126,7 +4148,7 @@
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
 
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     if (response && response.status == true && response.code == 200) {
@@ -4150,7 +4172,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            return fetch(requestURL, { headers: headers })
+            return fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     if (response && response.status == true && response.code == 200) {
@@ -4252,7 +4274,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            return fetch(requestURL, { headers: headers })
+            return fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     // Handle the response data
@@ -4665,7 +4687,7 @@
                         "Content-Type": "application/json"
                     };
                     if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-                    fetch(requestURL, { headers: headers })
+                    fetch(requestURL, {headers: headers})
                         .then(response => response.json())
                         .then(response => {
                             if (response && response.status == true && response.code == 200) {
@@ -4807,7 +4829,7 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
                     if (response && response.status == true && response.code == 200 && response.data) {
@@ -4937,7 +4959,7 @@
                                             } else {
                                                 notificationMessage = userName.trim() + " has assigned " + (contractInformation.companyId == element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section.";
                                             }
-                                            if(loggedInCompanyDetails._id != element.companyId){
+                                            if (loggedInCompanyDetails._id != element.companyId) {
                                                 notificationMessage += " Go to my side to assign a user to draft changes."
                                             }
                                         } else if (element.message == 'request_draft') {
@@ -4951,7 +4973,7 @@
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
-                                            if(element.message == 'Drafting rejected by'){
+                                            if (element.message == 'Drafting rejected by') {
                                                 notificationMessage += '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.'
                                             }
                                         }
@@ -5062,10 +5084,35 @@
                 "Content-Type": "application/json"
             };
             if (authToken) headers["Authorization"] = 'Bearer ' + authToken;
-            fetch(requestURL, { headers: headers })
+            fetch(requestURL, {headers: headers})
                 .then(response => response.json())
                 .then(response => {
+                    switchClass(elements.initialMessageMySide, displayNoneClass, true);
+                    switchClass(elements.positionMessageMySide, displayNoneClass, true);
+                    switchClass(elements.draftingMessageMySide, displayNoneClass, true);
+                    switchClass(elements.initialMessage, displayNoneClass, true);
+                    switchClass(elements.positionMessage, displayNoneClass, true);
+                    switchClass(elements.draftingMessage, displayNoneClass, true);
                     if (response && response.status == true && response.code == 200 && response.data) {
+                        let messageList = response.data.data
+
+                        var getNormalMessage = messageList.filter((ele) => ele.messageType == "Normal");
+                        if (getNormalMessage && getNormalMessage.length == 0) {
+                            switchClass(elements.initialMessageMySide, displayNoneClass, false);
+                            switchClass(elements.initialMessage, displayNoneClass, false);
+                        }
+                        if (getNormalMessage && getNormalMessage.length > 0) {
+                            switchClass(elements.positionMessageMySide, displayNoneClass, false);
+                            switchClass(elements.positionMessage, displayNoneClass, false);
+                        }
+
+                        // var positionMessage = messageList.filter((ele) => ele.messageType == "Position Confirmation" && ele.messageStatus == "None");
+                        // if (positionMessage && positionMessage.length == 0) {
+                        //     switchClass(elements.positionMessageMySide, displayNoneClass, true);
+                        //     switchClass(elements.positionMessage, displayNoneClass, true);
+                        //     // switchClass(elements.draftingMessageMySide, displayNoneClass, false);
+                        // }
+
                         if (response.data.data.length > 0) {
                             var responseData;
                             if (chatNextPage == 1) {
@@ -5196,7 +5243,7 @@
                                         var userName = element.messageSenderUser.firstName + " " + element.messageSenderUser.lastName;
                                         if (element.message == 'request_draft_counter') {
                                             notificationMessage = userName.trim() + " has assigned " + (loggedInCompanyDetails._id !== element.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + " to draft the changes to this section.";
-                                            if(loggedInCompanyDetails._id != element.companyId){
+                                            if (loggedInCompanyDetails._id != element.companyId) {
                                                 notificationMessage += " Go to my side to assign a user to draft changes."
                                             }
                                         } else if (element.message == 'request_draft') {
@@ -5210,7 +5257,7 @@
                                             notificationMessage = "Contract section withdrawn by " + userName.trim();
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
-                                            if(element.message == 'Drafting rejected by'){
+                                            if (element.message == 'Drafting rejected by') {
                                                 notificationMessage += '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.'
                                             }
                                         }
@@ -5431,6 +5478,7 @@
                                 }
                                 break;
                             default:
+                                normalMessageSent = true
                                 renderHTML += '<div class="message-wrapper reverse ' + (postData.with == "Counterparty" ? "light-gold-color" : "") + ' ">\n' +
                                     '   <div class="profile-picture">\n' +
                                     '      <img src="' + (postData.actionperformedbyUserImage ? postData.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
@@ -5443,7 +5491,12 @@
                                     '</div>\n';
                                 break
                         }
-
+                        if (normalMessageSent) {
+                            switchClass(elements.initialMessageMySide, displayNoneClass, true);
+                            switchClass(elements.initialMessage, displayNoneClass, true);
+                            switchClass(elements.positionMessageMySide, displayNoneClass, false);
+                            switchClass(elements.positionMessage, displayNoneClass, false);
+                        }
 
                         if (postData.with == "Counterparty") {
                             var newElement = document.createElement("div");
@@ -5758,7 +5811,7 @@
                                             message = postData.actionperformedbyUser + ' has assigned ' + (response.data.assignedUserDetails ? response.data.assignedUserDetails.firstName + " " + response.data.assignedUserDetails.lastName : "") + ' to draft the changes to this section.';
                                         } else {
                                             message = postData.actionperformedbyUser + ' has assigned ' + (loggedInCompanyDetails._id !== postData.companyId ? loggedInCompanyDetails.companyName : counterPartyCompanyDetail.companyName) + ' to draft the changes to this section.';
-                                            if(loggedInCompanyDetails._id !== postData.companyId){
+                                            if (loggedInCompanyDetails._id !== postData.companyId) {
                                                 message += ' Go to my side to assign a user to draft changes.'
                                             }
                                         }
@@ -6572,10 +6625,10 @@
                         var responseData = response.data;
                         let organisationList = [];
                         responseData.forEach((ele) => {
-                            organisationList.push({ 'id': ele._id, 'name': ele.companyName });
+                            organisationList.push({'id': ele._id, 'name': ele.companyName});
                             // organisationList.push(ele.companyName);
                         })
-                        if(organisationList.length > 0) {
+                        if (organisationList.length > 0) {
                             autocomplete(elements.inputOrganisationName, organisationList);
                         }
                     }

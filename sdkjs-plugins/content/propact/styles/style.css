@@ -254,6 +254,9 @@ div#divDraftingBox div#assignDraftingRequestBox div#accordionExampleB .accordion
 
 .go-btn2{padding-bottom: 10px; }
 .go-btn2 .btn{border: 1px solid #282756;}
+lable.d-block {
+    color: red;
+}
 /*.chat-footer-inner-2{justify-content: flex-end;}*/
 .close-btn{width: 30px;}
 
