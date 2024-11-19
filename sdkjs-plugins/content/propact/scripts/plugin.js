@@ -100,6 +100,7 @@
     let normalMessageSent = false
     let positionMessageSent = false
     let draftingMessageSent = false
+    let contractSectionCompleted = false
     /**
      * @constant
      * @description Define the variables for socket functionality
@@ -4601,14 +4602,16 @@
                             //     tooltipB.hide();
                             // });
                         }
+                        contractSectionCompleted = false
                         if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed" || selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Withdrawn")) {
+                            contractSectionCompleted = true;
                             switchClass(elements.initialMessageMySide, displayNoneClass, true);
                             switchClass(elements.positionMessageMySide, displayNoneClass, true);
                             switchClass(elements.draftingMessageMySide, displayNoneClass, true);
                             switchClass(elements.initialMessage, displayNoneClass, true);
                             switchClass(elements.positionMessage, displayNoneClass, true);
                             switchClass(elements.draftingMessage, displayNoneClass, true);
-                            
+
                             switchClass(elements.divSameSideTextbox, displayNoneClass, true);
                             switchClass(elements.divCounterpartyTextbox, displayNoneClass, true);
 
@@ -5400,6 +5403,14 @@
                             chatHasNextPage = response.data.hasNextPage;
                             chatNextPage = response.data.nextPage;
                             switchClass(elements.loader, displayNoneClass, true);
+                            if (contractSectionCompleted) {
+                                switchClass(elements.initialMessageMySide, displayNoneClass, true);
+                                switchClass(elements.positionMessageMySide, displayNoneClass, true);
+                                switchClass(elements.draftingMessageMySide, displayNoneClass, true);
+                                switchClass(elements.initialMessage, displayNoneClass, true);
+                                switchClass(elements.positionMessage, displayNoneClass, true);
+                                switchClass(elements.draftingMessage, displayNoneClass, true);
+                            }
                         } else {
                             elements.conversionHistory.innerHTML = '';
                             switchClass(elements.loader, displayNoneClass, true);
