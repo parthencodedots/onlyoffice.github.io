@@ -2714,6 +2714,7 @@
                     '</div>\n'
                 break;
             case "Position Confirmation":
+                normalMessageSent = true
                 positionMessageSent = true
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'SS' ? " grey-color" : " dark-gold-color") + (data && data.messageStatus && data.messageStatus == 'Reject' ? " red-color" : "") + '">\n' +
                     '       <div class="profile-picture">\n' +
@@ -2745,6 +2746,7 @@
                     '</div>\n';
                 break;
             case "Draft Confirmation":
+                normalMessageSent = true
                 draftingMessageSent = true
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'SS' ? " grey-color" : " dark-gold-color") + '">\n' +
                     '   <div class="profile-picture">\n' +
@@ -2789,7 +2791,7 @@
                     } else {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.';
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This will need to be redrafted and sent for approval. To reassign drafting go to my side.';
                     }
                     $('.draft-reject[data-id="' + data.messageId + '"]').parent().addClass(displayNoneClass);
                 } else if (data.confirmationType == "assign_draft") {
@@ -2968,6 +2970,7 @@
                 }
                 break;
             case "Meeting":
+                normalMessageSent = true
                 renderHTML += '<div class="scheduled-meeting" data-id="' + data.meetingId + '">\n' +
                     '          <div class="scheduled-meeting-inner">\n' +
                     '            <div class="scheduled-meeting-icon">\n' +
@@ -2983,6 +2986,7 @@
                     '        </div>';
                 break;
             case "Attachment":
+                normalMessageSent = true
                 renderHTML += '<div class="message-wrapper' + (chatWindow == 'CP' ? " light-gold-color" : "") + ' ">\n' +
                     '   <div class="profile-picture">\n' +
                     '      <img src="' + (data.actionperformedbyUserImage ? data.actionperformedbyUserImage : 'images/no-profile-image.jpg') + '" alt="pp">\n' +
@@ -3142,7 +3146,7 @@
                     } else {
                         getContractSectionDetails();
                         getContractDetails(socket, redirection = false);
-                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.';
+                        requestRowMessage = 'Drafting rejected by ' + data.actionperformedbyUser + '. This will need to be redrafted and sent for approval. To reassign drafting go to my side.';
                     }
                 } else if (data.confirmationType == "assign_draft") {
                     getContractDetails(socket, false);
@@ -4988,7 +4992,7 @@
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
                                             if (element.message == 'Drafting rejected by') {
-                                                notificationMessage += '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.'
+                                                notificationMessage += '. This will need to be redrafted and sent for approval. To reassign drafting go to my side.'
                                             }
                                         }
                                         renderHTML += '<div class="message-wrapper ' + (element.conversationType == 'OTM' ? " light-gold-color" : " reverse") + '">\n' +
@@ -5110,7 +5114,7 @@
                     if (response && response.status == true && response.code == 200 && response.data) {
                         let messageList = response.data.data
 
-                        var getNormalMessage = messageList.filter((ele) => ele.messageType == "Normal");
+                        var getNormalMessage = messageList.filter((ele) => ele.messageType != "Invite" && ele.messageType != "Notification");
                         if (getNormalMessage && getNormalMessage.length == 0) {
                             switchClass(elements.initialMessageMySide, displayNoneClass, false);
                             switchClass(elements.initialMessage, displayNoneClass, false);
@@ -5272,7 +5276,7 @@
                                         } else {
                                             notificationMessage = element.message + ' ' + userName.trim();
                                             if (element.message == 'Drafting rejected by') {
-                                                notificationMessage += '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.'
+                                                notificationMessage += '. This will need to be redrafted and sent for approval. To reassign drafting go to my side.'
                                             }
                                         }
                                         renderHTML += '<div class="message-wrapper' + (element.from == loggedInUserDetails._id ? " reverse" : "") + (messageType == "Counterparty" ? " light-gold-color" : "") + '">\n' +
@@ -5920,7 +5924,7 @@
                                     }
                                     message = 'Drafting approved by ' + postData.actionperformedbyUser;
                                 } else {
-                                    message = 'Drafting rejected by ' + postData.actionperformedbyUser + '. This will need to be redrafted and sent for approval, To reassign drafting go to my side.';
+                                    message = 'Drafting rejected by ' + postData.actionperformedbyUser + '. This will need to be redrafted and sent for approval. To reassign drafting go to my side.';
 
                                     renderHTML += '<div class="message-wrapper reverse red-color">\n' +
                                         '   <div class="profile-picture">\n' +
