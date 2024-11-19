@@ -4602,6 +4602,13 @@
                             // });
                         }
                         if (selectedContractSectionDetails && selectedContractSectionDetails.contractSectionData && (selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Completed" || selectedContractSectionDetails.contractSectionData.contractSectionStatus == "Withdrawn")) {
+                            switchClass(elements.initialMessageMySide, displayNoneClass, true);
+                            switchClass(elements.positionMessageMySide, displayNoneClass, true);
+                            switchClass(elements.draftingMessageMySide, displayNoneClass, true);
+                            switchClass(elements.initialMessage, displayNoneClass, true);
+                            switchClass(elements.positionMessage, displayNoneClass, true);
+                            switchClass(elements.draftingMessage, displayNoneClass, true);
+                            
                             switchClass(elements.divSameSideTextbox, displayNoneClass, true);
                             switchClass(elements.divCounterpartyTextbox, displayNoneClass, true);
 
