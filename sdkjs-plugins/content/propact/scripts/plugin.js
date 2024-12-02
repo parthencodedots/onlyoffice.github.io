@@ -5134,7 +5134,7 @@
                             switchClass(elements.positionMessage, displayNoneClass, false);
                         }
 
-                        var positionMessage = messageList.filter((ele) => ele.messageType == "Position Confirmation");
+                        var positionMessage = messageList.filter((ele) => ele.messageType == "Position Confirmation" || ele.messageType == "Draft Confirmation" || ele.messageType == "Draft Request");
                         if (positionMessage && positionMessage.length > 0) {
                             switchClass(elements.positionMessageMySide, displayNoneClass, true);
                             switchClass(elements.positionMessage, displayNoneClass, true);
