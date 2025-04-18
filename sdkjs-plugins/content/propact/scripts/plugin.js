@@ -30,9 +30,9 @@
      * @constant
      * @description Define the Path
      */
-    var baseUrl = 'https://apipropactv2.digitaldilemma.com.au';
+    var baseUrl = 'https://api.propact.com.au';
     var apiBaseUrl = baseUrl + '/api/v1/app';
-    var IMAGE_USER_PATH_LINK = 'https://propact.s3.amazonaws.com/';
+    var IMAGE_USER_PATH_LINK = 'https://propact-production.s3.amazonaws.com/';
 
     /**
      * @constant
