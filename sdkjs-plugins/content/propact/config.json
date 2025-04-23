@@ -4,7 +4,7 @@
 
     "variations" : [
         {
-            "description" : "ProPact",
+            "description" : "ProPact's agile workflow drives efficiency, accountability and trust into legal and commercial document negotiation.",
             "url"         : "index.html",
             "icons": [ "resources/light/icon.png", "resources/light/icon@2x.png" ],
 			"icons2": [
